@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Writing Test 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background: #fff;
+            color: #222;
+            font-size: 15px;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            height: 52px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+        }
+        .ielts-logo { display: flex; align-items: center; gap: 12px; }
+        .ielts-logo-box {
+            background: #c8102e;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 3px 8px;
+            letter-spacing: 1px;
+        }
+        .header-title { font-size: 15px; font-weight: 400; color: #222; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .header-icon {
+            color: #444; cursor: pointer; font-size: 20px;
+            background: none; border: none; display: flex; align-items: center;
+        }
+
+        /* ===== PART BAR ===== */
+        .part-bar {
+            background: #f5f5f3;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 16px;
+            flex-shrink: 0;
+        }
+        .part-bar strong { font-weight: 700; }
+        .part-bar p { font-size: 14px; color: #333; margin-top: 2px; }
+
+        /* ===== MAIN ===== */
+        .main { display: flex; flex: 1; overflow: hidden; }
+
+        .left-panel {
+            width: 50%;
+            border-right: 1px solid #ccc;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .task-prompt { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+        .task-prompt strong { font-weight: 700; }
+        .chart-img { max-width: 100%; border: 1px solid #ccc; }
+
+        .divider {
+            width: 28px;
+            background: #4a4a4a;
+            cursor: col-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #fff;
+        }
+        .writing-area-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 12px;
+        }
+        .writing-textarea {
+            flex: 1;
+            border: 2px solid #1565c0;
+            padding: 12px;
+            font-size: 15px;
+            font-family: 'Noto Sans', sans-serif;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+            color: #222;
+        }
+        .word-count-bar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 6px 12px;
+            font-size: 14px;
+            color: #555;
+        }
+        .right-panel-tools {
+            display: flex;
+            justify-content: flex-end;
+            padding: 4px 12px 8px;
+            gap: 8px;
+        }
+        .tool-btn {
+            width: 32px; height: 32px;
+            border-radius: 50%; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+        }
+        .tool-btn-green { background: #2e7d32; color: white; }
+        .tool-btn-teal  { background: #00796b; color: white; }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 12px;
+            gap: 6px;
+        }
+        .nav-arrow {
+            width: 52px; height: 52px;
+            background: #333; color: white;
+            border: none; font-size: 22px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .nav-arrow:disabled { background: #aaa; cursor: default; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            border-top: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            height: 48px;
+            flex-shrink: 0;
+            background: #fff;
+        }
+        .footer-part {
+            flex: 1; display: flex; align-items: center;
+            justify-content: space-between; padding: 0 20px;
+            height: 100%; cursor: pointer; border-right: 1px solid #ddd;
+        }
+        .footer-part:last-of-type { border-right: none; }
+        .footer-part-label { font-weight: 700; font-size: 15px; }
+        .footer-part-count { font-size: 13px; color: #888; }
+        .footer-check { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+        .check-icon {
+            width: 24px; height: 24px; border-radius: 50%;
+            border: 2px solid #bbb;
+            display: flex; align-items: center; justify-content: center;
+            color: transparent; font-size: 13px; font-weight: 700;
+        }
+        .check-icon.done { background: #1b5e20; border-color: #1b5e20; color: white; }
+
+        /* ===== OPTIONS OVERLAY ===== */
+        .overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.05); }
+        .overlay.open { display: block; }
+        .options-panel {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: 100%; max-width: 100%;
+            background: #fff; z-index: 1000;
+            display: none; flex-direction: column;
+        }
+        .options-panel.open { display: flex; }
+        .options-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; border-bottom: 1px solid #eee;
+        }
+        .options-header h2 { font-size: 20px; font-weight: 400; text-align: center; flex: 1; }
+        .options-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #222; }
+        .options-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .option-btn-submit {
+            background: #c8102e; color: white; border: none;
+            border-radius: 4px; padding: 18px 20px;
+            font-size: 16px; font-weight: 600;
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; text-align: left;
+        }
+        .option-btn-submit:hover { background: #a80d26; }
+        .option-btn-submit .option-left { display: flex; align-items: center; gap: 14px; }
+        .options-list { border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+        .option-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; cursor: pointer;
+            background: #fff; border: none; border-bottom: 1px solid #eee;
+            width: 100%; text-align: left; font-size: 15px;
+        }
+        .option-row:last-child { border-bottom: none; }
+        .option-row:hover { background: #f9f9f9; }
+        .option-row .option-left { display: flex; align-items: center; gap: 14px; }
+        .option-icon { width: 24px; text-align: center; font-size: 18px; color: #555; }
+        .chevron { color: #888; font-size: 18px; }
+
+        /* ===== SUBMENUS ===== */
+        .submenu {
+            display: none; position: fixed; inset: 0;
+            background: #fff; z-index: 1100; flex-direction: column;
+        }
+        .submenu.open { display: flex; }
+        .submenu-header {
+            display: flex; align-items: center;
+            padding: 14px 16px; border-bottom: 1px solid #eee; gap: 12px;
+        }
+        .submenu-header h2 { font-size: 18px; font-weight: 400; }
+        .back-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #222; }
+        .submenu-body { padding: 16px; }
+        .contrast-option {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 10px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 15px;
+        }
+        .contrast-option input[type=radio] { accent-color: #c8102e; width: 18px; height: 18px; }
+        .text-size-option { display: flex; align-items: center; gap: 16px; padding: 20px 0; }
+        .size-btn { border: 1px solid #ccc; background: #fff; padding: 8px 18px; font-size: 15px; cursor: pointer; border-radius: 2px; }
+        .size-btn:hover { background: #f0f0f0; }
+        .size-display { font-size: 20px; font-weight: 600; min-width: 60px; text-align: center; }
+
+        /* ===== RESULTS SCREEN ===== */
+        .results-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            background: #f4f4f2;
+        }
+        .results-screen.open { display: flex; }
+
+        /* Loading */
+        .ai-loading {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            flex: 1; gap: 20px; padding: 40px; text-align: center;
+        }
+        .ai-loading-spinner {
+            width: 48px; height: 48px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #c8102e;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .ai-loading h3 { font-size: 18px; font-weight: 500; color: #333; }
+        .ai-loading p  { font-size: 14px; color: #888; max-width: 320px; }
+
+        /* Results header */
+        .results-header {
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 20px 16px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .results-header-left h2 { font-size: 17px; font-weight: 600; color: #111; }
+        .results-header-left p  { font-size: 13px; color: #888; margin-top: 3px; }
+        .overall-band {
+            background: #c8102e; color: white;
+            border-radius: 8px; padding: 10px 18px;
+            text-align: center; line-height: 1; flex-shrink: 0;
+        }
+        .overall-band .num  { font-size: 30px; font-weight: 700; }
+        .overall-band .lbl  { font-size: 11px; margin-top: 3px; opacity: 0.88; }
+
+        /* Criteria */
+        .criteria-section { padding: 16px 16px 0; }
+        .criteria-section h3 {
+            font-size: 12px; font-weight: 600; color: #999;
+            letter-spacing: .5px; text-transform: uppercase; margin-bottom: 10px;
+        }
+        .part-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+        .part-tab {
+            padding: 6px 16px; border-radius: 20px; font-size: 13px;
+            cursor: pointer; border: 1px solid #ddd;
+            background: #fff; color: #666; transition: all .15s;
+        }
+        .part-tab.active { background: #c8102e; color: white; border-color: #c8102e; }
+        .criteria-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+        .crit-card {
+            background: #fff; border: 1px solid #e8e8e8;
+            border-radius: 10px; padding: 14px 10px; text-align: center;
+        }
+        .crit-card .clabel { font-size: 11px; color: #888; margin-bottom: 8px; line-height: 1.3; }
+        .crit-card .cscore { font-size: 24px; font-weight: 700; }
+        .score-hi { color: #2e7d32; }
+        .score-md { color: #e65100; }
+        .score-lo { color: #c62828; }
+
+        /* Feedback panels */
+        .feedback-section { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
+        .fb-panel {
+            background: #fff; border: 1px solid #e8e8e8;
+            border-radius: 10px; overflow: hidden;
+        }
+        .fb-panel-header {
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; border-bottom: 1px solid #f0f0f0;
+        }
+        .fb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .dot-green { background: #2e7d32; }
+        .dot-amber { background: #e65100; }
+        .fb-panel-header .fb-title { font-size: 14px; font-weight: 600; }
+        .fb-panel-header .fb-count { margin-left: auto; font-size: 12px; color: #aaa; }
+        .fb-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 13px; line-height: 1.65; color: #333;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+        .fb-item:last-child { border-bottom: none; }
+        .fb-icon { flex-shrink: 0; margin-top: 1px; font-size: 14px; }
+        .fb-body { flex: 1; }
+        .example-box {
+            background: #f9f9f7; border-radius: 6px;
+            padding: 9px 12px; margin-top: 8px;
+            font-size: 12px; line-height: 1.6;
+            border-left: 3px solid #e0e0e0;
+        }
+        .ex-before { color: #b71c1c; margin-bottom: 4px; }
+        .ex-after  { color: #1b5e20; }
+        .ex-label  { font-weight: 600; margin-right: 4px; }
+
+        /* Results actions */
+        .results-actions {
+            padding: 16px; display: flex; gap: 10px;
+            border-top: 1px solid #e8e8e8; background: #fff;
+            flex-shrink: 0; margin-top: auto;
+        }
+        .res-btn {
+            flex: 1; padding: 13px; border: none;
+            border-radius: 8px; font-size: 14px; font-weight: 600;
+            cursor: pointer; font-family: 'Noto Sans', sans-serif;
+        }
+        .res-btn-primary   { background: #c8102e; color: white; }
+        .res-btn-primary:hover { background: #a80d26; }
+        .res-btn-secondary { background: #f0f0f0; color: #333; }
+        .res-btn-secondary:hover { background: #e4e4e4; }
+
+        /* Error */
+        .ai-error {
+            background: #fff3f3; border: 1px solid #f5c6cb;
+            border-radius: 10px; padding: 20px; margin: 20px;
+            text-align: center;
+        }
+        .ai-error h3 { font-size: 16px; margin-bottom: 8px; color: #721c24; }
+        .ai-error p  { font-size: 13px; color: #555; }
+        .retry-btn {
+            margin-top: 14px; padding: 10px 24px;
+            background: #c8102e; color: white;
+            border: none; border-radius: 6px;
+            font-size: 14px; cursor: pointer;
+            font-family: 'Noto Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+    <div class="ielts-logo">
+        <div class="ielts-logo-box">IELTS</div>
+        <span class="header-title">Writing Test</span>
+    </div>
+    <div class="header-right">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/>
+        </svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <button class="header-icon" onclick="openOptions()" aria-label="Options">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round">
+                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<!-- ===== PART BAR ===== -->
+<div class="part-bar" id="partBar">
+    <strong id="partTitle">Part 1</strong>
+    <p id="partInstructions">You should spend about 20 minutes on this task. Write at least 150 words.</p>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main" id="mainArea">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel" id="leftPanel">
+
+        <!-- Part 1 content -->
+        <div id="content-part-1">
+            <div class="task-prompt">
+                <p><strong>The chart below shows the number of adults participating in different major sports in one area, in 1997 and 2017.</strong></p>
+                <br>
+                <p><strong>Summarise the information by selecting and reporting the main features, and make comparisons where relevant.</strong></p>
+            </div>
+            <img class="chart-img"
+                src="https://writing9.com/_next/image?url=https%3A%2F%2Fimages.writing9.com%2Fcb340b8fe901c5300ceab8075e9835ce.png&w=640&q=75"
+                alt="Bar chart showing number of adults participating in major sports 1997 and 2017" />
+        </div>
+
+        <!-- Part 2 content -->
+        <div id="content-part-2" style="display:none;">
+            <div class="task-prompt">
+                <p>Write about the following topic:</p>
+                <br>
+                <p><strong>The world of work is changing rapidly and employees cannot depend on having the same job or the same working conditions for life.</strong></p>
+                <br>
+                <p><strong>Discuss the possible causes for this rapid change, and suggest ways of preparing people for the world of work in the future.</strong></p>
+                <br>
+                <p>Give reasons for your answer and include any relevant examples from your own knowledge or experience.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="divider" id="divider">
+        <svg width="14" height="20" viewBox="0 0 14 20" fill="white">
+            <circle cx="3" cy="4" r="2"/><circle cx="11" cy="4" r="2"/>
+            <circle cx="3" cy="10" r="2"/><circle cx="11" cy="10" r="2"/>
+            <circle cx="3" cy="16" r="2"/><circle cx="11" cy="16" r="2"/>
+        </svg>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+        <div class="writing-area-wrapper">
+            <textarea class="writing-textarea" id="writingTextarea"
+                placeholder="Start writing your response here..."
+                oninput="updateWordCount()"></textarea>
+        </div>
+        <div class="word-count-bar">Words: <span id="wordCount">0</span></div>
+        <div class="right-panel-tools" id="tools-part-1">
+            <button class="tool-btn tool-btn-green" title="Spell check" onclick="alert('Spell check enabled')">✓</button>
+            <button class="tool-btn tool-btn-teal"  title="Grammar check" onclick="alert('Grammar check enabled')">G</button>
+        </div>
+        <div id="tools-part-2" style="display:none; height:8px;"></div>
+        <div class="nav-arrows">
+            <button class="nav-arrow" id="prevBtn" onclick="switchPart(1)" disabled>&#8592;</button>
+            <button class="nav-arrow" id="nextBtn" onclick="switchPart(2)">&#8594;</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer" id="footer">
+    <div class="footer-part active" id="footer-tab-1" onclick="switchPart(1)">
+        <span class="footer-part-label">Part 1</span>
+        <span class="footer-part-count" id="count-1">0 of 1</span>
+    </div>
+    <div class="footer-check"><div class="check-icon" id="check-1">✓</div></div>
+    <div class="footer-part" id="footer-tab-2" onclick="switchPart(2)">
+        <span class="footer-part-label">Part 2</span>
+        <span class="footer-part-count" id="count-2">0 of 1</span>
+    </div>
+    <div class="footer-check"><div class="check-icon" id="check-2">✓</div></div>
+</div>
+
+<!-- ===== RESULTS SCREEN ===== -->
+<div class="results-screen" id="resultsScreen"></div>
+
+<!-- ===== OPTIONS OVERLAY ===== -->
+<div class="overlay" id="overlay" onclick="closeOptions()"></div>
+<div class="options-panel" id="optionsPanel">
+    <div class="options-header">
+        <div style="width:32px;"></div>
+        <h2>Options</h2>
+        <button class="options-close" onclick="closeOptions()">&#x2715;</button>
+    </div>
+    <div class="options-body">
+        <button class="option-btn-submit" onclick="closeOptions(); submitTest();">
+            <div class="option-left">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                <span>Go to submission page</span>
+            </div>
+            <span>&#8250;</span>
+        </button>
+        <div class="options-list">
+            <button class="option-row" onclick="openContrast()">
+                <div class="option-left"><span class="option-icon">◑</span><span>Contrast</span></div>
+                <span class="chevron">&#8250;</span>
+            </button>
+            <button class="option-row" onclick="openTextSize()">
+                <div class="option-left"><span class="option-icon">⊕</span><span>Text size</span></div>
+                <span class="chevron">&#8250;</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CONTRAST SUBMENU ===== -->
+<div class="submenu" id="contrastMenu">
+    <div class="submenu-header">
+        <button class="back-btn" onclick="closeContrast()">&#8249;</button>
+        <h2>Contrast</h2>
+    </div>
+    <div class="submenu-body">
+        <label class="contrast-option"><span>Default</span><input type="radio" name="contrast" value="default" checked onchange="applyContrast('default')"></label>
+        <label class="contrast-option"><span>Black on white</span><input type="radio" name="contrast" value="black-white" onchange="applyContrast('black-white')"></label>
+        <label class="contrast-option"><span>White on black</span><input type="radio" name="contrast" value="white-black" onchange="applyContrast('white-black')"></label>
+        <label class="contrast-option"><span>Yellow on black</span><input type="radio" name="contrast" value="yellow-black" onchange="applyContrast('yellow-black')"></label>
+    </div>
+</div>
+
+<!-- ===== TEXT SIZE SUBMENU ===== -->
+<div class="submenu" id="textSizeMenu">
+    <div class="submenu-header">
+        <button class="back-btn" onclick="closeTextSize()">&#8249;</button>
+        <h2>Text size</h2>
+    </div>
+    <div class="submenu-body">
+        <p style="color:#555; margin-bottom:16px;">Adjust the text size for the reading content.</p>
+        <div class="text-size-option">
+            <button class="size-btn" onclick="changeTextSize(-1)">A-</button>
+            <div class="size-display" id="sizeDisplay">100%</div>
+            <button class="size-btn" onclick="changeTextSize(1)">A+</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// INTEGRATION: which test this page is — matches TEST_LIBRARY key
+// in /app/api/check-writing/route.ts
+// ─────────────────────────────────────────────────────────────────
+const TEST_ID = "writing-test-1";
+
+// ─────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────
+let currentPart  = 1;
+let textSizeLevel = 0;
+const partData = {
+    1: { content: "", wordCount: 0 },
+    2: { content: "", wordCount: 0 }
+};
+
+const writingTextarea = document.getElementById("writingTextarea");
+const wordCountSpan   = document.getElementById("wordCount");
+const mainArea        = document.getElementById("mainArea");
+const resultsScreen   = document.getElementById("resultsScreen");
+const footer          = document.getElementById("footer");
+const partBar         = document.getElementById("partBar");
+
+// ─────────────────────────────────────────────────────────────────
+// PART SWITCHING
+// ─────────────────────────────────────────────────────────────────
+function switchPart(n) {
+    if (currentPart === n) return;
+    partData[currentPart].content = writingTextarea.value;
+    currentPart = n;
+
+    document.getElementById("content-part-1").style.display = n === 1 ? "" : "none";
+    document.getElementById("content-part-2").style.display = n === 2 ? "" : "none";
+    document.getElementById("tools-part-1").style.display   = n === 1 ? "" : "none";
+    document.getElementById("tools-part-2").style.display   = n === 2 ? "" : "none";
+
+    document.getElementById("partTitle").textContent = "Part " + n;
+    document.getElementById("partInstructions").textContent = n === 1
+        ? "You should spend about 20 minutes on this task. Write at least 150 words."
+        : "You should spend about 40 minutes on this task. Write at least 250 words.";
+
+    document.getElementById("footer-tab-1").classList.toggle("active", n === 1);
+    document.getElementById("footer-tab-2").classList.toggle("active", n === 2);
+    document.getElementById("prevBtn").disabled = (n === 1);
+    document.getElementById("nextBtn").disabled = (n === 2);
+
+    writingTextarea.value = partData[n].content;
+    updateWordCount();
+    writingTextarea.focus();
+}
+
+// ─────────────────────────────────────────────────────────────────
+// WORD COUNT
+// ─────────────────────────────────────────────────────────────────
+function updateWordCount() {
+    const text  = writingTextarea.value.trim();
+    const count = text === "" ? 0 : text.split(/\s+/).length;
+    wordCountSpan.textContent = count;
+    partData[currentPart].wordCount = count;
+    partData[currentPart].content   = writingTextarea.value;
+
+    const minWords = currentPart === 1 ? 150 : 250;
+    document.getElementById("count-" + currentPart).textContent = count >= minWords ? "1 of 1" : "0 of 1";
+    const checkEl = document.getElementById("check-" + currentPart);
+    checkEl.classList.toggle("done", count >= minWords);
+}
+
+// ─────────────────────────────────────────────────────────────────
+// OPTIONS / CONTRAST / TEXT SIZE
+// ─────────────────────────────────────────────────────────────────
+function openOptions()   { document.getElementById("optionsPanel").classList.add("open");    document.getElementById("overlay").classList.add("open"); }
+function closeOptions()  { document.getElementById("optionsPanel").classList.remove("open"); document.getElementById("overlay").classList.remove("open"); }
+function openContrast()  { document.getElementById("optionsPanel").classList.remove("open"); document.getElementById("contrastMenu").classList.add("open"); }
+function closeContrast() { document.getElementById("contrastMenu").classList.remove("open"); document.getElementById("optionsPanel").classList.add("open"); }
+function openTextSize()  { document.getElementById("optionsPanel").classList.remove("open"); document.getElementById("textSizeMenu").classList.add("open"); }
+function closeTextSize() { document.getElementById("textSizeMenu").classList.remove("open"); document.getElementById("optionsPanel").classList.add("open"); }
+
+function applyContrast(mode) {
+    const els = document.querySelectorAll(".writing-textarea, .left-panel, .right-panel, .header, .part-bar, .footer, .submenu, .options-panel");
+    document.body.style.background = "";
+    document.body.style.color = "";
+    els.forEach(el => { el.style.background = ""; el.style.color = ""; });
+    if (mode === "white-black") {
+        document.body.style.background = "#000"; document.body.style.color = "#fff";
+        els.forEach(el => { el.style.background = "#000"; el.style.color = "#fff"; });
+    } else if (mode === "yellow-black") {
+        document.body.style.background = "#000"; document.body.style.color = "#ffff00";
+        els.forEach(el => { el.style.background = "#000"; el.style.color = "#ffff00"; });
+    } else if (mode === "black-white") {
+        document.body.style.background = "#fff"; document.body.style.color = "#000";
+    }
+}
+
+function changeTextSize(dir) {
+    textSizeLevel = Math.max(-3, Math.min(3, textSizeLevel + dir));
+    const pct = 100 + textSizeLevel * 10;
+    document.getElementById("sizeDisplay").textContent = pct + "%";
+    document.body.style.fontSize    = (15 * pct / 100) + "px";
+    writingTextarea.style.fontSize  = (15 * pct / 100) + "px";
+}
+
+// ─────────────────────────────────────────────────────────────────
+// SUBMIT — calls backend, never touches an API key
+// ─────────────────────────────────────────────────────────────────
+function submitTest() {
+    partData[currentPart].content = writingTextarea.value;
+
+    const total = partData[1].wordCount + partData[2].wordCount;
+    if (total === 0) {
+        alert("Please write at least one response before submitting.");
+        return;
+    }
+
+    const confirmMsg =
+        "Submit your test for AI marking?\n\n" +
+        "Part 1: " + partData[1].wordCount + " words\n" +
+        "Part 2: " + partData[2].wordCount + " words\n\n" +
+        "You will receive detailed IELTS band scores and feedback.";
+
+    if (!confirm(confirmMsg)) return;
+
+    // Hide test UI, show loading
+    partBar.style.display  = "none";
+    mainArea.style.display = "none";
+    footer.style.display   = "none";
+    resultsScreen.classList.add("open");
+    showLoadingState();
+
+    // POST to backend
+    fetch("/api/check-writing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            testId:     TEST_ID,
+            essay1:     partData[1].content,
+            essay2:     partData[2].content,
+            wordCount1: partData[1].wordCount,
+            wordCount2: partData[2].wordCount
+        })
+    })
+    .then(function(res) {
+        return res.json().then(function(data) {
+            if (!res.ok) throw new Error(data.error || "Server error (" + res.status + ")");
+            return data;
+        });
+    })
+    .then(function(data) {
+        renderResults(data);
+    })
+    .catch(function(err) {
+        showError(err.message || "Something went wrong. Please try again.");
+    });
+}
+
+// ─────────────────────────────────────────────────────────────────
+// LOADING STATE
+// ─────────────────────────────────────────────────────────────────
+function showLoadingState() {
+    resultsScreen.innerHTML = `
+        <div class="ai-loading">
+            <div class="ai-loading-spinner"></div>
+            <h3>Marking your responses…</h3>
+            <p>Our AI examiner is evaluating your writing against official IELTS band descriptors. This takes about 15–20 seconds.</p>
+        </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ERROR STATE
+// ─────────────────────────────────────────────────────────────────
+function showError(message) {
+    resultsScreen.innerHTML = `
+        <div class="ai-error">
+            <h3>Something went wrong</h3>
+            <p>${escapeHtml(message)}</p>
+            <button class="retry-btn" onclick="window.location.reload()">Go back &amp; try again</button>
+        </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// RENDER RESULTS
+// ─────────────────────────────────────────────────────────────────
+function renderResults(data) {
+    const p1 = data.part1;
+    const p2 = data.part2;
+
+    function scoreClass(s) {
+        if (s >= 7)   return "score-hi";
+        if (s >= 5.5) return "score-md";
+        return "score-lo";
+    }
+
+    function criteriaHTML(part, isTask2) {
+        const label = isTask2 ? "Task response" : "Task achievement";
+        const score = isTask2 ? part.taskResponse : part.taskAchievement;
+        return `
+            <div class="criteria-grid">
+                <div class="crit-card">
+                    <div class="clabel">${label}</div>
+                    <div class="cscore ${scoreClass(score)}">${(+score).toFixed(1)}</div>
+                </div>
+                <div class="crit-card">
+                    <div class="clabel">Coherence &amp; cohesion</div>
+                    <div class="cscore ${scoreClass(part.coherenceCohesion)}">${(+part.coherenceCohesion).toFixed(1)}</div>
+                </div>
+                <div class="crit-card">
+                    <div class="clabel">Lexical resource</div>
+                    <div class="cscore ${scoreClass(part.lexicalResource)}">${(+part.lexicalResource).toFixed(1)}</div>
+                </div>
+                <div class="crit-card">
+                    <div class="clabel">Grammatical range</div>
+                    <div class="cscore ${scoreClass(part.grammaticalRange)}">${(+part.grammaticalRange).toFixed(1)}</div>
+                </div>
+            </div>`;
+    }
+
+    function strengthsHTML(list) {
+        if (!list || list.length === 0) return emptyItem("No specific strengths identified.");
+        return list.map(function(s) {
+            return `<div class="fb-item">
+                <span class="fb-icon" style="color:#2e7d32">✓</span>
+                <div class="fb-body">${escapeHtml(s)}</div>
+            </div>`;
+        }).join("");
+    }
+
+    function improvementsHTML(list) {
+        if (!list || list.length === 0) return emptyItem("No specific improvements needed.");
+        return list.map(function(item) {
+            const example = (item.before && item.after)
+                ? `<div class="example-box">
+                       <div class="ex-before"><span class="ex-label">✗</span>${escapeHtml(item.before)}</div>
+                       <div class="ex-after"><span class="ex-label">✓</span>${escapeHtml(item.after)}</div>
+                   </div>`
+                : "";
+            return `<div class="fb-item">
+                <span class="fb-icon" style="color:#e65100">!</span>
+                <div class="fb-body">
+                    <div>${escapeHtml(item.point)}</div>
+                    ${example}
+                </div>
+            </div>`;
+        }).join("");
+    }
+
+    function emptyItem(msg) {
+        return `<div class="fb-item"><span class="fb-icon">—</span><div class="fb-body">${msg}</div></div>`;
+    }
+
+    function panel(dotClass, title, count, bodyHTML) {
+        return `<div class="fb-panel">
+            <div class="fb-panel-header">
+                <div class="fb-dot ${dotClass}"></div>
+                <span class="fb-title">${title}</span>
+                <span class="fb-count">${count} point${count !== 1 ? "s" : ""}</span>
+            </div>
+            ${bodyHTML}
+        </div>`;
+    }
+
+    resultsScreen.innerHTML = `
+        <div class="results-header">
+            <div class="results-header-left">
+                <h2>Your results</h2>
+                <p>Part 1: ${partData[1].wordCount} words &nbsp;·&nbsp; Part 2: ${partData[2].wordCount} words</p>
+            </div>
+            <div class="overall-band">
+                <div class="num">${(+data.overall).toFixed(1)}</div>
+                <div class="lbl">${escapeHtml(data.overallDescriptor || "")}</div>
+            </div>
+        </div>
+
+        <div class="criteria-section">
+            <h3>Criteria breakdown</h3>
+            <div class="part-tabs">
+                <div class="part-tab active" id="rtab-1" onclick="switchResultTab(1)">Part 1</div>
+                <div class="part-tab"        id="rtab-2" onclick="switchResultTab(2)">Part 2</div>
+            </div>
+            <div id="rcrit-1">${criteriaHTML(p1, false)}</div>
+            <div id="rcrit-2" style="display:none;">${criteriaHTML(p2, true)}</div>
+        </div>
+
+        <div class="feedback-section">
+            <div id="rfb-1">
+                ${panel("dot-green", "Part 1 — Strengths",        (p1.strengths    || []).length, strengthsHTML(p1.strengths))}
+                ${panel("dot-amber", "Part 1 — Areas to improve", (p1.improvements || []).length, improvementsHTML(p1.improvements))}
+            </div>
+            <div id="rfb-2" style="display:none;">
+                ${panel("dot-green", "Part 2 — Strengths",        (p2.strengths    || []).length, strengthsHTML(p2.strengths))}
+                ${panel("dot-amber", "Part 2 — Areas to improve", (p2.improvements || []).length, improvementsHTML(p2.improvements))}
+            </div>
+        </div>
+
+        <div class="results-actions">
+            <button class="res-btn res-btn-secondary"
+                onclick="if(confirm('Start a new test? Your responses will be lost.')) window.location.reload()">
+                Retake test
+            </button>
+            <button class="res-btn res-btn-primary" onclick="window.print()">
+                Save / Print report
+            </button>
+        </div>`;
+}
+
+function switchResultTab(n) {
+    document.getElementById("rtab-1").classList.toggle("active", n === 1);
+    document.getElementById("rtab-2").classList.toggle("active", n === 2);
+    document.getElementById("rcrit-1").style.display = n === 1 ? "" : "none";
+    document.getElementById("rcrit-2").style.display = n === 2 ? "" : "none";
+    document.getElementById("rfb-1").style.display   = n === 1 ? "" : "none";
+    document.getElementById("rfb-2").style.display   = n === 2 ? "" : "none";
+}
+
+// ─────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+// ─────────────────────────────────────────────────────────────────
+// DIVIDER DRAG
+// ─────────────────────────────────────────────────────────────────
+(function() {
+    const divider   = document.getElementById("divider");
+    const leftPanel = document.getElementById("leftPanel");
+    const main      = document.getElementById("mainArea");
+    let dragging = false;
+    divider.addEventListener("mousedown", function(e) { dragging = true; e.preventDefault(); });
+    document.addEventListener("mousemove", function(e) {
+        if (!dragging) return;
+        const rect = main.getBoundingClientRect();
+        let pct = ((e.clientX - rect.left) / rect.width) * 100;
+        pct = Math.max(25, Math.min(75, pct));
+        leftPanel.style.width = pct + "%";
+    });
+    document.addEventListener("mouseup", function() { dragging = false; });
+})();
+
+window.addEventListener("load", function() { writingTextarea.focus(); });
+</script>
+
+</body>
+</html>

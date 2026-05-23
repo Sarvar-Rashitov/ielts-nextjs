@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IELTS Listening CDI - Full Listening Test 1</title>
+<style>
+  :root{--bg:#f6f6f3;--surface:#fff;--surface2:#efefe9;--text:#111;--muted:#666;--line:#d8d8d2;--accent:#0a66ff;--accentSoft:#dce9ff;--success:#0c8f50;--danger:#d93025;--header:74px;--footer:92px;--fs:18px;--shadow:0 8px 26px rgba(0,0,0,.08);}
+  body.theme-black{--bg:#050505;--surface:#111;--surface2:#171717;--text:#f6f6f6;--muted:#cecece;--line:#3a3a3a;--accent:#8db6ff;--accentSoft:#1d3557;--shadow:none;}
+  body.theme-yellow{--bg:#000;--surface:#060606;--surface2:#101010;--text:#ffe600;--muted:#f0dd68;--line:#8d8400;--accent:#ffe600;--accentSoft:#3b3600;--shadow:none;}
+  body.size-large{--fs:21px;} body.size-xlarge{--fs:25px;}
+  *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;font-size:var(--fs)} body{overflow:hidden}
+  .hidden{display:none!important}
+  .app-header{position:fixed;top:0;left:0;right:0;height:var(--header);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 18px;background:var(--surface);border-bottom:1px solid var(--line);z-index:40}
+  .header-left,.header-center,.header-right{display:flex;align-items:center;gap:14px} .header-center{justify-content:center} .header-right{justify-content:flex-end}
+  .logo{font-size:2.25rem;font-weight:900;color:#e31c3d;letter-spacing:-1px;line-height:1} .logo small{font-size:.45em;vertical-align:top}
+  .id-wrap{display:flex;flex-direction:column;line-height:1.05} .candidate{font-weight:800} .audio-status{font-size:.86em;color:var(--muted)}
+  .timer{padding:8px 18px;border:1px solid var(--line);border-radius:999px;background:var(--surface2);font-weight:800;min-width:130px;text-align:center;box-shadow:var(--shadow)}
+  .icon-btn{border:none;background:transparent;color:var(--text);width:44px;height:44px;border-radius:12px;cursor:pointer;display:grid;place-items:center} .icon-btn:hover{background:var(--surface2)}
+  .main{position:fixed;top:var(--header);bottom:var(--footer);left:0;right:0;overflow:auto;padding:16px 18px 30px;scroll-behavior:smooth}
+  .part-banner{background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px} .part-banner h2{margin:0 0 8px 0;font-size:1.4em} .part-banner p{margin:0}
+  .section-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .q-title{font-size:1.5em;font-weight:800;margin:0 0 10px 0} .q-instruction{margin:0 0 20px 0;line-height:1.45}
+  .subheading{font-size:1.12em;font-weight:800;margin:18px 0 12px}
+  .note-list{line-height:1.9} .note-list li{margin-bottom:2px}
+  .text-input{min-width:128px;padding:10px 12px;border:2px solid #b8b8b8;border-radius:7px;background:var(--surface);color:var(--text);font-size:1em} body.theme-black .text-input, body.theme-yellow .text-input{border-color:var(--line)}
+  .inline-num{display:inline-flex;justify-content:center;align-items:center;min-width:40px;height:40px;padding:0 10px;margin-right:8px;border:2px solid var(--accent);border-radius:6px;font-weight:800}
+  .mcq-item{display:block;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0;cursor:pointer;background:var(--surface)} .mcq-item:hover{background:var(--surface2)} .mcq-item.active{border-color:var(--accent);background:var(--accentSoft)}
+  .q-row{margin-bottom:24px} .q-row .q-ask{font-size:1.06em;font-weight:700;margin-bottom:8px}
+  .map-wrap{display:grid;grid-template-columns:minmax(280px,720px) minmax(270px,440px);gap:18px;align-items:start} .map-wrap img{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff} .map-list{display:grid;gap:14px}
+  .map-item{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);display:flex;justify-content:space-between;gap:12px;align-items:center}
+  select{padding:10px 12px;border:2px solid #b8b8b8;border-radius:8px;background:var(--surface);color:var(--text);font-size:1em} body.theme-black select, body.theme-yellow select{border-color:var(--line)}
+  .footer{position:fixed;left:0;right:0;bottom:0;height:var(--footer);background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:center;padding:10px 18px;z-index:35}
+  .footer-left{display:flex;gap:18px;align-items:center;min-width:0;overflow:hidden} .part-pills,.q-nav{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;overflow:auto;padding-bottom:4px}
+  .pill,.q-btn{border:1px solid var(--line);background:var(--surface2);color:var(--text);border-radius:10px;padding:10px 14px;cursor:pointer;white-space:nowrap;font-weight:700} .pill.active,.q-btn.active{border-color:var(--accent);background:var(--accentSoft)} .q-btn.answered{box-shadow:inset 0 -3px 0 var(--success)}
+  .nav-btn,.primary-btn,.ghost-btn{border:none;border-radius:14px;padding:13px 18px;font-size:1rem;font-weight:800;cursor:pointer} .nav-btn{background:#111;color:#fff} .nav-btn.secondary{background:#d8d8d8;color:#333} .primary-btn{background:#111;color:#fff} .ghost-btn{background:var(--surface2);color:var(--text);border:1px solid var(--line)} body.theme-black .nav-btn, body.theme-yellow .nav-btn, body.theme-black .primary-btn, body.theme-yellow .primary-btn{background:#fff;color:#111}
+  .audio-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:grid;place-items:center;z-index:90;padding:20px} .overlay-card{text-align:center;color:#fff;max-width:880px} .overlay-icon{font-size:120px;line-height:1;margin-bottom:18px} .overlay h1{font-size:1.65rem;margin:0 0 12px} .overlay p{font-size:1.1rem;line-height:1.6;margin:0 0 24px} .play-btn{background:#000;color:#fff;border:none;border-radius:10px;padding:16px 28px;font-size:1.25rem;font-weight:800;cursor:pointer}
+  .drawer,.review-screen{position:fixed;inset:0;background:var(--bg);z-index:70;overflow:auto} .drawer .inner,.review-screen .inner{max-width:1100px;margin:0 auto;padding:20px 22px 120px}
+  .drawer-head,.review-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px} .drawer h2,.review-head h2{margin:0;font-size:2rem}
+  .option-grid{max-width:760px;margin:0 auto;display:grid;gap:14px} .option-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)} .option-item{padding:20px 22px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);cursor:pointer} .option-item:first-child{border-top:none} .option-item.active{background:var(--accentSoft);font-weight:800}
+  .score-box{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:20px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .review-grid{display:grid;gap:12px} .review-item{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--surface)} .review-item.correct{border-color:#3aa86e;background:rgba(11,143,77,.08)} .review-item.wrong{border-color:#d96f68;background:rgba(217,48,37,.08)}
+  .review-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:8px} .small{font-size:.92em;color:var(--muted)} .tag{display:inline-block;padding:5px 10px;border-radius:999px;font-size:.82em;font-weight:800} .tag.good{background:rgba(11,143,77,.14);color:var(--success)} .tag.bad{background:rgba(217,48,37,.14);color:var(--danger)}
+  .mini-controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px}
+  .empty-note{font-size:1rem;color:var(--muted)}
+  .band-score-display{font-size:2.2em;font-weight:900;color:var(--accent);margin:4px 0 0;}
+  .score-row{display:flex;gap:32px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px;}
+  @media (max-width:1000px){ .map-wrap{grid-template-columns:1fr} .app-header{grid-template-columns:1fr auto auto} .header-center{justify-content:flex-start} .footer{grid-template-columns:1fr; height:auto; padding-bottom:16px} .main{bottom:160px} }
+</style>
+</head>
+<body class="theme-white size-regular">
+<div id="overlay" class="overlay">
+  <div class="overlay-card">
+    <div class="overlay-icon">🎧</div>
+    <h1>You will be listening to audio during this test.</h1>
+    <p>You will not be permitted to pause or rewind the audio while answering the questions.<br>To continue, click Play.</p>
+    <button id="playStartBtn" class="play-btn">▶ Play</button>
+  </div>
+</div>
+
+<header class="app-header">
+  <div class="header-left">
+    <div class="logo">IELTS<small>™</small></div>
+    <div class="id-wrap">
+      <div class="candidate">Test taker ID</div>
+      <div id="audioStatus" class="audio-status">Audio is ready</div>
+    </div>
+  </div>
+  <div class="header-center"><div id="timer" class="timer">40:00</div></div>
+  <div class="header-right">
+    <button class="icon-btn" title="Wi‑Fi" aria-label="Wi‑Fi">📶</button>
+    <button class="icon-btn" title="Notification" aria-label="Notification">🔔</button>
+    <button id="optionsOpen" class="icon-btn" title="Options" aria-label="Options">☰</button>
+  </div>
+</header>
+
+<main id="main" class="main">
+  <div class="audio-controls section-card">
+    <button class="primary-btn" id="resumeBtn">Resume audio</button>
+    <button class="ghost-btn" id="stopAudioBtn">Stop audio</button>
+    <button class="ghost-btn" id="restartPartBtn">Restart current part</button>
+    <button class="ghost-btn" id="submitBtnTop">Submit test</button>
+  </div>
+
+  <section id="part1" data-part="1" class="test-part">
+    <div class="part-banner"><h2>Part 1</h2><p>Questions 1–10</p></div>
+    <div class="section-card">
+      <h3 class="q-title">Questions 1–10</h3>
+      <p class="q-instruction">Complete the notes below.</p>
+      <div class="subheading">Building Work</div>
+      <p><strong>Address:</strong> 15 Hill Street</p>
+      <div class="subheading">Contact Information</div>
+      <ul class="note-list">
+        <li>Name: Sally <input class="text-input answer-input" autocomplete="off" data-q="1" /></li>
+        <li>Phone: 027 584 6613</li>
+      </ul>
+      <div class="subheading">Kitchen</div>
+      <ul class="note-list">
+        <li>Needs a bigger window</li>
+        <li>The kitchen is too hot – fit a <input class="text-input answer-input" autocomplete="off" data-q="2" /></li>
+      </ul>
+      <div class="subheading">Bathroom</div>
+      <ul class="note-list">
+        <li>put a <input class="text-input answer-input" autocomplete="off" data-q="3" /> on the back wall</li>
+        <li>decide the <input class="text-input answer-input" autocomplete="off" data-q="4" /> of the small tiles later.</li>
+      </ul>
+      <div class="subheading">Outside</div>
+      <ul class="note-list">
+        <li>put a higher <input class="text-input answer-input" autocomplete="off" data-q="5" /> in the garden.</li>
+        <li>put a new <input class="text-input answer-input" autocomplete="off" data-q="6" /> on the garage door.</li>
+        <li>fix the roof – it was damaged by a <input class="text-input answer-input" autocomplete="off" data-q="7" /></li>
+        <li>fit a new rain gutter made of <input class="text-input answer-input" autocomplete="off" data-q="8" /></li>
+      </ul>
+      <div class="subheading">Other information</div>
+      <ul class="note-list">
+        <li>Start date: <input class="text-input answer-input" autocomplete="off" data-q="9" /></li>
+        <li>Security code: <input class="text-input answer-input" autocomplete="off" data-q="10" /></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="part2" data-part="2" class="test-part hidden">
+    <div class="part-banner"><h2>Part 2</h2><p>Questions 11–20</p></div>
+    <div class="section-card">
+      <h3 class="q-title">Questions 11–14</h3>
+      <p class="q-instruction">Choose the correct letter, A, B or C.</p>
+      <div class="subheading">Bridge to Brisbane Fun Run</div>
+      <div class="q-row" id="qrow-11"><div class="q-ask"><span class="inline-num">11</span>On the day of the race the speaker recommends parking</div><label class="mcq-item option" data-q="11"><input type="radio" name="q11" value="A"> in the sports ground.</label><label class="mcq-item option" data-q="11"><input type="radio" name="q11" value="B"> by the river.</label><label class="mcq-item option" data-q="11"><input type="radio" name="q11" value="C"> in the shopping centre.</label></div><div class="q-row" id="qrow-12"><div class="q-ask"><span class="inline-num">12</span>The timing chip should be attached to</div><label class="mcq-item option" data-q="12"><input type="radio" name="q12" value="A"> the shirt or singlet.</label><label class="mcq-item option" data-q="12"><input type="radio" name="q12" value="B"> a shoe.</label><label class="mcq-item option" data-q="12"><input type="radio" name="q12" value="C"> the wristband.</label></div><div class="q-row" id="qrow-13"><div class="q-ask"><span class="inline-num">13</span>Which group will run first?</div><label class="mcq-item option" data-q="13"><input type="radio" name="q13" value="A"> yellow</label><label class="mcq-item option" data-q="13"><input type="radio" name="q13" value="B"> red</label><label class="mcq-item option" data-q="13"><input type="radio" name="q13" value="C"> purple</label></div><div class="q-row" id="qrow-14"><div class="q-ask"><span class="inline-num">14</span>The race organisers still need to find volunteers to help with</div><label class="mcq-item option" data-q="14"><input type="radio" name="q14" value="A"> giving first aid.</label><label class="mcq-item option" data-q="14"><input type="radio" name="q14" value="B"> handing out water.</label><label class="mcq-item option" data-q="14"><input type="radio" name="q14" value="C"> starting the race.</label></div>
+    </div>
+
+    <div class="section-card">
+      <h3 class="q-title">Questions 15–20</h3>
+      <p class="q-instruction">Look at the map of Race Village. Choose the correct letter, A–I, for each place in questions 15–20.</p>
+      <div class="map-wrap">
+        <img src="data:image/png;base64,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" alt="Map of Race Village" />
+        <div class="map-list">
+          <div class="map-item"><div><strong>15.</strong> Stage</div><select class="answer-input" data-q="15"><option value="">Choose</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option></select></div><div class="map-item"><div><strong>16.</strong> T-shirt Stand</div><select class="answer-input" data-q="16"><option value="">Choose</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option></select></div><div class="map-item"><div><strong>17.</strong> Bag Collection Area</div><select class="answer-input" data-q="17"><option value="">Choose</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option></select></div><div class="map-item"><div><strong>18.</strong> Information Centre</div><select class="answer-input" data-q="18"><option value="">Choose</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option></select></div><div class="map-item"><div><strong>19.</strong> Prize Draw Box</div><select class="answer-input" data-q="19"><option value="">Choose</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option></select></div><div class="map-item"><div><strong>20.</strong> Water station</div><select class="answer-input" data-q="20"><option value="">Choose</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option><option value="I">I</option></select></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="part3" data-part="3" class="test-part hidden">
+    <div class="part-banner"><h2>Part 3</h2><p>Questions 21–30</p></div>
+    <div class="section-card">
+      <h3 class="q-title">Questions 21–26</h3>
+      <p class="q-instruction">Choose the correct letter, A, B or C.</p>
+      <div class="subheading">Research Project</div>
+      <div class="q-row" id="qrow-21"><div class="q-ask"><span class="inline-num">21</span>How did John choose the topic of his research project?</div><label class="mcq-item option" data-q="21"><input type="radio" name="q21" value="A"> He thought the information would be useful for town planning.</label><label class="mcq-item option" data-q="21"><input type="radio" name="q21" value="B"> He has a special interest in the use of public services.</label><label class="mcq-item option" data-q="21"><input type="radio" name="q21" value="C"> He read about a similar study which had been done earlier.</label></div><div class="q-row" id="qrow-22"><div class="q-ask"><span class="inline-num">22</span>During his research, John is expecting to find that</div><label class="mcq-item option" data-q="22"><input type="radio" name="q22" value="A"> The use of public services has altered very little.</label><label class="mcq-item option" data-q="22"><input type="radio" name="q22" value="B"> A group of people has changed its habits.</label><label class="mcq-item option" data-q="22"><input type="radio" name="q22" value="C"> The most frequently used facility is the library.</label></div><div class="q-row" id="qrow-23"><div class="q-ask"><span class="inline-num">23</span>What is the problem with using official records?</div><label class="mcq-item option" data-q="23"><input type="radio" name="q23" value="A"> They may be lacking in detail.</label><label class="mcq-item option" data-q="23"><input type="radio" name="q23" value="B"> They may not be readily available.</label><label class="mcq-item option" data-q="23"><input type="radio" name="q23" value="C"> They may be difficult to analyse.</label></div><div class="q-row" id="qrow-24"><div class="q-ask"><span class="inline-num">24</span>What does the tutor think about John using a questionnaire to get information?</div><label class="mcq-item option" data-q="24"><input type="radio" name="q24" value="A"> He needs to do a course in questionnaire design first.</label><label class="mcq-item option" data-q="24"><input type="radio" name="q24" value="B"> He should use this method instead of looking at public records.</label><label class="mcq-item option" data-q="24"><input type="radio" name="q24" value="C"> He will find the practice he gets useful the following year.</label></div><div class="q-row" id="qrow-25"><div class="q-ask"><span class="inline-num">25</span>Which new variable does John agree to add to his investigation?</div><label class="mcq-item option" data-q="25"><input type="radio" name="q25" value="A"> Occupation</label><label class="mcq-item option" data-q="25"><input type="radio" name="q25" value="B"> Income group</label><label class="mcq-item option" data-q="25"><input type="radio" name="q25" value="C"> Qualifications</label></div><div class="q-row" id="qrow-26"><div class="q-ask"><span class="inline-num">26</span>How many questionnaires will John distribute?</div><label class="mcq-item option" data-q="26"><input type="radio" name="q26" value="A"> The same number as in the previous study</label><label class="mcq-item option" data-q="26"><input type="radio" name="q26" value="B"> A greater number than he needs for analysis</label><label class="mcq-item option" data-q="26"><input type="radio" name="q26" value="C"> The number recommended in the project guidelines</label></div>
+    </div>
+    <div class="section-card">
+      <h3 class="q-title">Questions 27–28</h3>
+      <p class="q-instruction">Choose TWO letters, A–E. Select one answer for each question number.</p>
+      <div class="subheading">Which TWO strategies will John use to encourage people to fill out his questionnaire?</div>
+      <div class="map-item"><div><strong>27.</strong> Strategy 1</div><select class="answer-input" data-q="27"><option value="">Choose</option><option value="A">A — Using simple language</option><option value="B">B — Delivering the questionnaires in person</option><option value="C">C — Making the questionnaires anonymous</option><option value="D">D — Providing return envelopes</option><option value="E">E — Trialing the questionnaire on friends</option></select></div><div class="map-item"><div><strong>28.</strong> Strategy 2</div><select class="answer-input" data-q="28"><option value="">Choose</option><option value="A">A — Using simple language</option><option value="B">B — Delivering the questionnaires in person</option><option value="C">C — Making the questionnaires anonymous</option><option value="D">D — Providing return envelopes</option><option value="E">E — Trialing the questionnaire on friends</option></select></div>
+    </div>
+    <div class="section-card">
+      <h3 class="q-title">Questions 29–30</h3>
+      <p class="q-instruction">Choose TWO letters, A–E. Select one answer for each question number.</p>
+      <div class="subheading">Which TWO pieces of advice does the tutor give John about his questionnaire?</div>
+      <div class="map-item"><div><strong>29.</strong> Advice 1</div><select class="answer-input" data-q="29"><option value="">Choose</option><option value="A">A — There should be a mixture of question types.</option><option value="B">B — Some questions should elicit personal information.</option><option value="C">C — There should be an introduction to explain the survey's purpose.</option><option value="D">D — A telephone number should be provided for queries.</option><option value="E">E — The questions should only take a few minutes to answer.</option></select></div><div class="map-item"><div><strong>30.</strong> Advice 2</div><select class="answer-input" data-q="30"><option value="">Choose</option><option value="A">A — There should be a mixture of question types.</option><option value="B">B — Some questions should elicit personal information.</option><option value="C">C — There should be an introduction to explain the survey's purpose.</option><option value="D">D — A telephone number should be provided for queries.</option><option value="E">E — The questions should only take a few minutes to answer.</option></select></div>
+    </div>
+  </section>
+
+  <section id="part4" data-part="4" class="test-part hidden">
+    <div class="part-banner"><h2>Part 4</h2><p>Questions 31–40</p></div>
+    <div class="section-card">
+      <h3 class="q-title">Questions 31–40</h3>
+      <p class="q-instruction">Complete the notes below. Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+      <div class="subheading">The Early History of Salt</div>
+      <div class="subheading">Introduction</div>
+      <ul class="note-list"><li>Salt is essential for human <input class="text-input answer-input" autocomplete="off" data-q="31" /></li></ul>
+      <div class="subheading">Ancient Rome</div>
+      <ul class="note-list"><li>The word <input class="text-input answer-input" autocomplete="off" data-q="32" /> comes from the Latin word <em>solarium argentum</em>, which was used to describe the payment to Roman soldiers.</li></ul>
+      <div class="subheading">Ancient Sweden</div>
+      <ul class="note-list">
+        <li>Animals were kept in the local <input class="text-input answer-input" autocomplete="off" data-q="33" /> at the right time of year.</li>
+        <li>Fresh meat was only available in <input class="text-input answer-input" autocomplete="off" data-q="34" /></li>
+        <li>Salt has been used widely: we can tell from the diet of the <input class="text-input answer-input" autocomplete="off" data-q="35" /> in Sweden.</li>
+        <li><input class="text-input answer-input" autocomplete="off" data-q="36" /> consumption increased rapidly because the food was much too salty.</li>
+      </ul>
+      <div class="subheading">Salt source</div>
+      <ul class="note-list">
+        <li>People mainly extract salt from oceans and <input class="text-input answer-input" autocomplete="off" data-q="37" /> in the basins.</li>
+        <li>Salt from spring water is more <input class="text-input answer-input" autocomplete="off" data-q="38" /> and purer compared to that from sea water.</li>
+      </ul>
+      <div class="subheading">Salt distribution</div>
+      <ul class="note-list">
+        <li>In ancient Sweden, locals needed to protect the <input class="text-input answer-input" autocomplete="off" data-q="39" /> by which they imported salt.</li>
+        <li>In other ancient countries, people carrying salt around were seen as a natural means of <input class="text-input answer-input" autocomplete="off" data-q="40" /></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-left">
+    <div class="part-pills" id="partPills"></div>
+    <div class="q-nav" id="qNav"></div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:flex-end">
+    <button class="nav-btn secondary" id="prevBtn">← Back</button>
+    <button class="nav-btn" id="nextBtn">Next →</button>
+  </div>
+  <div style="display:flex;justify-content:flex-end"><button class="primary-btn" id="submitBtn">Submit test</button></div>
+</footer>
+
+<section id="optionsDrawer" class="drawer hidden">
+  <div class="inner">
+    <div class="drawer-head">
+      <button id="closeOptions" class="ghost-btn">← Options</button>
+      <h2>Options</h2>
+      <button id="closeOptions2" class="ghost-btn">✕</button>
+    </div>
+    <div class="option-grid">
+      <div class="option-card">
+        <div class="option-item active" data-theme="theme-white">Black on white <span>✔</span></div>
+        <div class="option-item" data-theme="theme-black">White on black <span>☰</span></div>
+        <div class="option-item" data-theme="theme-yellow">Yellow on black <span>☰</span></div>
+      </div>
+      <div class="option-card">
+        <div class="option-item active" data-size="size-regular">Regular <span>✔</span></div>
+        <div class="option-item" data-size="size-large">Large <span>A+</span></div>
+        <div class="option-item" data-size="size-xlarge">Extra large <span>AA</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviewScreen" class="review-screen hidden">
+  <div class="inner">
+    <div class="review-head">
+      <button id="backToTest" class="ghost-btn">← Back to test</button>
+      <h2>Review</h2>
+      <button id="closeReview" class="ghost-btn">✕</button>
+    </div>
+    <div class="score-box">
+      <h3 style="margin-top:0">Your result</h3>
+      <div class="score-row">
+        <div>
+          <div class="small">Correct answers</div>
+          <div style="font-size:1.6em;font-weight:800;" id="scoreRaw">0 / 40</div>
+        </div>
+        <div>
+          <div class="small">IELTS Band Score</div>
+          <div class="band-score-display" id="scoreBand">—</div>
+        </div>
+      </div>
+      <div class="mini-controls">
+        <button class="primary-btn" id="reviewResumeBtn">Resume audio</button>
+        <button class="ghost-btn" id="reviewStopBtn">Stop audio</button>
+        <button class="ghost-btn" id="reviewRestartBtn">Restart current part</button>
+        <button class="ghost-btn review-part-btn" data-part="1">Play Part 1</button>
+        <button class="ghost-btn review-part-btn" data-part="2">Play Part 2</button>
+        <button class="ghost-btn review-part-btn" data-part="3">Play Part 3</button>
+        <button class="ghost-btn review-part-btn" data-part="4">Play Part 4</button>
+      </div>
+      <p class="small">Answers are checked against the provided answer key. Minor spelling variants are accepted for text answers.</p>
+    </div>
+    <div id="reviewGrid" class="review-grid"></div>
+  </div>
+</section>
+
+<audio id="audio1" src="https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/Part-1.mp3"></audio>
+<audio id="audio2" src="https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/Part-2.mp3"></audio>
+<audio id="audio3" src="https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/Part-3.mp3"></audio>
+<audio id="audio4" src="https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/Part-4.mp3"></audio>
+
+<script>
+// ─── ANSWER KEY ────────────────────────────────────────────────────────────────
+// Each entry: primary correct answer (string), plus optional array of acceptable
+// alternatives (all compared case-insensitively after stripping extra whitespace).
+const ANSWER_KEY = {
+  "1":  { ans: "KEYWORTH", alts: [] },
+  "2":  { ans: "FAN",      alts: [] },
+  "3":  { ans: "SHOWER",   alts: [] },
+  "4":  { ans: "COLOR",    alts: ["COLOUR"] },
+  "5":  { ans: "GATE",     alts: [] },
+  "6":  { ans: "LOCK",     alts: [] },
+  "7":  { ans: "STORM",    alts: [] },
+  "8":  { ans: "PLASTIC",  alts: [] },
+  "9":  { ans: "8TH MAY",  alts: ["8 MAY", "MAY 8", "MAY 8TH", "THE 8TH OF MAY", "MAY THE 8TH"] },
+  "10": { ans: "AG4176",   alts: [] },
+  "11": { ans: "A", alts: [] },
+  "12": { ans: "B", alts: [] },
+  "13": { ans: "A", alts: [] },
+  "14": { ans: "B", alts: [] },
+  "15": { ans: "F", alts: [] },
+  "16": { ans: "A", alts: [] },
+  "17": { ans: "B", alts: [] },
+  "18": { ans: "H", alts: [] },
+  "19": { ans: "G", alts: [] },
+  "20": { ans: "I", alts: [] },
+  "21": { ans: "C", alts: [] },
+  "22": { ans: "B", alts: [] },
+  "23": { ans: "A", alts: [] },
+  "24": { ans: "C", alts: [] },
+  "25": { ans: "C", alts: [] },
+  "26": { ans: "B", alts: [] },
+  "27": { ans: "D", alts: ["E"] }, // either D or E accepted for 27/28 as a pair
+  "28": { ans: "E", alts: ["D"] },
+  "29": { ans: "B", alts: ["C"] }, // either B or C accepted for 29/30 as a pair
+  "30": { ans: "C", alts: ["B"] },
+  "31": { ans: "HEALTH",        alts: [] },
+  "32": { ans: "SALARY",        alts: [] },
+  "33": { ans: "FOREST",        alts: [] },
+  "34": { ans: "OCTOBER",       alts: [] },
+  "35": { ans: "KING",          alts: [] },
+  "36": { ans: "BEER",          alts: [] },
+  "37": { ans: "DESERTS",       alts: ["DESERT"] },
+  "38": { ans: "CONCENTRATED",  alts: ["CONCENTRATE"] },
+  "39": { ans: "SHIPPING",      alts: ["SHIPS", "SHIP"] },
+  "40": { ans: "TRANSPORT",     alts: ["TRANSPORTATION"] },
+};
+
+// ─── BAND SCORE TABLE (Listening) ──────────────────────────────────────────────
+// Based on official IELTS conversion: correct answers → band score
+function getBandScore(correct) {
+  if (correct >= 39) return 9;
+  if (correct >= 37) return 8.5;
+  if (correct >= 35) return 8;
+  if (correct >= 32) return 7.5;
+  if (correct >= 30) return 7;
+  if (correct >= 26) return 6.5;
+  if (correct >= 23) return 6;
+  if (correct >= 18) return 5.5;
+  if (correct >= 16) return 5;
+  if (correct >= 13) return 4.5;
+  if (correct >= 10) return 4;
+  if (correct >= 8)  return 3.5;
+  if (correct >= 6)  return 3;
+  if (correct >= 4)  return 2.5;
+  return 2;
+}
+
+// ─── QUESTION META ─────────────────────────────────────────────────────────────
+const questionMeta = {
+  "1":{"part":1,"type":"text"},"2":{"part":1,"type":"text"},"3":{"part":1,"type":"text"},
+  "4":{"part":1,"type":"text"},"5":{"part":1,"type":"text"},"6":{"part":1,"type":"text"},
+  "7":{"part":1,"type":"text"},"8":{"part":1,"type":"text"},"9":{"part":1,"type":"text"},
+  "10":{"part":1,"type":"text"},
+  "11":{"part":2,"type":"choice"},"12":{"part":2,"type":"choice"},"13":{"part":2,"type":"choice"},
+  "14":{"part":2,"type":"choice"},"15":{"part":2,"type":"choice"},"16":{"part":2,"type":"choice"},
+  "17":{"part":2,"type":"choice"},"18":{"part":2,"type":"choice"},"19":{"part":2,"type":"choice"},
+  "20":{"part":2,"type":"choice"},
+  "21":{"part":3,"type":"choice"},"22":{"part":3,"type":"choice"},"23":{"part":3,"type":"choice"},
+  "24":{"part":3,"type":"choice"},"25":{"part":3,"type":"choice"},"26":{"part":3,"type":"choice"},
+  "27":{"part":3,"type":"choice"},"28":{"part":3,"type":"choice"},"29":{"part":3,"type":"choice"},
+  "30":{"part":3,"type":"choice"},
+  "31":{"part":4,"type":"text"},"32":{"part":4,"type":"text"},"33":{"part":4,"type":"text"},
+  "34":{"part":4,"type":"text"},"35":{"part":4,"type":"text"},"36":{"part":4,"type":"text"},
+  "37":{"part":4,"type":"text"},"38":{"part":4,"type":"text"},"39":{"part":4,"type":"text"},
+  "40":{"part":4,"type":"text"},
+};
+
+const parts = {
+  1:{title:'Part 1',start:1,end:10,audio:document.getElementById('audio1')},
+  2:{title:'Part 2',start:11,end:20,audio:document.getElementById('audio2')},
+  3:{title:'Part 3',start:21,end:30,audio:document.getElementById('audio3')},
+  4:{title:'Part 4',start:31,end:40,audio:document.getElementById('audio4')}
+};
+
+const state = {started:false,currentPart:1,currentQuestion:1,timeLeft:2400,timer:null,answers:{},submitted:false};
+const main = document.getElementById('main');
+const timerEl = document.getElementById('timer');
+const audioStatus = document.getElementById('audioStatus');
+
+// ─── NORMALIZE ─────────────────────────────────────────────────────────────────
+// Converts any user input to a comparable uppercase string with collapsed whitespace
+function normalize(val) {
+  if (val === null || val === undefined) return '';
+  return String(val).trim().replace(/\s+/g, ' ').toUpperCase();
+}
+
+// ─── CHECK ANSWER ──────────────────────────────────────────────────────────────
+// Returns true if the user's answer matches the key answer or any accepted alternative
+function checkAnswer(qNum, userRaw) {
+  const entry = ANSWER_KEY[String(qNum)];
+  if (!entry) return false;
+  const user = normalize(userRaw);
+  if (!user) return false;
+  if (user === normalize(entry.ans)) return true;
+  for (const alt of (entry.alts || [])) {
+    if (user === normalize(alt)) return true;
+  }
+  return false;
+}
+
+// For pairs like Q27/Q28 where either D or E is accepted but not both the same:
+// We check each independently using the alts array which allows both options.
+// The display key shown will be the primary answer.
+
+history.scrollRestoration = 'manual';
+window.addEventListener('pageshow', e => { if (e.persisted) window.location.reload(); });
+window.addEventListener('load', () => {
+  document.querySelectorAll('input').forEach(el => { if(el.type !== 'radio') el.value = ''; else el.checked = false; });
+  document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+  for (const p of Object.values(parts)) { p.audio.pause(); p.audio.currentTime = 0; p.audio.controls = false; }
+  buildFooter();
+  attachEvents();
+  showPart(1, true);
+  renderAnswered();
+});
+
+function updateTimer(){
+  const m = String(Math.floor(state.timeLeft/60)).padStart(2,'0');
+  const s = String(state.timeLeft%60).padStart(2,'0');
+  timerEl.textContent = `${m}:${s}`;
+}
+function startTimer(){
+  if(state.timer) return;
+  state.timer = setInterval(() => {
+    state.timeLeft--; updateTimer();
+    if(state.timeLeft <= 0){ clearInterval(state.timer); state.timer = null; state.timeLeft = 0; updateTimer(); submitTest(); }
+  },1000);
+}
+function pauseAllAudio(){ Object.values(parts).forEach(p => p.audio.pause()); }
+function stopAudio(){ pauseAllAudio(); setAudioStatus(`Audio paused — Part ${state.currentPart}`); }
+function setAudioStatus(text){ audioStatus.textContent = text; }
+function playPart(part, restart=false){
+  state.currentPart = part;
+  pauseAllAudio();
+  const a = parts[part].audio;
+  if(restart) a.currentTime = 0;
+  const playPromise = a.play();
+  if(playPromise && playPromise.catch) playPromise.catch(() => setAudioStatus('Press Resume audio to continue'));
+  setAudioStatus(`Audio is playing — Part ${part}`);
+  if(state.started) startTimer();
+  showPart(part, true);
+}
+function showPart(part, scrollTop=false){
+  state.currentPart = part;
+  document.querySelectorAll('.test-part').forEach(sec => sec.classList.add('hidden'));
+  document.getElementById(`part${part}`).classList.remove('hidden');
+  document.querySelectorAll('.pill').forEach(btn => btn.classList.toggle('active', Number(btn.dataset.part) === part));
+  document.querySelectorAll('.q-btn').forEach(btn => {
+    const q = Number(btn.dataset.q);
+    btn.classList.toggle('active', q === state.currentQuestion);
+  });
+  if(scrollTop) main.scrollTo({top:0,behavior:'smooth'});
+}
+function gotoQuestion(q){
+  state.currentQuestion = q;
+  const part = questionMeta[String(q)].part;
+  showPart(part, false);
+  const row = document.getElementById(`qrow-${q}`) || document.querySelector(`[data-q="${q}"]`)?.closest('.section-card');
+  if(row) row.scrollIntoView({behavior:'smooth', block:'center'});
+  document.querySelectorAll('.q-btn').forEach(btn => btn.classList.toggle('active', Number(btn.dataset.q)===q));
+}
+function buildFooter(){
+  const partPills = document.getElementById('partPills');
+  const qNav = document.getElementById('qNav');
+  partPills.innerHTML = '';
+  qNav.innerHTML = '';
+  for(let p=1;p<=4;p++){
+    const btn = document.createElement('button'); btn.className='pill'; btn.dataset.part=p; btn.textContent='Part '+p;
+    btn.onclick=()=>{ state.currentQuestion = parts[p].start; showPart(p, true); gotoQuestion(parts[p].start); }; partPills.appendChild(btn);
+  }
+  for(let q=1;q<=40;q++){
+    const btn = document.createElement('button'); btn.className='q-btn'; btn.dataset.q=q; btn.textContent=q;
+    btn.onclick=()=>gotoQuestion(q); qNav.appendChild(btn);
+  }
+}
+function renderAnswered(){
+  document.querySelectorAll('.q-btn').forEach(btn => {
+    const q=btn.dataset.q; btn.classList.toggle('answered', !!normalize(state.answers[q]));
+  });
+}
+function recordAnswer(q, value){ state.answers[String(q)] = value; renderAnswered(); }
+
+function attachEvents(){
+  document.getElementById('playStartBtn').onclick = () => {
+    state.started = true; document.getElementById('overlay').classList.add('hidden'); updateTimer(); startTimer(); playPart(1, true);
+  };
+  document.getElementById('resumeBtn').onclick = () => { if(!state.started) return; playPart(state.currentPart, false); };
+  document.getElementById('stopAudioBtn').onclick = () => { if(!state.started) return; stopAudio(); };
+  document.getElementById('restartPartBtn').onclick = () => { if(!state.started) return; playPart(state.currentPart, true); };
+  document.getElementById('reviewResumeBtn').onclick = () => { if(!state.started) return; playPart(state.currentPart, false); };
+  document.getElementById('reviewStopBtn').onclick = () => { if(!state.started) return; stopAudio(); };
+  document.getElementById('reviewRestartBtn').onclick = () => { if(!state.started) return; playPart(state.currentPart, true); };
+  document.querySelectorAll('.review-part-btn').forEach(btn => btn.onclick = () => { if(!state.started) return; playPart(Number(btn.dataset.part), true); });
+  document.getElementById('prevBtn').onclick = () => { if(state.currentQuestion > 1) gotoQuestion(state.currentQuestion - 1); };
+  document.getElementById('nextBtn').onclick = () => { if(state.currentQuestion < 40) gotoQuestion(state.currentQuestion + 1); };
+  document.getElementById('submitBtn').onclick = submitTest;
+  document.getElementById('submitBtnTop').onclick = submitTest;
+  document.getElementById('optionsOpen').onclick = () => document.getElementById('optionsDrawer').classList.remove('hidden');
+  document.getElementById('closeOptions').onclick = () => document.getElementById('optionsDrawer').classList.add('hidden');
+  document.getElementById('closeOptions2').onclick = () => document.getElementById('optionsDrawer').classList.add('hidden');
+  document.querySelectorAll('[data-theme]').forEach(item => item.onclick = () => {
+    document.body.classList.remove('theme-white','theme-black','theme-yellow'); document.body.classList.add(item.dataset.theme);
+    document.querySelectorAll('[data-theme]').forEach(el => el.classList.toggle('active', el===item));
+  });
+  document.querySelectorAll('[data-size]').forEach(item => item.onclick = () => {
+    document.body.classList.remove('size-regular','size-large','size-xlarge'); document.body.classList.add(item.dataset.size);
+    document.querySelectorAll('[data-size]').forEach(el => el.classList.toggle('active', el===item));
+  });
+  document.getElementById('backToTest').onclick = () => document.getElementById('reviewScreen').classList.add('hidden');
+  document.getElementById('closeReview').onclick = () => document.getElementById('reviewScreen').classList.add('hidden');
+
+  document.querySelectorAll('input.answer-input').forEach(input => input.addEventListener('input', e => recordAnswer(e.target.dataset.q, e.target.value)));
+  document.querySelectorAll('select.answer-input').forEach(sel => sel.addEventListener('change', e => recordAnswer(e.target.dataset.q, e.target.value)));
+  document.querySelectorAll('label.option input[type="radio"]').forEach(r => r.addEventListener('change', e => {
+    recordAnswer(e.target.name.replace('q',''), e.target.value);
+    const q = e.target.name.replace('q','');
+    document.querySelectorAll(`label.option[data-q="${q}"]`).forEach(lbl => lbl.classList.toggle('active', lbl.querySelector('input').checked));
+  }));
+  Object.entries(parts).forEach(([num, part]) => {
+    part.audio.addEventListener('play', () => setAudioStatus(`Audio is playing — Part ${num}`));
+    part.audio.addEventListener('ended', () => setAudioStatus(`Part ${num} finished`));
+  });
+}
+
+function submitTest(){
+  state.submitted = true;
+  pauseAllAudio();
+  const reviewGrid = document.getElementById('reviewGrid');
+  reviewGrid.innerHTML='';
+  let score = 0;
+
+  for(let q=1;q<=40;q++){
+    const entry = ANSWER_KEY[String(q)];
+    const userRaw = state.answers[String(q)] || '';
+    const ok = checkAnswer(q, userRaw);
+    if(ok) score++;
+
+    // Build display key: show primary + alts if any
+    const keyDisplay = entry
+      ? (entry.alts && entry.alts.length > 0
+          ? entry.ans + ' (also: ' + entry.alts.join(', ') + ')'
+          : entry.ans)
+      : '—';
+
+    const div = document.createElement('div');
+    div.className = 'review-item ' + (ok ? 'correct' : 'wrong');
+    div.innerHTML = `
+      <div class="review-top">
+        <div>
+          <strong>Question ${q}</strong>
+          <div class="small">Part ${questionMeta[String(q)].part}</div>
+        </div>
+        <span class="tag ${ok ? 'good' : 'bad'}">${ok ? 'Correct' : 'Incorrect'}</span>
+      </div>
+      <div>Your answer: <strong>${normalize(userRaw) || '—'}</strong></div>
+      <div>Correct answer: <strong>${keyDisplay}</strong></div>`;
+    reviewGrid.appendChild(div);
+  }
+
+  // Update score displays
+  document.getElementById('scoreRaw').textContent = `${score} / 40`;
+  document.getElementById('scoreBand').textContent = getBandScore(score);
+  document.getElementById('reviewScreen').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

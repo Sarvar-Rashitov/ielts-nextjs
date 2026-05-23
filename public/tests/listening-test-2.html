@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IELTS Listening Test 1</title>
+  <style>
+    :root {
+      --bg: #f6f6f4;
+      --panel: #ffffff;
+      --panel-soft: #efefeb;
+      --line: #cfcfc8;
+      --text: #0f0f10;
+      --muted: #5c5c5f;
+      --red: #c81421;
+      --blue: #1e66d0;
+      --shadow: 0 8px 24px rgba(0,0,0,0.06);
+      --header-h: 74px;
+      --audio-bar-h: 56px;
+      --nav-h: 64px;
+      --font-scale: 1;
+    }
+
+    body.theme-dark {
+      --bg: #0e0f10;
+      --panel: #17191b;
+      --panel-soft: #212427;
+      --line: #343840;
+      --text: #f4f5f7;
+      --muted: #b5bcc7;
+      --blue: #8ab4ff;
+      --shadow: 0 12px 28px rgba(0,0,0,0.35);
+    }
+
+    body.theme-yellow {
+      --bg: #070707;
+      --panel: #121212;
+      --panel-soft: #181818;
+      --line: #49421c;
+      --text: #ffe96d;
+      --muted: #dbc95a;
+      --blue: #fff59f;
+    }
+
+    body.size-large { --font-scale: 1.08; }
+    body.size-xl { --font-scale: 1.18; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: calc(16px * var(--font-scale));
+      line-height: 1.35;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    button, input, select { font: inherit; }
+    .hidden { display: none !important; }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--panel-soft);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      z-index: 100;
+    }
+
+    .brand-wrap { display: flex; align-items: center; gap: 18px; }
+    .logo {
+      color: var(--red);
+      font-size: 2.45rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+    .brand-meta { display: flex; flex-direction: column; gap: 2px; }
+    .brand-meta .id { font-size: 0.98rem; font-weight: 700; }
+
+    .timer { font-weight: 700; font-size: 1rem; letter-spacing: .03em; }
+    .icons { display: flex; align-items: center; gap: 22px; }
+    .icon-btn {
+      border: 0; background: transparent; color: var(--text); cursor: pointer; padding: 4px;
+      display: grid; place-items: center;
+    }
+    .icon-btn svg { width: 30px; height: 30px; }
+
+    /* ── Spotify-style audio bar ── */
+    .audio-bar {
+      position: fixed;
+      top: var(--header-h);
+      left: 0; right: 0;
+      height: var(--audio-bar-h);
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 18px;
+      z-index: 99;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .audio-ctrl-btn {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+    .audio-ctrl-btn svg { width: 22px; height: 22px; }
+    .audio-ctrl-btn:disabled { opacity: 0.35; cursor: default; }
+
+    .audio-seek-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .audio-time {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      min-width: 36px;
+      text-align: center;
+    }
+
+    /* Custom range slider */
+    .seek-range {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--line);
+      outline: none;
+      cursor: pointer;
+      position: relative;
+    }
+    .seek-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--text);
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      transition: transform 0.1s;
+    }
+    .seek-range::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    .seek-range::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--text);
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Volume */
+    .audio-vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .vol-range {
+      width: 80px;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--line);
+      outline: none;
+      cursor: pointer;
+    }
+    .vol-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--text);
+      cursor: pointer;
+    }
+    .vol-range::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--text);
+      border: none;
+    }
+
+    .audio-part-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      min-width: 46px;
+    }
+
+    /* ── Page content ── */
+    .page {
+      padding-top: calc(var(--header-h) + var(--audio-bar-h) + 18px);
+      padding-bottom: calc(var(--nav-h) + 26px);
+      padding-left: 18px;
+      padding-right: 18px;
+      max-width: none;
+      width: 100%;
+    }
+
+    .section-box {
+      background: #e8e8e3;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    body.theme-dark .section-box, body.theme-yellow .section-box { background: var(--panel-soft); }
+
+    .section-box h2 { margin: 0 0 10px; font-size: 1.1rem; }
+    .section-box p { margin: 0; font-size: 1rem; }
+
+    .content { max-width: 1140px; padding-right: 140px; }
+    .question-group { margin-bottom: 26px; }
+    .question-group h3 { margin: 0 0 12px; font-size: 1.1rem; }
+    .question-group p { margin: 0 0 10px; }
+    .instruction strong { font-weight: 800; }
+    .task-title { font-size: 1.16rem; font-weight: 700; margin: 18px 0 10px; }
+    .subheading { font-size: 0.98rem; font-weight: 700; margin: 18px 0 8px; }
+
+    .mcq-block, .match-block, .flow-block, .notes-block { margin: 14px 0 18px; }
+    .question-line { margin: 12px 0; }
+    .qnum-inline { font-weight: 700; margin-right: 6px; }
+
+    input.answer, select.answer {
+      min-width: 96px;
+      height: 30px;
+      border: 1px solid #696969;
+      border-radius: 4px;
+      background: #fff;
+      color: #111;
+      padding: 0 10px;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+    }
+    select.answer { text-align: left; font-weight: 600; }
+    body.theme-dark input.answer, body.theme-dark select.answer,
+    body.theme-yellow input.answer, body.theme-yellow select.answer {
+      background: #fff;
+      color: #111;
+    }
+
+    .inline-answer { display: inline-flex; align-items: center; gap: 8px; }
+    .bullets { margin: 0 0 0 24px; padding: 0; }
+    .bullets li { margin: 8px 0; }
+    .option-list { margin: 8px 0 0 28px; }
+    .option-list label { display: block; margin: 8px 0; cursor: pointer; }
+    .option-list input { margin-right: 8px; }
+
+    .match-table {
+      width: fit-content;
+      border: 1px solid #6f6f6f;
+      padding: 10px 14px;
+      margin: 12px 0 18px;
+      background: rgba(255,255,255,0.45);
+    }
+    body.theme-dark .match-table, body.theme-yellow .match-table { background: transparent; }
+    .match-table .row { display: grid; grid-template-columns: 28px 1fr; gap: 10px; margin: 4px 0; }
+
+    .flow-options {
+      width: fit-content;
+      border: 1px solid #6f6f6f;
+      padding: 10px 14px;
+      margin: 10px 0 16px;
+      background: rgba(255,255,255,0.45);
+    }
+    .flow-options .row { display: grid; grid-template-columns: 28px 1fr; gap: 10px; margin: 3px 0; }
+    .flow-step {
+      width: min(760px, 100%);
+      border: 1px solid #7e7e7e;
+      padding: 14px 14px;
+      margin: 10px 0;
+      position: relative;
+      background: rgba(255,255,255,0.25);
+    }
+    .flow-arrow { font-size: 2rem; line-height: 1; margin: 4px 0 4px 160px; }
+
+    .navigator {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      height: var(--nav-h);
+      border-top: 1px solid var(--line);
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      z-index: 90;
+      gap: 18px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 24px; min-width: 0; }
+    .nav-part { font-size: 1rem; font-weight: 700; }
+    .part-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .part-tab {
+      min-width: 66px; height: 34px; border: 1px solid var(--line); border-radius: 4px;
+      background: var(--panel-soft); color: var(--text); cursor: pointer; font-weight: 700; padding: 0 12px;
+    }
+    .part-tab.active { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+    .nav-questions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .qnav-btn {
+      width: 30px; height: 34px; border-radius: 3px; border: 1px solid transparent;
+      background: transparent; color: var(--text); cursor: pointer; font-weight: 500;
+    }
+    .qnav-btn.current { border-color: var(--blue); color: var(--text); font-weight: 700; }
+    .qnav-btn.answered { background: #e7edf9; border-color: #c1d3f7; }
+    body.theme-dark .qnav-btn.answered, body.theme-yellow .qnav-btn.answered { background: var(--panel-soft); border-color: var(--blue); }
+
+    .right-rail {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-30%);
+      display: flex;
+      flex-direction: column;
+      gap: 110px;
+      z-index: 95;
+      align-items: flex-end;
+    }
+    .arrow-pair { display: flex; gap: 0; box-shadow: var(--shadow); }
+    .rail-btn {
+      width: 70px; height: 70px; border: 0; cursor: pointer; background: #111; color: #fff;
+      display: grid; place-items: center;
+    }
+    .rail-btn.disabled { background: #d9d9d9; color: #fff; cursor: default; }
+    .rail-btn.submit { background: #ecece9; color: #1d1d1d; }
+    .rail-btn svg { width: 34px; height: 34px; }
+
+    .options-panel {
+      position: fixed;
+      top: calc(var(--header-h) + var(--audio-bar-h));
+      right: 12px;
+      width: 310px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      z-index: 110;
+    }
+    .options-panel h4 { margin: 0 0 14px; }
+    .options-panel .section { margin-bottom: 16px; }
+    .stack { display: grid; gap: 8px; }
+    .opt-btn, .audio-btn, .review-toggle {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--text);
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(40,40,42,0.72);
+      display: grid;
+      place-items: center;
+      z-index: 200;
+    }
+    .intro-card {
+      width: min(860px, 92vw);
+      color: #fff;
+      text-align: center;
+      padding: 30px 24px;
+    }
+    .intro-card .headphones {
+      margin: 0 auto 18px;
+      width: 116px; height: 116px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+    }
+    .intro-card p { font-size: 1.06rem; margin: 0 0 14px; }
+    .play-btn {
+      margin-top: 14px;
+      border: 0;
+      background: #111;
+      color: #fff;
+      padding: 14px 26px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 2px;
+    }
+    .play-btn svg { width: 28px; height: 28px; }
+
+    .review-page { max-width: 1140px; }
+    .review-header { margin-bottom: 18px; }
+    .summary-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .part-review {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 18px;
+      margin: 0 0 18px;
+    }
+    .review-item { border-top: 1px solid var(--line); padding: 12px 0; }
+    .review-item:first-child { border-top: 0; }
+    .badge { display: inline-block; padding: 4px 8px; font-weight: 700; font-size: 0.82rem; margin-left: 10px; }
+    .ok { background: #dff3e4; color: #17693b; }
+    .bad { background: #fae2e2; color: #9d2222; }
+    .miss { background: #ececec; color: #5b5b5b; }
+    .answer-grid { margin-top: 8px; display: grid; gap: 4px; }
+    .review-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+    .right-bottom-submit {
+      position: fixed;
+      right: 18px;
+      bottom: 10px;
+      z-index: 96;
+    }
+
+    .selection-toolbar {
+      position: fixed;
+      z-index: 140;
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+    }
+    .selection-toolbar button {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--text);
+      padding: 8px 12px;
+      cursor: pointer;
+      font-weight: 700;
+      border-radius: 6px;
+    }
+    .hl-mark { background: #fff3a3; padding: 0 .08em; border-radius: 2px; }
+    .note-mark {
+      text-decoration: underline;
+      text-decoration-color: #2f6fed;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    .note-mark::after {
+      content: attr(data-note);
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 8px);
+      min-width: 180px;
+      max-width: 260px;
+      white-space: normal;
+      background: #1f2633;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity .08s ease, transform .08s ease;
+      font-size: .88rem;
+      line-height: 1.3;
+    }
+    .note-mark:hover::after { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .content { padding-right: 0; }
+      .right-rail { right: 10px; gap: 18px; top: auto; bottom: calc(var(--nav-h) + 82px); transform: none; }
+      .rail-btn { width: 58px; height: 58px; }
+      .right-bottom-submit { right: 10px; bottom: 8px; }
+      .topbar { padding: 0 10px; }
+      .logo { font-size: 1.9rem; }
+      .icons { gap: 10px; }
+      .timer { font-size: 0.92rem; }
+      .vol-range { width: 56px; }
+      .audio-bar { gap: 8px; padding: 0 10px; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="audioPlayer" preload="none"></audio>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="logo">IELTS</div>
+      <div class="brand-meta">
+        <div class="id">Test taker ID</div>
+      </div>
+    </div>
+    <div class="timer" id="timer">30:00</div>
+    <div class="icons">
+      <button class="icon-btn" aria-label="connection">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 18.2c.88 0 1.6.72 1.6 1.6s-.72 1.6-1.6 1.6-1.6-.72-1.6-1.6.72-1.6 1.6-1.6zm0-4.2c2.2 0 4.2.84 5.76 2.21l-1.42 1.42A6.02 6.02 0 0 0 12 16c-1.7 0-3.26.66-4.42 1.74l-1.42-1.42A8.19 8.19 0 0 1 12 14zm0-4.2c3.53 0 6.75 1.35 9.16 3.55l-1.42 1.42A11.12 11.12 0 0 0 12 11c-2.98 0-5.68 1.17-7.74 3.08l-1.42-1.42A13.1 13.1 0 0 1 12 9.8zm0-4.3c4.85 0 9.25 1.85 12.54 4.87l-1.42 1.42A16.77 16.77 0 0 0 12 6.6c-4.04 0-7.75 1.49-10.7 3.96L-.12 9.14A19.95 19.95 0 0 1 12 5.5z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="bell">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a4 4 0 0 0-4 4v1.2c0 .9-.3 1.78-.86 2.49L5.7 12.5A2 2 0 0 0 7.26 16h9.48a2 2 0 0 0 1.56-3.5l-1.44-1.81A4 4 0 0 1 16 8.2V7a4 4 0 0 0-4-4Z"/><path d="M9.5 19a2.5 2.5 0 0 0 5 0"/></svg>
+      </button>
+      <button class="icon-btn" id="menuToggle" aria-label="menu">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Spotify-style audio bar -->
+  <div class="audio-bar" id="audioBar">
+    <!-- Rewind 10s -->
+    <button class="audio-ctrl-btn" id="rewindBtn" title="Rewind 10s" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 5V1l-5 5 5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/><text x="8" y="14" font-size="6" font-weight="bold" fill="currentColor">10</text></svg>
+    </button>
+    <!-- Play / Pause -->
+    <button class="audio-ctrl-btn" id="playPauseBtn" title="Play / Pause" disabled>
+      <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" class="hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <!-- Forward 10s -->
+    <button class="audio-ctrl-btn" id="forwardBtn" title="Forward 10s" disabled>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 13c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6v4l5-5-5-5v4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8h-2z"/><text x="8" y="14" font-size="6" font-weight="bold" fill="currentColor">10</text></svg>
+    </button>
+
+    <!-- Seek bar -->
+    <div class="audio-seek-wrap">
+      <span class="audio-time" id="currentTime">0:00</span>
+      <input type="range" class="seek-range" id="seekRange" min="0" max="100" value="0" step="0.1" disabled />
+      <span class="audio-time" id="totalTime">0:00</span>
+    </div>
+
+    <!-- Volume -->
+    <div class="audio-vol-wrap">
+      <button class="audio-ctrl-btn" id="muteBtn" title="Mute">
+        <svg id="volIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="muteIcon" viewBox="0 0 24 24" fill="currentColor" class="hidden"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+      <input type="range" class="vol-range" id="volRange" min="0" max="1" step="0.05" value="1" />
+    </div>
+
+    <!-- Part label -->
+    <div class="audio-part-label" id="audioPartLabel">Part 1</div>
+  </div>
+
+  <!-- Options panel -->
+  <aside class="options-panel hidden" id="optionsPanel">
+    <h4>Options</h4>
+    <div class="section">
+      <strong>Contrast</strong>
+      <div class="stack" style="margin-top:8px;">
+        <button class="opt-btn" data-theme="light">Black on white</button>
+        <button class="opt-btn" data-theme="dark">White on black</button>
+        <button class="opt-btn" data-theme="yellow">Yellow on black</button>
+      </div>
+    </div>
+    <div class="section">
+      <strong>Text size</strong>
+      <div class="stack" style="margin-top:8px;">
+        <button class="opt-btn" data-size="regular">Regular</button>
+        <button class="opt-btn" data-size="large">Large</button>
+        <button class="opt-btn" data-size="xl">Extra large</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Intro overlay -->
+  <div class="overlay" id="introOverlay">
+    <div class="intro-card">
+      <div class="headphones">
+        <svg viewBox="0 0 120 120" width="120" height="120" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 60a38 38 0 0 1 76 0"/>
+          <rect x="20" y="56" width="18" height="34" rx="8" fill="#fff" stroke="none"/>
+          <rect x="82" y="56" width="18" height="34" rx="8" fill="#fff" stroke="none"/>
+          <path d="M40 78h8M72 78h8"/>
+        </svg>
+      </div>
+      <p>You will be listening to an audio clip during this test. You will not be permitted to pause or rewind the audio while answering the questions.</p>
+      <p>To continue, click Play.</p>
+      <button class="play-btn" id="startBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12 8 5.2zm4 17.8a11 11 0 1 1 0-22 11 11 0 0 1 0 22zm0-20a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/></svg>
+        Play
+      </button>
+    </div>
+  </div>
+
+  <main class="page" id="testPage">
+    <div class="content" id="content"></div>
+  </main>
+
+  <main class="page hidden" id="reviewPage">
+    <div class="review-page" id="reviewContent"></div>
+  </main>
+
+  <div class="navigator" id="navigator">
+    <div class="nav-left">
+      <div class="nav-part" id="navPartLabel">Part 1</div>
+      <div class="part-tabs" id="partTabs"></div>
+      <div class="nav-questions" id="questionNav"></div>
+    </div>
+  </div>
+
+  <div class="right-rail" id="rightRail">
+    <div class="arrow-pair">
+      <button class="rail-btn" id="prevBtn" aria-label="previous">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 5.3 8 12l6.7 6.7-1.4 1.4L5.2 12l8.1-8.1z"/></svg>
+      </button>
+      <button class="rail-btn" id="nextBtn" aria-label="next">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.3 18.7 16 12 9.3 5.3l1.4-1.4 8.1 8.1-8.1 8.1z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="right-bottom-submit" id="submitWrap">
+    <button class="rail-btn submit" id="submitBtn" aria-label="submit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-11"/></svg>
+    </button>
+  </div>
+
+  <div class="selection-toolbar hidden" id="selectionToolbar">
+    <button id="highlightBtn" type="button">Highlight</button>
+    <button id="noteBtn" type="button">Note</button>
+    <button id="clearMarkBtn" type="button">Clear</button>
+    <button id="clearAllMarksBtn" type="button">Clear all</button>
+  </div>
+
+  <script>
+    const AUDIO_LINKS = {
+      1: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-2p1.mp3',
+      2: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-2p2.mp3',
+      3: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-2p3.mp3',
+      4: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-2p4.mp3'
+    };
+
+    const TEST_DURATION_SECONDS = 30 * 60;
+
+    const answerKey = {
+      1:'B',2:'D',3:'C',4:'A',5:'A',6:'C',7:'deposit',8:'invitations',9:'transport',10:'presents',
+      11:'lead',12:'sheet',13:'house',14:'horse hair',15:'rubber',16:'stop watch',17:'B',18:'C',19:'B',20:'C',
+      21:'B',22:'A',23:'B',24:'C',25:'D',26:'G',27:'F',28:'E',29:'C',30:'B',
+      31:'confusion',32:'generations',33:'environment',34:'right',35:'living',36:'time',37:'accept',38:'roads',39:'corn',40:'diet'
+    };
+
+    const parts = [
+      {
+        part: 1, title: 'Part 1', subtitle: 'Listen and answer questions 1–10.',
+        groups: [
+          { range: 'Questions 1–6', instruction: 'Which hotel offers the following facilities?', subInstruction: 'Write the correct letter, A, B, C or D, next to questions 1–6.', custom: 'matchHotels' },
+          { range: 'Questions 7–10', instruction: 'Complete the notes below.', subInstruction: 'Write ONE WORD ONLY for each answer.', custom: 'part1Notes' }
+        ]
+      },
+      {
+        part: 2, title: 'Part 2', subtitle: 'Listen and answer questions 11–20.',
+        groups: [
+          { range: 'Questions 11–16', instruction: 'Complete the sentences below.', subInstruction: 'Write NO MORE THAN TWO WORDS for each answer.', custom: 'part2Sentences' },
+          { range: 'Questions 17–20', instruction: 'Choose the correct letter, A, B or C.', custom: 'part2Mcq' }
+        ]
+      },
+      {
+        part: 3, title: 'Part 3', subtitle: 'Listen and answer questions 21–30.',
+        groups: [
+          { range: 'Questions 21–24', instruction: 'Choose the correct letter, A, B or C.', custom: 'part3Mcq' },
+          { range: 'Questions 25–30', instruction: 'Complete the flow-chart below.', subInstruction: 'Choose SIX answers from the box and write the correct letter, A–H, next to questions 25–30.', custom: 'part3Flow' }
+        ]
+      },
+      {
+        part: 4, title: 'Part 4', subtitle: 'Listen and answer questions 31–40.',
+        groups: [
+          { range: 'Questions 31–40', instruction: 'Complete the notes below.', subInstruction: 'Write ONE WORD ONLY for each answer.', custom: 'part4Notes' }
+        ]
+      }
+    ];
+
+    const state = {
+      currentPart: 1,
+      timerLeft: TEST_DURATION_SECONDS,
+      timerId: null,
+      answers: {},
+      started: false,
+      submitted: false,
+      currentAudioPart: 1,
+      partMarkup: {}
+    };
+
+    /* ── DOM refs ── */
+    const content        = document.getElementById('content');
+    const reviewPage     = document.getElementById('reviewPage');
+    const testPage       = document.getElementById('testPage');
+    const reviewContent  = document.getElementById('reviewContent');
+    const questionNav    = document.getElementById('questionNav');
+    const partTabs       = document.getElementById('partTabs');
+    const navPartLabel   = document.getElementById('navPartLabel');
+    const timerEl        = document.getElementById('timer');
+    const introOverlay   = document.getElementById('introOverlay');
+    const audio          = document.getElementById('audioPlayer');
+    const optionsPanel   = document.getElementById('optionsPanel');
+    const selectionToolbar = document.getElementById('selectionToolbar');
+    const highlightBtn   = document.getElementById('highlightBtn');
+    const noteBtn        = document.getElementById('noteBtn');
+    const clearMarkBtn   = document.getElementById('clearMarkBtn');
+    const clearAllMarksBtn = document.getElementById('clearAllMarksBtn');
+
+    /* ── Audio bar refs ── */
+    const playPauseBtn   = document.getElementById('playPauseBtn');
+    const playIcon       = document.getElementById('playIcon');
+    const pauseIcon      = document.getElementById('pauseIcon');
+    const rewindBtn      = document.getElementById('rewindBtn');
+    const forwardBtn     = document.getElementById('forwardBtn');
+    const seekRange      = document.getElementById('seekRange');
+    const currentTimeEl  = document.getElementById('currentTime');
+    const totalTimeEl    = document.getElementById('totalTime');
+    const muteBtn        = document.getElementById('muteBtn');
+    const volIcon        = document.getElementById('volIcon');
+    const muteIcon       = document.getElementById('muteIcon');
+    const volRange       = document.getElementById('volRange');
+    const audioPartLabel = document.getElementById('audioPartLabel');
+
+    /* ── Helpers ── */
+    function formatTime(secs) {
+      if (!isFinite(secs) || isNaN(secs)) return '0:00';
+      const m = Math.floor(secs / 60);
+      const s = String(Math.floor(secs % 60)).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function normalizeAnswer(value) {
+      return String(value || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function inputHTML(q, width = 110) {
+      const value = state.answers[q] || '';
+      return `<input class="answer" style="width:${width}px" data-q="${q}" value="${escapeHtml(value)}" />`;
+    }
+
+    function selectHTML(q, letters, width = 110) {
+      const value = state.answers[q] || '';
+      return `<select class="answer" style="width:${width}px" data-q="${q}"><option value=""></option>${letters.map(l=>`<option value="${l}" ${value===l?'selected':''}>${l}</option>`).join('')}</select>`;
+    }
+
+    function radioHTML(q, options) {
+      const selected = state.answers[q] || '';
+      return `<div class="option-list">${options.map(opt=>`<label><input type="radio" name="q${q}" data-q="${q}" value="${opt.letter}" ${selected===opt.letter?'checked':''}> <strong>${opt.letter}</strong> ${opt.text}</label>`).join('')}</div>`;
+    }
+
+    /* ── Audio bar logic ── */
+    let isSeeking = false;
+
+    function enableAudioBar() {
+      playPauseBtn.disabled = false;
+      rewindBtn.disabled    = false;
+      forwardBtn.disabled   = false;
+      seekRange.disabled    = false;
+    }
+
+    function updateAudioBar() {
+      const dur = audio.duration || 0;
+      const cur = audio.currentTime || 0;
+      currentTimeEl.textContent = formatTime(cur);
+      totalTimeEl.textContent   = formatTime(dur);
+      if (!isSeeking && dur > 0) {
+        seekRange.value = (cur / dur) * 100;
+        const pct = (cur / dur) * 100;
+        seekRange.style.background = `linear-gradient(to right, var(--text) ${pct}%, var(--line) ${pct}%)`;
+      }
+      if (audio.paused) {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      } else {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      }
+    }
+
+    audio.addEventListener('timeupdate', updateAudioBar);
+    audio.addEventListener('loadedmetadata', () => {
+      totalTimeEl.textContent = formatTime(audio.duration);
+      seekRange.max = 100;
+      updateAudioBar();
+    });
+    audio.addEventListener('play',  updateAudioBar);
+    audio.addEventListener('pause', updateAudioBar);
+    audio.addEventListener('ended', updateAudioBar);
+
+    playPauseBtn.addEventListener('click', () => {
+      if (!AUDIO_LINKS[state.currentAudioPart]) return;
+      if (audio.paused) audio.play().catch(()=>{});
+      else audio.pause();
+    });
+
+    rewindBtn.addEventListener('click', () => {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+    });
+
+    forwardBtn.addEventListener('click', () => {
+      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
+    });
+
+    seekRange.addEventListener('mousedown', () => { isSeeking = true; });
+    seekRange.addEventListener('touchstart', () => { isSeeking = true; }, { passive: true });
+    seekRange.addEventListener('input', () => {
+      const dur = audio.duration || 0;
+      const newTime = (seekRange.value / 100) * dur;
+      currentTimeEl.textContent = formatTime(newTime);
+      const pct = parseFloat(seekRange.value);
+      seekRange.style.background = `linear-gradient(to right, var(--text) ${pct}%, var(--line) ${pct}%)`;
+    });
+    seekRange.addEventListener('change', () => {
+      const dur = audio.duration || 0;
+      audio.currentTime = (seekRange.value / 100) * dur;
+      isSeeking = false;
+    });
+    seekRange.addEventListener('mouseup',  () => { isSeeking = false; });
+    seekRange.addEventListener('touchend', () => { isSeeking = false; });
+
+    muteBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      volIcon.classList.toggle('hidden', audio.muted);
+      muteIcon.classList.toggle('hidden', !audio.muted);
+    });
+
+    volRange.addEventListener('input', () => {
+      audio.volume = parseFloat(volRange.value);
+      const muted = audio.volume === 0;
+      volIcon.classList.toggle('hidden', muted);
+      muteIcon.classList.toggle('hidden', !muted);
+    });
+
+    /* ── Audio switching (FIXED) ── */
+    // Track whether audio was playing before part switch
+    function switchAudioForPart(partNum, autoplay) {
+      state.currentAudioPart = partNum;
+      audioPartLabel.textContent = `Part ${partNum}`;
+      const src = AUDIO_LINKS[partNum];
+      if (!src) return;
+
+      // Always update the src when switching parts so the correct file loads
+      const wasPlaying = !audio.paused;
+      audio.pause();
+      audio.src = src;
+      // Reset seek bar display while new audio loads
+      seekRange.value = 0;
+      seekRange.style.background = `linear-gradient(to right, var(--text) 0%, var(--line) 0%)`;
+      currentTimeEl.textContent = '0:00';
+      totalTimeEl.textContent = '0:00';
+      audio.load();
+
+      if (autoplay) {
+        // Play once enough data is available
+        audio.addEventListener('canplay', function onCanPlay() {
+          audio.removeEventListener('canplay', onCanPlay);
+          audio.play().catch(() => {});
+        });
+      }
+    }
+
+    function stopAudio() { audio.pause(); }
+
+    /* ── Render ── */
+    function renderPart(partNum) {
+      state.currentPart = partNum;
+      const part = parts.find(p => p.part === partNum);
+      if (state.partMarkup[partNum]) {
+        content.innerHTML = state.partMarkup[partNum];
+      } else {
+        content.innerHTML = `
+          <div class="section-box">
+            <h2>${part.title}</h2>
+            <p>${part.subtitle}</p>
+          </div>
+          ${part.groups.map(renderGroup).join('')}
+        `;
+      }
+      syncDomAnswersFromState();
+      attachInputs();
+      renderNavigator();
+      updateRailButtons();
+      if (state.started) switchAudioForPart(partNum, false);
+    }
+
+    function renderGroup(group) {
+      return `<section class="question-group">
+        <h3>${group.range}</h3>
+        <p class="instruction">${group.instruction}</p>
+        ${group.subInstruction ? `<p class="instruction">${group.subInstruction}</p>` : ''}
+        ${renderCustom(group.custom)}
+      </section>`;
+    }
+
+    function renderCustom(name) {
+      switch(name) {
+        case 'matchHotels': return `
+          <div class="task-title">Birthday party arrangements</div>
+          <div class="match-table">
+            <div class="row"><div><strong>A</strong></div><div>Royal Hotel</div></div>
+            <div class="row"><div><strong>B</strong></div><div>Star Hotel</div></div>
+            <div class="row"><div><strong>C</strong></div><div>Winchester Hotel</div></div>
+            <div class="row"><div><strong>D</strong></div><div>all three hotels</div></div>
+          </div>
+          <div class="flow-step" style="width:min(620px,100%); margin-top:6px;">
+            <em>Example</em><br><br>
+            online booking <span style="margin-left:90px; font-style:italic;">B</span>
+          </div>
+          <div class="match-block">
+            <div class="question-line"><span class="qnum-inline">1</span> sea view &nbsp;&nbsp; ${selectHTML(1,['A','B','C','D'],98)}</div>
+            <div class="question-line"><span class="qnum-inline">2</span> disabled access &nbsp;&nbsp; ${selectHTML(2,['A','B','C','D'],98)}</div>
+            <div class="question-line"><span class="qnum-inline">3</span> indoor play area &nbsp;&nbsp; ${selectHTML(3,['A','B','C','D'],98)}</div>
+            <div class="question-line"><span class="qnum-inline">4</span> choice of food &nbsp;&nbsp; ${selectHTML(4,['A','B','C','D'],98)}</div>
+            <div class="question-line"><span class="qnum-inline">5</span> private dining room &nbsp;&nbsp; ${selectHTML(5,['A','B','C','D'],98)}</div>
+            <div class="question-line"><span class="qnum-inline">6</span> group discount &nbsp;&nbsp; ${selectHTML(6,['A','B','C','D'],98)}</div>
+          </div>`;
+        case 'part1Notes': return `
+          <div class="flow-step" style="width:min(720px,100%); background:transparent;">
+            <div class="subheading" style="margin-top:0;">Things to do immediately</div>
+            <p>Send a 7 ${inputHTML(7,120)} to the Winchester Hotel</p>
+            <p>Make the 8 ${inputHTML(8,140)}</p>
+            <div class="subheading">Things to do later</div>
+            <p>Find out who needs help with 9 ${inputHTML(9,150)}</p>
+            <p>Tell people not to bring any 10 ${inputHTML(10,150)}</p>
+          </div>`;
+        case 'part2Sentences': return `
+          <div class="task-title">The game of curling</div>
+          <div class="notes-block">
+            <p><span class="qnum-inline">11</span> The four players on the team are called the ${inputHTML(11,150)}, the Second, the Third and the Skip.</p>
+            <p><span class="qnum-inline">12</span> The length of ice on which curling is played is called the ${inputHTML(12,150)}.</p>
+            <p><span class="qnum-inline">13</span> The target area is called the ${inputHTML(13,150)}.</p>
+            <p>• The main pieces of equipment used are stones and brushes.</p>
+            <p><span class="qnum-inline">14</span> Scottish brushes are usually made from ${inputHTML(14,170)}.</p>
+            <p><span class="qnum-inline">15</span> One shoe needs to have a sole made of ${inputHTML(15,150)}.</p>
+            <p><span class="qnum-inline">16</span> The captain of the team often carries a ${inputHTML(16,170)}.</p>
+          </div>`;
+        case 'part2Mcq': return `
+          <div class="mcq-block">
+            <div class="question-line"><strong>17</strong> Montreal Curling Club is famous as</div>
+            ${radioHTML(17,[{letter:'A',text:'the champion club of the local league.'},{letter:'B',text:'the oldest sports club in the region.'},{letter:'C',text:'the most influential club in winter sports.'}])}
+            <div class="question-line"><strong>18</strong> The Caledonian Curling Club was formed in order to</div>
+            ${radioHTML(18,[{letter:'A',text:'attract interest in the sport.'},{letter:'B',text:'train young players.'},{letter:'C',text:'fix regulations for the game.'}])}
+            <div class="question-line"><strong>19</strong> In the 16<sup>th</sup> century, curling avoided being banned because</div>
+            ${radioHTML(19,[{letter:'A',text:'it was already so popular.'},{letter:'B',text:'it was good training for battle.'},{letter:'C',text:'it was only played by children.'}])}
+            <div class="question-line"><strong>20</strong> Early curling games in Canada used implements made of</div>
+            ${radioHTML(20,[{letter:'A',text:'local material.'},{letter:'B',text:'imported stone.'},{letter:'C',text:'cast iron.'}])}
+          </div>`;
+        case 'part3Mcq': return `
+          <div class="task-title">Using scientific techniques to investigate works of art</div>
+          <div class="mcq-block">
+            <div class="question-line"><strong>21</strong> What does Josh think about Jackson Pollock's paintings?</div>
+            ${radioHTML(21,[{letter:'A',text:'They are easy to copy.'},{letter:'B',text:'They are complex.'},{letter:'C',text:'They are childish.'}])}
+            <div class="question-line"><strong>22</strong> The $5 painting was considered to be a fake because</div>
+            ${radioHTML(22,[{letter:'A',text:'it lacked documentation.'},{letter:'B',text:'it was too cheap.'},{letter:'C',text:'it featured the wrong colours.'}])}
+            <div class="question-line"><strong>23</strong> What made the International Foundation for Art Research reject the $5 painting?</div>
+            ${radioHTML(23,[{letter:'A',text:'what was on the back of the painting'},{letter:'B',text:'the type of paint used'},{letter:'C',text:'how the paint was applied'}])}
+            <div class="question-line"><strong>24</strong> What do Josh and Emily agree about art evaluation?</div>
+            ${radioHTML(24,[{letter:'A',text:'Only an experienced critic can evaluate a painting\'s authenticity.'},{letter:'B',text:'Modern scientific methods have replaced the traditional approach.'},{letter:'C',text:'Experts from the science and art worlds should work together.'}])}
+          </div>`;
+        case 'part3Flow': return `
+          <div class="flow-options">
+            <div class="row"><div><strong>A</strong></div><div>ultrasound</div></div>
+            <div class="row"><div><strong>B</strong></div><div>gamma-ray technology</div></div>
+            <div class="row"><div><strong>C</strong></div><div>stone</div></div>
+            <div class="row"><div><strong>D</strong></div><div>a laser scanner</div></div>
+            <div class="row"><div><strong>E</strong></div><div>a radar machine</div></div>
+            <div class="row"><div><strong>F</strong></div><div>glass</div></div>
+            <div class="row"><div><strong>G</strong></div><div>a thermographic camera</div></div>
+            <div class="row"><div><strong>H</strong></div><div>brick</div></div>
+          </div>
+          <div class="task-title">Seracini's search for Leonardo Da Vinci's <em>Battle of Anghiari</em></div>
+          <div class="flow-step">Seracini used 25 ${selectHTML(25,['A','B','C','D','E','F','G','H'],120)} to help make a model of the building.</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">Seracini used 26 ${selectHTML(26,['A','B','C','D','E','F','G','H'],120)} to reveal different materials in the walls. He found the original architecture.</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">Seracini guessed that Da Vinci painted his masterpiece on the east wall, in a space that used to hold 27 ${selectHTML(27,['A','B','C','D','E','F','G','H'],120)}.</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">Seracini analysed the wall using 28 ${selectHTML(28,['A','B','C','D','E','F','G','H'],120)} and discovered a second wall behind it.</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">Seracini hypothesised that the Da Vinci painting is still there on the original 29 ${selectHTML(29,['A','B','C','D','E','F','G','H'],120)} wall.</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">Seracini is using 30 ${selectHTML(30,['A','B','C','D','E','F','G','H'],120)} to prove his theory.</div>`;
+        case 'part4Notes': return `
+          <div class="flow-step" style="width:min(920px,100%); background:transparent;">
+            <div class="task-title" style="text-align:center; margin-top:0;">Sustainability</div>
+            <p><strong>Sustainability:</strong> Term first used in 1987 by writers of United Nations report</p>
+            <p><strong>Lecture aim:</strong> Analysis of the 31 ${inputHTML(31,160)} surrounding sustainability</p>
+            <p><strong>Sustainable development:</strong> Development that will meet the needs of both present and future 32 ${inputHTML(32,170)}</p>
+            <div class="subheading">Myth 1:</div>
+            <p>• No mention of the 33 ${inputHTML(33,170)} in original definition</p>
+            <p>• Original focus: poorer nations should have the same 34 ${inputHTML(34,140)} to natural resources as richer nations</p>
+            <p>&nbsp;&nbsp; This would help them achieve better 35 ${inputHTML(35,170)} conditions</p>
+            <div class="subheading">Myth 2: 'Green' vs Sustainable</div>
+            <p>• Key difference: unlike 'green', 'sustainable' is not always associated with things that are natural</p>
+            <p>• For the sustainability lobby, the key problem is finding 36 ${inputHTML(36,150)} to develop technology</p>
+            <p>• Sustainability lobby is prepared to 37 ${inputHTML(37,150)} nuclear energy</p>
+            <div class="subheading">Myth 3: Role of technology</div>
+            <p>• Introduction of battery stations on 38 ${inputHTML(38,150)} is an example of new business thinking, not new technology</p>
+            <p>• Agriculture: some farmers plant crops like sunflowers which don't use much water, unlike 39 ${inputHTML(39,150)}</p>
+            <p>• Greater use of water is a result of changes in our 40 ${inputHTML(40,150)}</p>
+          </div>`;
+        default: return '';
+      }
+    }
+
+    function syncDomAnswersFromState() {
+      content.querySelectorAll('input.answer').forEach(el => {
+        el.value = state.answers[el.dataset.q] || '';
+      });
+      content.querySelectorAll('select.answer').forEach(el => {
+        el.value = state.answers[el.dataset.q] || '';
+      });
+      content.querySelectorAll('input[type="radio"]').forEach(el => {
+        el.checked = state.answers[el.dataset.q] === el.value;
+      });
+    }
+
+    function saveCurrentPartMarkup() {
+      if (!content.innerHTML) return;
+      syncDomAnswersFromState();
+      state.partMarkup[state.currentPart] = content.innerHTML;
+    }
+
+    function attachInputs() {
+      content.querySelectorAll('input.answer').forEach(el => {
+        el.addEventListener('input', e => {
+          state.answers[e.target.dataset.q] = e.target.value;
+          renderNavigator();
+          saveCurrentPartMarkup();
+        });
+      });
+      content.querySelectorAll('select.answer').forEach(el => {
+        el.addEventListener('change', e => {
+          state.answers[e.target.dataset.q] = e.target.value;
+          renderNavigator();
+          saveCurrentPartMarkup();
+        });
+      });
+      content.querySelectorAll('input[type="radio"]').forEach(el => {
+        el.addEventListener('change', e => {
+          state.answers[e.target.dataset.q] = e.target.value;
+          renderNavigator();
+          saveCurrentPartMarkup();
+        });
+      });
+    }
+
+    function questionsForPart(partNum) {
+      if (partNum === 1) return [1,2,3,4,5,6,7,8,9,10];
+      if (partNum === 2) return [11,12,13,14,15,16,17,18,19,20];
+      if (partNum === 3) return [21,22,23,24,25,26,27,28,29,30];
+      return [31,32,33,34,35,36,37,38,39,40];
+    }
+
+    function renderNavigator() {
+      navPartLabel.textContent = `Part ${state.currentPart}`;
+      const qs = questionsForPart(state.currentPart);
+      partTabs.innerHTML = [1,2,3,4].map(part => `<button class="part-tab ${part===state.currentPart?'active':''}" data-partnav="${part}">Part ${part}</button>`).join('');
+      partTabs.querySelectorAll('[data-partnav]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (state.submitted) return;
+          saveCurrentPartMarkup();
+          renderPart(Number(btn.dataset.partnav));
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+      questionNav.innerHTML = qs.map(q => {
+        const answered = state.answers[q] ? 'answered' : '';
+        return `<button class="qnav-btn ${answered}" data-qnav="${q}">${q}</button>`;
+      }).join('');
+      questionNav.querySelectorAll('[data-qnav]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = content.querySelector(`[data-q="${btn.dataset.qnav}"]`);
+          if (target) {
+            target.focus({ preventScroll: false });
+            window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 160, behavior: 'smooth' });
+          }
+        });
+      });
+    }
+
+    function updateRailButtons() {
+      document.getElementById('prevBtn').classList.toggle('disabled', state.currentPart === 1 || state.submitted);
+      document.getElementById('nextBtn').classList.toggle('disabled', state.currentPart === 4 || state.submitted);
+    }
+
+    function startTimer() {
+      clearInterval(state.timerId);
+      state.timerId = setInterval(() => {
+        state.timerLeft -= 1;
+        if (state.timerLeft <= 0) { state.timerLeft = 0; updateTimer(); submitTest(true); return; }
+        updateTimer();
+      }, 1000);
+    }
+
+    function updateTimer() {
+      timerEl.textContent = formatTime(state.timerLeft);
+    }
+
+    function isCorrect(q, userAnswer) {
+      return normalizeAnswer(userAnswer) === normalizeAnswer(answerKey[q]);
+    }
+
+    function buildReview() {
+      let score = 0;
+      for (let i = 1; i <= 40; i++) if (isCorrect(i, state.answers[i])) score++;
+
+      reviewContent.innerHTML = `
+        <div class="review-header"><h2>Review</h2></div>
+        <div class="summary-box"><div><strong>Score:</strong> ${score} / 40</div></div>
+        <div class="review-toolbar">
+          <button class="review-toggle" id="backToTest">Get back to the test</button>
+        </div>
+        ${parts.map(part => `<section class="part-review">
+          <h3>Part ${part.part}</h3>
+          ${questionsForPart(part.part).map(q => {
+            const user = state.answers[q] || '';
+            const correct = answerKey[q];
+            const badgeClass = !user ? 'miss' : (isCorrect(q, user) ? 'ok' : 'bad');
+            const badgeText  = !user ? 'Unanswered' : (isCorrect(q, user) ? 'Correct' : 'Incorrect');
+            return `<div class="review-item">
+              <div><strong>${q}.</strong><span class="badge ${badgeClass}">${badgeText}</span></div>
+              <div class="answer-grid">
+                <div><strong>Your answer:</strong> ${escapeHtml(user || '—')}</div>
+                <div><strong>Correct answer:</strong> ${escapeHtml(correct)}</div>
+              </div>
+            </div>`;
+          }).join('')}
+        </section>`).join('')}
+      `;
+
+      document.getElementById('backToTest').onclick = () => {
+        reviewPage.classList.add('hidden');
+        testPage.classList.remove('hidden');
+        document.getElementById('navigator').classList.remove('hidden');
+        document.getElementById('rightRail').classList.remove('hidden');
+        document.getElementById('submitWrap').classList.remove('hidden');
+        saveCurrentPartMarkup();
+        renderPart(state.currentPart);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+    }
+
+    function submitTest(auto = false) {
+      if (state.submitted) return;
+      state.submitted = true;
+      clearInterval(state.timerId);
+      saveCurrentPartMarkup();
+      stopAudio();
+
+      let score = 0;
+      for (let i = 1; i <= 40; i++) if (isCorrect(i, state.answers[i])) score++;
+
+      testPage.classList.add('hidden');
+      reviewPage.classList.remove('hidden');
+      document.getElementById('navigator').classList.add('hidden');
+      document.getElementById('rightRail').classList.add('hidden');
+      document.getElementById('submitWrap').classList.add('hidden');
+      buildReview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      window.parent.postMessage({ type: 'TEST_COMPLETE', score }, '*');
+    }
+
+    /* ── Selection / highlight ── */
+    function isSelectableRange(range) {
+      if (!range || range.collapsed) return false;
+      const ancestor = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
+      if (!ancestor) return false;
+      if (!content.contains(ancestor) && !reviewContent.contains(ancestor)) return false;
+      if (ancestor.closest('input, select, button, .selection-toolbar, .navigator, .right-rail, .options-panel')) return false;
+      return String(range.toString()).trim().length > 0;
+    }
+
+    function unwrapNestedMarks(fragment, className) {
+      fragment.querySelectorAll('.' + className).forEach(node => {
+        const parent = node.parentNode;
+        while (node.firstChild) parent.insertBefore(node.firstChild, node);
+        parent.removeChild(node);
+      });
+    }
+
+    function applyMark(className, noteText = '') {
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return;
+      const range = sel.getRangeAt(0);
+      if (!isSelectableRange(range)) return;
+      const span = document.createElement('span');
+      span.className = className;
+      if (noteText) span.setAttribute('data-note', noteText);
+      const fragment = range.extractContents();
+      unwrapNestedMarks(fragment, className);
+      span.appendChild(fragment);
+      range.insertNode(span);
+      sel.removeAllRanges();
+      hideSelectionToolbar();
+      saveCurrentPartMarkup();
+    }
+
+    function showSelectionToolbar() {
+      const sel = window.getSelection();
+      if (!sel || !sel.rangeCount) return hideSelectionToolbar();
+      const range = sel.getRangeAt(0);
+      if (!isSelectableRange(range)) return hideSelectionToolbar();
+      const rect = range.getBoundingClientRect();
+      selectionToolbar.classList.remove('hidden');
+      selectionToolbar.style.top  = Math.max(8, rect.top + window.scrollY - 52) + 'px';
+      selectionToolbar.style.left = Math.max(8, rect.left + window.scrollX + rect.width / 2 - 90) + 'px';
+    }
+
+    function hideSelectionToolbar() { selectionToolbar.classList.add('hidden'); }
+
+    function unwrapNode(node) {
+      if (!node || !node.parentNode) return;
+      const parent = node.parentNode;
+      while (node.firstChild) parent.insertBefore(node.firstChild, node);
+      parent.removeChild(node);
+    }
+
+    function clearCurrentMark() {
+      const sel = window.getSelection();
+      let target = null;
+      if (sel && sel.rangeCount) {
+        const range = sel.getRangeAt(0);
+        const startEl = range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement;
+        target = startEl && startEl.closest ? startEl.closest('.hl-mark, .note-mark') : null;
+      }
+      if (!target) { hideSelectionToolbar(); return; }
+      unwrapNode(target);
+      if (sel) sel.removeAllRanges();
+      hideSelectionToolbar();
+      if (reviewPage.classList.contains('hidden')) saveCurrentPartMarkup();
+    }
+
+    function clearAllMarks() {
+      const container = reviewPage.classList.contains('hidden') ? content : reviewContent;
+      container.querySelectorAll('.hl-mark, .note-mark').forEach(unwrapNode);
+      const sel = window.getSelection();
+      if (sel) sel.removeAllRanges();
+      hideSelectionToolbar();
+      if (reviewPage.classList.contains('hidden')) saveCurrentPartMarkup();
+    }
+
+    /* ── Event listeners ── */
+    highlightBtn.addEventListener('click', () => applyMark('hl-mark'));
+    noteBtn.addEventListener('click', () => {
+      const text = window.prompt('Write your note...');
+      if (text && text.trim()) applyMark('note-mark', text.trim());
+      else hideSelectionToolbar();
+    });
+    clearMarkBtn.addEventListener('click', clearCurrentMark);
+    clearAllMarksBtn.addEventListener('click', clearAllMarks);
+
+    document.addEventListener('selectionchange', () => {
+      const active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+      setTimeout(showSelectionToolbar, 0);
+    });
+    document.addEventListener('mousedown', e => {
+      if (!selectionToolbar.contains(e.target)) hideSelectionToolbar();
+    });
+
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      optionsPanel.classList.toggle('hidden');
+    });
+    document.querySelectorAll('[data-theme]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.body.classList.remove('theme-dark','theme-yellow');
+        if (btn.dataset.theme === 'dark') document.body.classList.add('theme-dark');
+        if (btn.dataset.theme === 'yellow') document.body.classList.add('theme-yellow');
+      });
+    });
+    document.querySelectorAll('[data-size]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.body.classList.remove('size-large','size-xl');
+        if (btn.dataset.size === 'large') document.body.classList.add('size-large');
+        if (btn.dataset.size === 'xl') document.body.classList.add('size-xl');
+      });
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (state.currentPart > 1 && !state.submitted) {
+        saveCurrentPartMarkup(); renderPart(state.currentPart - 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (state.currentPart < 4 && !state.submitted) {
+        saveCurrentPartMarkup(); renderPart(state.currentPart + 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', () => submitTest(false));
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      introOverlay.classList.add('hidden');
+      state.started = true;
+      enableAudioBar();
+      saveCurrentPartMarkup();
+      renderPart(1);
+      startTimer();
+      switchAudioForPart(1, true);
+    });
+
+    updateTimer();
+    renderPart(1);
+    saveCurrentPartMarkup();
+  </script>
+</body>
+</html>

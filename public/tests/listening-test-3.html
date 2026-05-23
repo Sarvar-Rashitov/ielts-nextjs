@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IELTS Listening Test - Furniture Removals</title>
+  <style>
+    :root {
+      --bg: #f6f6f4;
+      --panel: #ffffff;
+      --panel-soft: #efefeb;
+      --line: #cfcfc8;
+      --text: #0f0f10;
+      --muted: #5c5c5f;
+      --red: #c81421;
+      --blue: #1e66d0;
+      --shadow: 0 8px 24px rgba(0,0,0,0.06);
+      --header-h: 74px;
+      --nav-h: 64px;
+      --font-scale: 1;
+    }
+
+    body.theme-dark {
+      --bg: #0e0f10;
+      --panel: #17191b;
+      --panel-soft: #212427;
+      --line: #343840;
+      --text: #f4f5f7;
+      --muted: #b5bcc7;
+      --blue: #8ab4ff;
+      --shadow: 0 12px 28px rgba(0,0,0,0.35);
+    }
+
+    body.theme-yellow {
+      --bg: #070707;
+      --panel: #121212;
+      --panel-soft: #181818;
+      --line: #49421c;
+      --text: #ffe96d;
+      --muted: #dbc95a;
+      --blue: #fff59f;
+    }
+
+    body.size-large { --font-scale: 1.08; }
+    body.size-xl { --font-scale: 1.18; }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: calc(16px * var(--font-scale));
+      line-height: 1.35;
+    }
+
+    button, input, select { font: inherit; }
+    .hidden { display: none !important; }
+
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--panel-soft);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      z-index: 100;
+    }
+
+    .brand-wrap { display: flex; align-items: center; gap: 18px; }
+    .logo {
+      color: var(--red);
+      font-size: 2.45rem;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+    .brand-meta { display: flex; flex-direction: column; gap: 2px; }
+    .brand-meta .id { font-size: 0.98rem; font-weight: 700; }
+    .brand-meta .audio-status { font-size: 0.7rem; color: var(--muted); min-height: 1em; }
+    .brand-meta .audio-status.active { color: var(--text); }
+
+    .timer { font-weight: 700; font-size: 1rem; letter-spacing: .03em; }
+    .icons { display: flex; align-items: center; gap: 22px; }
+    .icon-btn {
+      border: 0; background: transparent; color: var(--text); cursor: pointer; padding: 4px;
+      display: grid; place-items: center;
+    }
+    .icon-btn svg { width: 30px; height: 30px; }
+
+    .page {
+      padding: calc(var(--header-h) + 18px) 18px calc(var(--nav-h) + 26px);
+      max-width: none;
+      width: 100%;
+    }
+
+    .section-box {
+      background: #e8e8e3;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    body.theme-dark .section-box, body.theme-yellow .section-box { background: var(--panel-soft); }
+
+    .section-box h2 { margin: 0 0 10px; font-size: 1.1rem; }
+    .section-box p { margin: 0; font-size: 1rem; }
+
+    .content { max-width: 1140px; padding-right: 140px; }
+    .question-group { margin-bottom: 26px; }
+    .question-group h3 { margin: 0 0 12px; font-size: 1.1rem; }
+    .question-group p { margin: 0 0 10px; }
+    .instruction strong { font-weight: 800; }
+    .task-title { font-size: 1.16rem; font-weight: 700; margin: 18px 0 10px; }
+    .subheading { font-size: 0.98rem; font-weight: 700; margin: 18px 0 8px; }
+
+    .mcq-block, .match-block, .flow-block, .notes-block { margin: 14px 0 18px; }
+    .question-line { margin: 12px 0; }
+    .qnum-inline { font-weight: 700; margin-right: 6px; }
+
+    input.answer, select.answer {
+      min-width: 96px;
+      height: 30px;
+      border: 1px solid #696969;
+      border-radius: 4px;
+      background: #fff;
+      color: #111;
+      padding: 0 10px;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+    }
+    select.answer { text-align: left; font-weight: 600; }
+    body.theme-dark input.answer, body.theme-dark select.answer,
+    body.theme-yellow input.answer, body.theme-yellow select.answer {
+      background: #fff;
+      color: #111;
+    }
+
+    .inline-answer { display: inline-flex; align-items: center; gap: 8px; }
+    .bullets { margin: 0 0 0 24px; padding: 0; }
+    .bullets li { margin: 8px 0; }
+    .option-list { margin: 8px 0 0 28px; }
+    .option-list label { display: block; margin: 8px 0; cursor: pointer; }
+    .option-list input { margin-right: 8px; }
+
+    .match-table {
+      width: fit-content;
+      border: 1px solid #6f6f6f;
+      padding: 10px 14px;
+      margin: 12px 0 18px;
+      background: rgba(255,255,255,0.45);
+    }
+    body.theme-dark .match-table, body.theme-yellow .match-table { background: transparent; }
+    .match-table .row { display: grid; grid-template-columns: 28px 1fr; gap: 10px; margin: 4px 0; }
+
+    .flow-options {
+      width: fit-content;
+      border: 1px solid #6f6f6f;
+      padding: 10px 14px;
+      margin: 10px 0 16px;
+      background: rgba(255,255,255,0.45);
+    }
+    .flow-options .row { display: grid; grid-template-columns: 28px 1fr; gap: 10px; margin: 3px 0; }
+    .flow-step {
+      width: min(760px, 100%);
+      border: 1px solid #7e7e7e;
+      padding: 14px 14px;
+      margin: 10px 0;
+      position: relative;
+      background: rgba(255,255,255,0.25);
+    }
+    .flow-arrow { font-size: 2rem; line-height: 1; margin: 4px 0 4px 160px; }
+
+    .navigator {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      height: var(--nav-h);
+      border-top: 1px solid var(--line);
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      z-index: 90;
+      gap: 18px;
+    }
+    .nav-left { display: flex; align-items: center; gap: 24px; min-width: 0; }
+    .nav-part { font-size: 1rem; font-weight: 700; }
+    .part-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .part-tab {
+      min-width: 66px; height: 34px; border: 1px solid var(--line); border-radius: 4px;
+      background: var(--panel-soft); color: var(--text); cursor: pointer; font-weight: 700; padding: 0 12px;
+    }
+    .part-tab.active { border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+    .nav-questions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .qnav-btn {
+      width: 30px; height: 34px; border-radius: 3px; border: 1px solid transparent;
+      background: transparent; color: var(--text); cursor: pointer; font-weight: 500;
+    }
+    .qnav-btn.current { border-color: var(--blue); color: var(--text); font-weight: 700; }
+    .qnav-btn.answered { background: #e7edf9; border-color: #c1d3f7; }
+    body.theme-dark .qnav-btn.answered, body.theme-yellow .qnav-btn.answered { background: var(--panel-soft); border-color: var(--blue); }
+
+    .right-rail {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-30%);
+      display: flex;
+      flex-direction: column;
+      gap: 110px;
+      z-index: 95;
+      align-items: flex-end;
+    }
+    .arrow-pair {
+      display: flex;
+      gap: 0;
+      box-shadow: var(--shadow);
+    }
+    .rail-btn {
+      width: 70px; height: 70px; border: 0; cursor: pointer; background: #111; color: #fff;
+      display: grid; place-items: center;
+    }
+    .rail-btn.disabled { background: #d9d9d9; color: #fff; cursor: default; }
+    .rail-btn.submit { background: #ecece9; color: #1d1d1d; }
+    .rail-btn svg { width: 34px; height: 34px; }
+
+    .options-panel {
+      position: fixed;
+      top: var(--header-h);
+      right: 12px;
+      width: 310px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      z-index: 110;
+    }
+    .options-panel h4 { margin: 0 0 14px; }
+    .options-panel .section { margin-bottom: 16px; }
+    .stack { display: grid; gap: 8px; }
+    .opt-btn, .audio-btn, .review-toggle {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--text);
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .audio-btn-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(40,40,42,0.72);
+      display: grid;
+      place-items: center;
+      z-index: 200;
+    }
+    .intro-card {
+      width: min(860px, 92vw);
+      color: #fff;
+      text-align: center;
+      padding: 30px 24px;
+    }
+    .intro-card .headphones {
+      margin: 0 auto 18px;
+      width: 116px; height: 116px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+    }
+    .intro-card p { font-size: 1.06rem; margin: 0 0 14px; }
+    .play-btn {
+      margin-top: 14px;
+      border: 0;
+      background: #111;
+      color: #fff;
+      padding: 14px 26px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 2px;
+    }
+    .play-btn svg { width: 28px; height: 28px; }
+
+    .review-page { max-width: 1140px; }
+    .review-header { margin-bottom: 18px; }
+    .summary-box {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .part-review {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 18px;
+      margin: 0 0 18px;
+    }
+    .review-item { border-top: 1px solid var(--line); padding: 12px 0; }
+    .review-item:first-child { border-top: 0; }
+    .badge { display: inline-block; padding: 4px 8px; font-weight: 700; font-size: 0.82rem; margin-left: 10px; }
+    .ok { background: #dff3e4; color: #17693b; }
+    .bad { background: #fae2e2; color: #9d2222; }
+    .miss { background: #ececec; color: #5b5b5b; }
+    .answer-grid { margin-top: 8px; display: grid; gap: 4px; }
+    .review-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+    .right-bottom-submit {
+      position: fixed;
+      right: 18px;
+      bottom: 10px;
+      z-index: 96;
+    }
+
+
+    .selection-toolbar {
+      position: fixed;
+      z-index: 140;
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+    }
+    .selection-toolbar button {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--text);
+      padding: 8px 12px;
+      cursor: pointer;
+      font-weight: 700;
+      border-radius: 6px;
+    }
+    .hl-mark {
+      background: #fff3a3;
+      padding: 0 .08em;
+      border-radius: 2px;
+    }
+    .note-mark {
+      text-decoration: underline;
+      text-decoration-color: #2f6fed;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    .note-mark::after {
+      content: attr(data-note);
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 8px);
+      min-width: 180px;
+      max-width: 260px;
+      white-space: normal;
+      background: #1f2633;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity .08s ease, transform .08s ease;
+      font-size: .88rem;
+      line-height: 1.3;
+    }
+    .note-mark:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .content { padding-right: 0; }
+      .right-rail { right: 10px; gap: 18px; top: auto; bottom: calc(var(--nav-h) + 82px); transform: none; }
+      .rail-btn { width: 58px; height: 58px; }
+      .right-bottom-submit { right: 10px; bottom: 8px; }
+      .topbar { padding: 0 10px; }
+      .logo { font-size: 1.9rem; }
+      .icons { gap: 10px; }
+      .timer { font-size: 0.92rem; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="audioPlayer" preload="none"></audio>
+
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="logo">IELTS</div>
+      <div class="brand-meta">
+        <div class="id">Test taker ID</div>
+        <div id="audioStatus" class="audio-status"></div>
+      </div>
+    </div>
+    <div class="timer" id="timer">30:00</div>
+    <div class="icons">
+      <button class="icon-btn" aria-label="connection">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 18.2c.88 0 1.6.72 1.6 1.6s-.72 1.6-1.6 1.6-1.6-.72-1.6-1.6.72-1.6 1.6-1.6zm0-4.2c2.2 0 4.2.84 5.76 2.21l-1.42 1.42A6.02 6.02 0 0 0 12 16c-1.7 0-3.26.66-4.42 1.74l-1.42-1.42A8.19 8.19 0 0 1 12 14zm0-4.2c3.53 0 6.75 1.35 9.16 3.55l-1.42 1.42A11.12 11.12 0 0 0 12 11c-2.98 0-5.68 1.17-7.74 3.08l-1.42-1.42A13.1 13.1 0 0 1 12 9.8zm0-4.3c4.85 0 9.25 1.85 12.54 4.87l-1.42 1.42A16.77 16.77 0 0 0 12 6.6c-4.04 0-7.75 1.49-10.7 3.96L-.12 9.14A19.95 19.95 0 0 1 12 5.5z"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="bell">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a4 4 0 0 0-4 4v1.2c0 .9-.3 1.78-.86 2.49L5.7 12.5A2 2 0 0 0 7.26 16h9.48a2 2 0 0 0 1.56-3.5l-1.44-1.81A4 4 0 0 1 16 8.2V7a4 4 0 0 0-4-4Z"/><path d="M9.5 19a2.5 2.5 0 0 0 5 0"/></svg>
+      </button>
+      <button class="icon-btn" id="menuToggle" aria-label="menu">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <aside class="options-panel hidden" id="optionsPanel">
+    <h4>Options</h4>
+    <div class="section">
+      <strong>Contrast</strong>
+      <div class="stack" style="margin-top:8px;">
+        <button class="opt-btn" data-theme="light">Black on white</button>
+        <button class="opt-btn" data-theme="dark">White on black</button>
+        <button class="opt-btn" data-theme="yellow">Yellow on black</button>
+      </div>
+    </div>
+    <div class="section">
+      <strong>Text size</strong>
+      <div class="stack" style="margin-top:8px;">
+        <button class="opt-btn" data-size="regular">Regular</button>
+        <button class="opt-btn" data-size="large">Large</button>
+        <button class="opt-btn" data-size="xl">Extra large</button>
+      </div>
+    </div>
+    <div class="section">
+      <strong>Audio controls</strong>
+      <div class="audio-btn-row" style="margin-top:8px;">
+        <button class="audio-btn" id="resumeAudio">Resume</button>
+        <button class="audio-btn" id="stopAudio">Stop</button>
+        <button class="audio-btn" id="restartAudio">Restart part</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="overlay" id="introOverlay">
+    <div class="intro-card">
+      <div class="headphones">
+        <svg viewBox="0 0 120 120" width="120" height="120" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 60a38 38 0 0 1 76 0"/>
+          <rect x="20" y="56" width="18" height="34" rx="8" fill="#fff" stroke="none"/>
+          <rect x="82" y="56" width="18" height="34" rx="8" fill="#fff" stroke="none"/>
+          <path d="M40 78h8M72 78h8"/>
+        </svg>
+      </div>
+      <p>You will be listening to an audio clip during this test. You will not be permitted to pause or rewind the audio while answering the questions.</p>
+      <p>To continue, click Play.</p>
+      <button class="play-btn" id="startBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6L19 12 8 5.2zm4 17.8a11 11 0 1 1 0-22 11 11 0 0 1 0 22zm0-20a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/></svg>
+        Play
+      </button>
+    </div>
+  </div>
+
+  <main class="page" id="testPage">
+    <div class="content" id="content"></div>
+  </main>
+
+  <main class="page hidden" id="reviewPage">
+    <div class="review-page" id="reviewContent"></div>
+  </main>
+
+  <div class="navigator" id="navigator">
+    <div class="nav-left">
+      <div class="nav-part" id="navPartLabel">Part 1</div>
+      <div class="part-tabs" id="partTabs"></div>
+      <div class="nav-questions" id="questionNav"></div>
+    </div>
+  </div>
+
+  <div class="right-rail" id="rightRail">
+    <div class="arrow-pair">
+      <button class="rail-btn" id="prevBtn" aria-label="previous">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.7 5.3 8 12l6.7 6.7-1.4 1.4L5.2 12l8.1-8.1z"/></svg>
+      </button>
+      <button class="rail-btn" id="nextBtn" aria-label="next">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.3 18.7 16 12 9.3 5.3l1.4-1.4 8.1 8.1-8.1 8.1z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="right-bottom-submit" id="submitWrap">
+    <button class="rail-btn submit" id="submitBtn" aria-label="submit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-11"/></svg>
+    </button>
+  </div>
+
+
+  <div class="selection-toolbar hidden" id="selectionToolbar">
+    <button id="highlightBtn" type="button">Highlight</button>
+    <button id="noteBtn" type="button">Note</button>
+    <button id="clearBtn" type="button">Clear</button>
+    <button id="clearAllBtn" type="button">Clear all</button>
+  </div>
+
+  <script>
+    /* ==========================================================
+       Paste your audio links here.
+       Example:
+       1: 'https://example.com/part1.mp3'
+       ========================================================== */
+    const AUDIO_LINKS = {
+      1: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-3p1.mp3',
+      2: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-3p2.mp3',
+      3: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-3p3.mp3',
+      4: 'https://uvcnkaolhovqnofzngtx.supabase.co/storage/v1/object/public/audio/listening-test-3p4.mp3'
+    };
+
+    const TEST_DURATION_SECONDS = 30 * 60;
+
+    const answerKey = {
+      11:'A', 12:'B', 13:'A', 14:'C', 15:'A', 16:'C',
+      17:'C', 18:'B', 19:'E', 20:'D',
+      21:'C', 22:'D', 23:'E', 24:'A', 25:'G',
+      26:'B', 27:'B', 28:'C', 29:'C', 30:'A',
+      31:'business management', 32:'phone interviews', 33:'qualifications', 34:'public', 35:'expectation',
+      36:'team', 37:'problem-solving', 38:'presentation', 39:'essay writing', 40:'job'
+    };
+
+    const parts = [
+      {
+        part: 1,
+        title: 'Part 1',
+        subtitle: 'Listen and answer questions 1–10.',
+        groups: [
+          {
+            range: 'Questions 1–10',
+            instruction: 'Complete the notes below.',
+            subInstruction: 'Write ONE WORD AND/OR A NUMBER for each answer.',
+            custom: 'part1Furniture'
+          }
+        ]
+      },
+      {
+        part: 2,
+        title: 'Part 2',
+        subtitle: 'Listen and answer questions 11–20.',
+        groups: [
+          {
+            range: 'Questions 11–16',
+            instruction: 'Choose the correct letter A, B or C.',
+            custom: 'part2MuseumMcq'
+          },
+          {
+            range: 'Questions 17–20',
+            instruction: 'What information does the guide give about each of the following collections?',
+            subInstruction: 'Choose FOUR answers from the box and write the correct letter, A–F, next to Questions 17–20.',
+            custom: 'part2Collections'
+          }
+        ]
+      },
+      {
+        part: 3,
+        title: 'Part 3',
+        subtitle: 'Listen and answer questions 21–30.',
+        groups: [
+          {
+            range: 'Questions 21–25',
+            instruction: 'What are the characteristics of the following analysis methods?',
+            subInstruction: 'Choose FIVE letters from the box and write letters A–G, next to questions 21–25.',
+            custom: 'part3Methods'
+          },
+          {
+            range: 'Questions 26–30',
+            instruction: 'Choose the correct letter, A, B or C.',
+            custom: 'part3CompanyMcq'
+          }
+        ]
+      },
+      {
+        part: 4,
+        title: 'Part 4',
+        subtitle: 'Listen and answer questions 31–40.',
+        groups: [
+          {
+            range: 'Questions 31–40',
+            instruction: 'Complete the notes below.',
+            subInstruction: 'Write NO MORE THAN TWO WORDS for each answer.',
+            custom: 'part4Employment'
+          }
+        ]
+      }
+    ];
+
+    const state = {
+      currentPart: 1,
+      timerLeft: TEST_DURATION_SECONDS,
+      timerId: null,
+      answers: {},
+      started: false,
+      submitted: false,
+      currentAudioPart: 1,
+      audioReadyPart: null,
+      partMarkup: {}
+    };
+
+    const content = document.getElementById('content');
+    const reviewPage = document.getElementById('reviewPage');
+    const testPage = document.getElementById('testPage');
+    const reviewContent = document.getElementById('reviewContent');
+    const questionNav = document.getElementById('questionNav');
+    const partTabs = document.getElementById('partTabs');
+    const navPartLabel = document.getElementById('navPartLabel');
+    const timerEl = document.getElementById('timer');
+    const introOverlay = document.getElementById('introOverlay');
+    const audio = document.getElementById('audioPlayer');
+    const audioStatus = document.getElementById('audioStatus');
+    const optionsPanel = document.getElementById('optionsPanel');
+    const selectionToolbar = document.getElementById('selectionToolbar');
+    const highlightBtn = document.getElementById('highlightBtn');
+    const noteBtn = document.getElementById('noteBtn');
+
+    function formatTime(secs) {
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function setAudioStatus(text, active = false) {
+      audioStatus.textContent = text || '';
+      audioStatus.classList.toggle('active', active);
+    }
+
+    function normalizeAnswer(value) {
+      return String(value || '').trim().toLowerCase().replace(/[‐‑–—-]/g, '-').replace(/\s*\/\s*/g, '/').replace(/\s+/g, ' ');
+    }
+
+    function inputHTML(q, width = 110) {
+      const value = state.answers[q] || '';
+      return `<input class="answer" style="width:${width}px" data-q="${q}" value="${escapeHtml(value)}" />`;
+    }
+
+    function selectHTML(q, letters, width = 110) {
+      const value = state.answers[q] || '';
+      return `<select class="answer" style="width:${width}px" data-q="${q}"><option value=""></option>${letters.map(l => `<option value="${l}" ${value===l?'selected':''}>${l}</option>`).join('')}</select>`;
+    }
+
+    function radioHTML(q, options) {
+      const selected = state.answers[q] || '';
+      return `<div class="option-list">${options.map(opt => `<label><input type="radio" name="q${q}" data-q="${q}" value="${opt.letter}" ${selected===opt.letter?'checked':''}> <strong>${opt.letter}</strong> ${opt.text}</label>`).join('')}</div>`;
+    }
+
+    function renderPart(partNum) {
+      state.currentPart = partNum;
+      const part = parts.find(p => p.part === partNum);
+      if (state.partMarkup[partNum]) {
+        content.innerHTML = state.partMarkup[partNum];
+      } else {
+        content.innerHTML = `
+          <div class="section-box">
+            <h2>${part.title}</h2>
+            <p>${part.subtitle}</p>
+          </div>
+          ${part.groups.map(renderGroup).join('')}
+        `;
+      }
+      syncDomAnswersFromState();
+      attachInputs();
+      renderNavigator();
+      updateRailButtons();
+      if (state.started) switchAudioForPart(partNum, false);
+    }
+
+    function renderGroup(group) {
+      return `<section class="question-group">
+        <h3>${group.range}</h3>
+        <p class="instruction">${group.instruction}</p>
+        ${group.subInstruction ? `<p class="instruction">${group.subInstruction}</p>` : ''}
+        ${renderCustom(group.custom)}
+      </section>`;
+    }
+
+    function renderCustom(name) {
+      switch(name) {
+        case 'part1Furniture': return `
+          <div class="task-title">A1 Furniture Removals</div>
+          <div class="flow-step" style="width:min(980px,100%); background:transparent;">
+            <div><strong>Example</strong></div>
+            <div>Request to move furniture within <strong>UK</strong></div>
+            <div class="subheading">Details of items:</div>
+            <p>a 1 ${inputHTML(1,150)} (normal size)</p>
+            <p>a small 2 ${inputHTML(2,150)} table</p>
+            <p>a antique 3 ${inputHTML(3,150)} (2m X 2m)</p>
+            <p>a cupboard (1.90m X 1m, doors made of 4 ${inputHTML(4,150)})</p>
+
+            <div class="subheading">Items to be collected from:</div>
+            <p>21 A forest Road<br>Muswell Hill<br>London<br>M10 3LY</p>
+            <p>Contact name: Tania Green<br>Phone: 0777 422 8760</p>
+
+            <div class="subheading">Items to be delivered to:</div>
+            <p>448 5 ${inputHTML(5,150)} Road<br>Birmingham<br>B17 5CB</p>
+            <p>Contact name: Stephen Green<br>Phone: 0121 551 6743</p>
+
+            <div class="subheading">Price quoted:</div>
+            <p>6 £ ${inputHTML(6,140)} ( not including 7 ${inputHTML(7,150)})</p>
+
+            <div class="subheading">Date of collection:</div>
+            <p>August 26 ( in the 8 ${inputHTML(8,150)})</p>
+
+            <div class="subheading">Parking:</div>
+            <p>Collection: at the 9 ${inputHTML(9,150)} of the house</p>
+            <p>Delivery: in front of the 10 ${inputHTML(10,150)} of the house</p>
+          </div>`;
+
+        case 'part2MuseumMcq': return `
+          <div class="task-title">Museum tour</div>
+          <div class="mcq-block">
+            <div class="question-line"><strong>11</strong> What does the tour guide advise the visitors to do in the museum today?</div>
+            ${radioHTML(11,[
+              {letter:'A',text:'see the most popular exhibits first'},
+              {letter:'B',text:'pay a brief visit to each gallery'},
+              {letter:'C',text:'go to the photography gallery last'}
+            ])}
+
+            <div class="question-line"><strong>12</strong> The museum was designed by William Craven, who also designed</div>
+            ${radioHTML(12,[
+              {letter:'A',text:'a textile factory'},
+              {letter:'B',text:'the town hall'},
+              {letter:'C',text:'the railway station'}
+            ])}
+
+            <div class="question-line"><strong>13</strong> The museum won an award for the preservation of the</div>
+            ${radioHTML(13,[
+              {letter:'A',text:'staircase'},
+              {letter:'B',text:'floor'},
+              {letter:'C',text:'windows'}
+            ])}
+
+            <div class="question-line"><strong>14</strong> Most of the money for the project came from</div>
+            ${radioHTML(14,[
+              {letter:'A',text:'the public'},
+              {letter:'B',text:'the government'},
+              {letter:'C',text:'local businesses'}
+            ])}
+
+            <div class="question-line"><strong>15</strong> Over the next five years, the museum will invest mainly in</div>
+            ${radioHTML(15,[
+              {letter:'A',text:'restoring existing collections.'},
+              {letter:'B',text:'developing educational programmes.'},
+              {letter:'C',text:'purchasing new objects for display.'}
+            ])}
+
+            <div class="question-line"><strong>16</strong> Visitors who are interested in learning more about the exhibits should</div>
+            ${radioHTML(16,[
+              {letter:'A',text:'visit the museum’s website'},
+              {letter:'B',text:'read the leaflets on display'},
+              {letter:'C',text:'attend the monthly lectures'}
+            ])}
+          </div>`;
+
+        case 'part2Collections': return `
+          <div class="flow-options" style="max-width:760px;">
+            <div class="row"><div><strong>A</strong></div><div>has been shown in different museums</div></div>
+            <div class="row"><div><strong>B</strong></div><div>consists of work by a local resident</div></div>
+            <div class="row"><div><strong>C</strong></div><div>has exhibits from various countries</div></div>
+            <div class="row"><div><strong>D</strong></div><div>in only on temporary display</div></div>
+            <div class="row"><div><strong>E</strong></div><div>shows things that are no longer common</div></div>
+            <div class="row"><div><strong>F</strong></div><div>is on loan from foreign museum</div></div>
+          </div>
+          <div class="subheading">Collections</div>
+          <div class="match-block">
+            <div class="question-line"><span class="qnum-inline">17</span> 18th-century paintings &nbsp;&nbsp; ${selectHTML(17,['A','B','C','D','E','F'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">18</span> Farnley collection &nbsp;&nbsp; ${selectHTML(18,['A','B','C','D','E','F'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">19</span> kitchen appliances &nbsp;&nbsp; ${selectHTML(19,['A','B','C','D','E','F'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">20</span> fashion gallery &nbsp;&nbsp; ${selectHTML(20,['A','B','C','D','E','F'],110)}</div>
+          </div>`;
+
+        case 'part3Methods': return `
+          <div class="flow-options" style="max-width:820px;">
+            <div class="row"><div><strong>A</strong></div><div>it will save a lot of business time and effort</div></div>
+            <div class="row"><div><strong>B</strong></div><div>it is visualized</div></div>
+            <div class="row"><div><strong>C</strong></div><div>it does not fit our company</div></div>
+            <div class="row"><div><strong>D</strong></div><div>it will take too long</div></div>
+            <div class="row"><div><strong>E</strong></div><div>it is easy to use</div></div>
+            <div class="row"><div><strong>F</strong></div><div>it is difficult to apply</div></div>
+            <div class="row"><div><strong>G</strong></div><div>it is suitable to almost all sized companies</div></div>
+          </div>
+          <div class="subheading">Analysis methods</div>
+          <div class="match-block">
+            <div class="question-line"><span class="qnum-inline">21</span> PEST &nbsp;&nbsp; ${selectHTML(21,['A','B','C','D','E','F','G'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">22</span> Drill Down &nbsp;&nbsp; ${selectHTML(22,['A','B','C','D','E','F','G'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">23</span> PMI &nbsp;&nbsp; ${selectHTML(23,['A','B','C','D','E','F','G'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">24</span> Pareto &nbsp;&nbsp; ${selectHTML(24,['A','B','C','D','E','F','G'],110)}</div>
+            <div class="question-line"><span class="qnum-inline">25</span> SWOT &nbsp;&nbsp; ${selectHTML(25,['A','B','C','D','E','F','G'],110)}</div>
+          </div>`;
+
+        case 'part3CompanyMcq': return `
+          <div class="mcq-block">
+            <div class="question-line"><strong>26</strong> What does Frances consider as the best strength of the company?</div>
+            ${radioHTML(26,[
+              {letter:'A',text:'reputation'},
+              {letter:'B',text:'experienced employees'},
+              {letter:'C',text:'management'}
+            ])}
+            <div class="question-line"><strong>27</strong> What factor did Sam overlook for the future growth of the company?</div>
+            ${radioHTML(27,[
+              {letter:'A',text:'seek for cheaper suppliers'},
+              {letter:'B',text:'set up an overseas office'},
+              {letter:'C',text:'compete with major competitors'}
+            ])}
+            <div class="question-line"><strong>28</strong> Which of the following can be the threat to a company?</div>
+            ${radioHTML(28,[
+              {letter:'A',text:'increasing competition'},
+              {letter:'B',text:'outdated technology'},
+              {letter:'C',text:'new legislation'}
+            ])}
+            <div class="question-line"><strong>29</strong> What has Sam learned from the research?</div>
+            ${radioHTML(29,[
+              {letter:'A',text:'using better tools'},
+              {letter:'B',text:'cost of a success business'},
+              {letter:'C',text:'gap between reality and theory'}
+            ])}
+            <div class="question-line"><strong>30</strong> What is the professor’s suggestion for the report?</div>
+            ${radioHTML(30,[
+              {letter:'A',text:'give a final determination'},
+              {letter:'B',text:'reorganize a clear structure'},
+              {letter:'C',text:'add more detailed information'}
+            ])}
+          </div>`;
+
+        case 'part4Employment': return `
+          <div class="flow-step" style="width:min(980px,100%); background:transparent;">
+            <div class="task-title" style="text-align:center; margin-top:0;">Employment Survey on Graduates</div>
+            <div class="subheading">Overview</div>
+            <p>– interviews from which subject: 31 ${inputHTML(31,170)}</p>
+            <p>– two research methods: email questionnaires and 32 ${inputHTML(32,170)}</p>
+            <div class="subheading">Findings</div>
+            <p>– 32% of students tended to acquire another 33 ${inputHTML(33,170)}</p>
+            <p>– only 4% were unemployed</p>
+            <p>– most of the students work in the 34 ${inputHTML(34,170)} sector</p>
+            <p>– majority are happy with: 35 ${inputHTML(35,170)}</p>
+            <div class="subheading">Feedback</div>
+            <p><strong>Useful skills learned in college:</strong></p>
+            <p>– working as a 36 ${inputHTML(36,170)} member</p>
+            <p>– personal organization</p>
+            <p>– 37 ${inputHTML(37,170)} ability</p>
+            <p><strong>Useless skills:</strong></p>
+            <p>– 38 ${inputHTML(38,170)} (lack of training)</p>
+            <p>– advice on 39 ${inputHTML(39,170)} (unnecessary)</p>
+            <p>– advice on finding a 40 ${inputHTML(40,170)} (not enough)</p>
+          </div>`;
+
+        default: return '';
+      }
+    }
+
+function syncDomAnswersFromState() {
+      content.querySelectorAll('input.answer').forEach(el => {
+        const q = el.dataset.q;
+        el.value = state.answers[q] || '';
+        el.setAttribute('value', el.value);
+      });
+      content.querySelectorAll('select.answer').forEach(el => {
+        const q = el.dataset.q;
+        const val = state.answers[q] || '';
+        el.value = val;
+        Array.from(el.options).forEach(opt => {
+          if (opt.value === val) opt.setAttribute('selected','selected');
+          else opt.removeAttribute('selected');
+        });
+      });
+      content.querySelectorAll('input[type="radio"]').forEach(el => {
+        const q = el.dataset.q;
+        const checked = state.answers[q] === el.value;
+        el.checked = checked;
+        if (checked) el.setAttribute('checked','checked');
+        else el.removeAttribute('checked');
+      });
+    }
+
+    function saveCurrentPartMarkup() {
+      if (!content.innerHTML) return;
+      syncDomAnswersFromState();
+      state.partMarkup[state.currentPart] = content.innerHTML;
+    }
+
+    function isSelectableRange(range) {
+      if (!range || range.collapsed) return false;
+      const ancestor = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
+      if (!ancestor) return false;
+      if (!content.contains(ancestor) && !reviewContent.contains(ancestor)) return false;
+      if (ancestor.closest('input, select, button, .selection-toolbar, .navigator, .right-rail, .options-panel')) return false;
+      return String(range.toString()).trim().length > 0;
+    }
+
+    function unwrapNestedMarks(fragment, className) {
+      fragment.querySelectorAll('.' + className).forEach(node => {
+        const parent = node.parentNode;
+        while (node.firstChild) parent.insertBefore(node.firstChild, node);
+        parent.removeChild(node);
+      });
+    }
+
+    function applyMark(className, noteText = '') {
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return;
+      const range = sel.getRangeAt(0);
+      if (!isSelectableRange(range)) return;
+      const span = document.createElement('span');
+      span.className = className;
+      if (noteText) span.setAttribute('data-note', noteText);
+      const fragment = range.extractContents();
+      unwrapNestedMarks(fragment, className);
+      span.appendChild(fragment);
+      range.insertNode(span);
+      sel.removeAllRanges();
+      hideSelectionToolbar();
+      saveCurrentPartMarkup();
+    }
+
+    function showSelectionToolbar() {
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return hideSelectionToolbar();
+      const range = sel.getRangeAt(0);
+      if (!isSelectableRange(range)) return hideSelectionToolbar();
+      const rect = range.getBoundingClientRect();
+      selectionToolbar.classList.remove('hidden');
+      const top = Math.max(8, rect.top + window.scrollY - 52);
+      const left = Math.max(8, rect.left + window.scrollX + rect.width / 2 - 90);
+      selectionToolbar.style.top = top + 'px';
+      selectionToolbar.style.left = left + 'px';
+    }
+
+    function hideSelectionToolbar() {
+      selectionToolbar.classList.add('hidden');
+    }
+
+
+    function unwrapElement(el) {
+      const parent = el.parentNode;
+      while (el.firstChild) parent.insertBefore(el.firstChild, el);
+      parent.removeChild(el);
+    }
+
+    function clearNearestMark() {
+      const sel = window.getSelection();
+      let node = sel && sel.rangeCount ? sel.getRangeAt(0).commonAncestorContainer : null;
+      if (node && node.nodeType === 3) node = node.parentNode;
+      const mark = node && node.closest ? node.closest('.hl-mark, .note-mark') : null;
+      if (mark && content.contains(mark)) {
+        unwrapElement(mark);
+        hideSelectionToolbar();
+        saveCurrentPartMarkup();
+        return;
+      }
+      hideSelectionToolbar();
+    }
+
+    function clearAllMarksInView() {
+      content.querySelectorAll('.hl-mark, .note-mark').forEach(unwrapElement);
+      hideSelectionToolbar();
+      saveCurrentPartMarkup();
+    }
+
+    function attachInputs() {
+      content.querySelectorAll('input.answer').forEach(el => {
+        el.addEventListener('input', e => {
+          state.answers[e.target.dataset.q] = e.target.value;
+          renderNavigator();
+          saveCurrentPartMarkup();
+        });
+      });
+      content.querySelectorAll('select.answer').forEach(el => {
+        el.addEventListener('change', e => {
+          state.answers[e.target.dataset.q] = e.target.value;
+          renderNavigator();
+          saveCurrentPartMarkup();
+        });
+      });
+      content.querySelectorAll('input[type="radio"]').forEach(el => {
+        el.addEventListener('change', e => {
+          state.answers[e.target.dataset.q] = e.target.value;
+          renderNavigator();
+          saveCurrentPartMarkup();
+        });
+      });
+    }
+
+    function questionsForPart(partNum) {
+      if (partNum === 1) return [1,2,3,4,5,6,7,8,9,10];
+      if (partNum === 2) return [11,12,13,14,15,16,17,18,19,20];
+      if (partNum === 3) return [21,22,23,24,25,26,27,28,29,30];
+      return [31,32,33,34,35,36,37,38,39,40];
+    }
+
+    function renderNavigator() {
+      navPartLabel.textContent = `Part ${state.currentPart}`;
+      const qs = questionsForPart(state.currentPart);
+      partTabs.innerHTML = [1,2,3,4].map(part => `<button class="part-tab ${part===state.currentPart?'active':''}" data-partnav="${part}">Part ${part}</button>`).join('');
+      partTabs.querySelectorAll('[data-partnav]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const part = Number(btn.dataset.partnav);
+          if (state.submitted) return;
+          saveCurrentPartMarkup();
+          renderPart(part);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+
+      questionNav.innerHTML = qs.map(q => {
+        const current = firstQuestionForPart(state.currentPart) === q ? 'current' : '';
+        const answered = state.answers[q] ? 'answered' : '';
+        return `<button class="qnav-btn ${current} ${answered}" data-qnav="${q}">${q}</button>`;
+      }).join('');
+      questionNav.querySelectorAll('[data-qnav]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const q = Number(btn.dataset.qnav);
+          const target = content.querySelector(`[data-q="${q}"]`);
+          if (target) target.focus({preventScroll:false});
+          const y = target ? target.getBoundingClientRect().top + window.scrollY - 140 : 0;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          questionNav.querySelectorAll('.qnav-btn').forEach(b => b.classList.remove('current'));
+          btn.classList.add('current');
+        });
+      });
+    }
+
+    function firstQuestionForPart(partNum) {
+      return questionsForPart(partNum)[0];
+    }
+
+    function updateRailButtons() {
+      const prev = document.getElementById('prevBtn');
+      const next = document.getElementById('nextBtn');
+      prev.classList.toggle('disabled', state.currentPart === 1 || state.submitted);
+      next.classList.toggle('disabled', state.currentPart === 4 || state.submitted);
+    }
+
+    function switchAudioForPart(partNum, autoplay) {
+      state.currentAudioPart = partNum;
+      const src = AUDIO_LINKS[partNum];
+      if (!src) {
+        audio.removeAttribute('src');
+        audio.load();
+        setAudioStatus('Audio link not added', false);
+        return;
+      }
+      if (state.audioReadyPart !== partNum) {
+        audio.src = src;
+        audio.load();
+        state.audioReadyPart = partNum;
+      }
+      if (autoplay) {
+        audio.play().then(() => setAudioStatus('🔊 Audio is Playing', true)).catch(() => setAudioStatus('Audio ready', false));
+      }
+    }
+
+    audio.addEventListener('play', () => setAudioStatus('🔊 Audio is Playing', true));
+    audio.addEventListener('pause', () => {
+      if (audio.currentTime > 0 && !audio.ended) setAudioStatus('Audio stopped', false);
+    });
+    audio.addEventListener('ended', () => setAudioStatus('Audio finished', false));
+
+    function startTimer() {
+      clearInterval(state.timerId);
+      state.timerId = setInterval(() => {
+        state.timerLeft -= 1;
+        if (state.timerLeft <= 0) {
+          state.timerLeft = 0;
+          updateTimer();
+          submitTest(true);
+          return;
+        }
+        updateTimer();
+      }, 1000);
+    }
+
+    function updateTimer() {
+      timerEl.textContent = formatTime(state.timerLeft);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function isCorrect(q, userAnswer) {
+      if (!answerKey[q]) return false;
+      return normalizeAnswer(userAnswer) === normalizeAnswer(answerKey[q]);
+    }
+
+    function buildReview() {
+      const knownQuestions = Object.keys(answerKey).map(Number).filter(Boolean).sort((a,b) => a-b);
+      const hasAnswerKey = knownQuestions.length > 0;
+      let score = 0;
+      if (hasAnswerKey) {
+        for (const q of knownQuestions) if (isCorrect(q, state.answers[q])) score++;
+      }
+
+      reviewContent.innerHTML = `
+        <div class="review-header">
+          <h2>Review</h2>
+        </div>
+        <div class="summary-box">
+          ${hasAnswerKey ? `<div><strong>Score:</strong> ${score} / ${knownQuestions.length}</div><div style="margin-top:6px;color:var(--muted)">Scoring is currently based on Questions 11–40. Part 1 answers could not be verified reliably from the audio alone, so they were left unscored rather than guessed.</div>` : `<div><strong>Score:</strong> unavailable until you add the answer key in the code.</div>`}
+        </div>
+        <div class="review-toolbar">
+          <button class="audio-btn" id="reviewResume">Resume audio</button>
+          <button class="audio-btn" id="reviewStop">Stop audio</button>
+          <button class="audio-btn" id="reviewRestart">Restart current part audio</button>
+          <button class="review-toggle" id="backToTest">Get back to the test</button>
+        </div>
+        ${parts.map(part => renderReviewPart(part)).join('')}
+      `;
+
+      document.getElementById('reviewResume').onclick = resumeAudio;
+      document.getElementById('reviewStop').onclick = stopAudio;
+      document.getElementById('reviewRestart').onclick = restartAudio;
+      document.getElementById('backToTest').onclick = () => {
+        reviewPage.classList.add('hidden');
+        testPage.classList.remove('hidden');
+        document.getElementById('navigator').classList.remove('hidden');
+        document.getElementById('rightRail').classList.remove('hidden');
+        document.getElementById('submitWrap').classList.remove('hidden');
+        saveCurrentPartMarkup();
+        renderPart(state.currentPart);
+        window.scrollTo({top:0,behavior:'smooth'});
+      };
+    }
+
+    function renderReviewPart(part) {
+      const qs = questionsForPart(part.part);
+      return `<section class="part-review">
+        <h3>Part ${part.part}</h3>
+        ${qs.map(q => {
+          const user = state.answers[q] || '';
+          const hasKey = Object.prototype.hasOwnProperty.call(answerKey, q);
+          const correct = hasKey ? answerKey[q] : 'Not verified';
+          const badgeClass = !user ? 'miss' : (hasKey && isCorrect(q, user) ? 'ok' : (hasKey ? 'bad' : 'miss'));
+          const badgeText = !user ? 'Unanswered' : (hasKey ? (isCorrect(q, user) ? 'Correct' : 'Entered') : 'Entered');
+          return `<div class="review-item">
+            <div><strong>${q}.</strong><span class="badge ${badgeClass}">${badgeText}</span></div>
+            <div class="answer-grid">
+              <div><strong>Your answer:</strong> ${escapeHtml(user || '—')}</div>
+              <div><strong>Correct answer:</strong> ${escapeHtml(correct)}</div>
+            </div>
+          </div>`;
+        }).join('')}
+      </section>`;
+    }
+
+    function submitTest(auto = false) {
+      if (state.submitted) return;
+      state.submitted = true;
+      clearInterval(state.timerId);
+      saveCurrentPartMarkup();
+      stopAudio();
+      testPage.classList.add('hidden');
+      reviewPage.classList.remove('hidden');
+      document.getElementById('navigator').classList.add('hidden');
+      document.getElementById('rightRail').classList.add('hidden');
+      document.getElementById('submitWrap').classList.add('hidden');
+      buildReview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (auto) setAudioStatus('Time is up', false);
+    }
+
+    function resumeAudio() {
+      if (!AUDIO_LINKS[state.currentAudioPart]) return;
+      audio.play().catch(() => {});
+    }
+    function stopAudio() { audio.pause(); }
+    function restartAudio() {
+      if (!AUDIO_LINKS[state.currentAudioPart]) return;
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    }
+
+
+    highlightBtn.addEventListener('click', () => applyMark('hl-mark'));
+    noteBtn.addEventListener('click', () => {
+      const text = window.prompt('Write your note...');
+      if (text && text.trim()) applyMark('note-mark', text.trim());
+      else hideSelectionToolbar();
+    });
+
+    clearBtn.addEventListener('click', clearNearestMark);
+    clearAllBtn.addEventListener('click', clearAllMarksInView);
+
+    document.addEventListener('selectionchange', () => {
+      const active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+      setTimeout(showSelectionToolbar, 0);
+    });
+
+    document.addEventListener('mousedown', (e) => {
+      if (!selectionToolbar.contains(e.target)) hideSelectionToolbar();
+    });
+
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      optionsPanel.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('[data-theme]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.body.classList.remove('theme-dark','theme-yellow');
+        if (btn.dataset.theme === 'dark') document.body.classList.add('theme-dark');
+        if (btn.dataset.theme === 'yellow') document.body.classList.add('theme-yellow');
+      });
+    });
+
+    document.querySelectorAll('[data-size]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.body.classList.remove('size-large','size-xl');
+        if (btn.dataset.size === 'large') document.body.classList.add('size-large');
+        if (btn.dataset.size === 'xl') document.body.classList.add('size-xl');
+      });
+    });
+
+    document.getElementById('resumeAudio').onclick = resumeAudio;
+    document.getElementById('stopAudio').onclick = stopAudio;
+    document.getElementById('restartAudio').onclick = restartAudio;
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      if (state.currentPart > 1 && !state.submitted) {
+        saveCurrentPartMarkup();
+        renderPart(state.currentPart - 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      if (state.currentPart < 4 && !state.submitted) {
+        saveCurrentPartMarkup();
+        renderPart(state.currentPart + 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', () => submitTest(false));
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      introOverlay.classList.add('hidden');
+      state.started = true;
+      saveCurrentPartMarkup();
+      renderPart(1);
+      startTimer();
+      switchAudioForPart(1, true);
+    });
+
+    updateTimer();
+    renderPart(1);
+    saveCurrentPartMarkup();
+  </script>
+</body>
+</html>

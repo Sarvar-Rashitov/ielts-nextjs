@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IELTS Reading CDI Interface</title>
+<style>
+:root {
+  --bg:#f5f7fb; --surface:#fff; --surface-2:#f9fafb; --text:#111827; --muted:#6b7280; --line:#dbe3ef;
+  --accent:#c1121f; --accent-2:#0f172a; --success:#166534; --success-bg:#ecfdf3; --danger:#b42318; --danger-bg:#fff1f2;
+  --highlight:#fff59d; --panel-shadow:0 18px 45px rgba(15,23,42,.08); --font-size:16px; --header-height:72px; --footer-height:72px;
+}
+body[data-contrast="white-black"] { --bg:#000; --surface:#0a0a0a; --surface-2:#111; --text:#fafafa; --muted:#cbd5e1; --line:#2f2f2f; --accent:#ff4d5a; --accent-2:#f8fafc; --success:#86efac; --success-bg:#102114; --danger:#fda4af; --danger-bg:#2b1114; --highlight:#374151;}
+body[data-contrast="yellow-black"] { --bg:#000; --surface:#0a0a0a; --surface-2:#121200; --text:#fff59d; --muted:#fef08a; --line:#4b4b1d; --accent:#facc15; --accent-2:#fff59d; --success:#d9f99d; --success-bg:#1e1f09; --danger:#fecaca; --danger-bg:#271111; --highlight:#5f5800;}
+body[data-text-size="small"] { --font-size:14px; } body[data-text-size="medium"] { --font-size:16px; } body[data-text-size="large"] { --font-size:19px; }
+*{box-sizing:border-box} html,body{height:100%} body{margin:0;font-family:Arial,Helvetica,sans-serif;font-size:var(--font-size);line-height:1.55;background:var(--bg);color:var(--text);overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit} a{color:inherit}
+.header{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--header-height);background:var(--surface);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:0 20px;box-shadow:0 8px 25px rgba(0,0,0,.04)}
+.header-left,.header-right,.header-center{display:flex;align-items:center}.header-left{gap:16px;min-width:0}.header-center{justify-content:center}.header-right{justify-content:flex-end;gap:10px;min-width:0}
+.wordmark{font-size:30px;font-weight:900;letter-spacing:.4px;color:var(--accent)} .taker-id{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-weight:700;white-space:nowrap}
+.pill{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:8px 12px}
+.timer-wrap{min-width:140px;display:inline-flex;justify-content:center;align-items:center;font-size:24px;font-weight:800;letter-spacing:1px;padding:10px 18px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.icon-btn,.menu-btn,.tg-btn,.plain-btn{border:1px solid var(--line);background:var(--surface);color:var(--text);height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .18s ease,background .18s ease,box-shadow .18s ease,border-color .18s ease}
+.icon-btn:hover,.menu-btn:hover,.tg-btn:hover,.plain-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.08)}
+.icon-btn{width:42px}.menu-btn{width:46px;font-size:21px;font-weight:800}.tg-btn,.plain-btn{padding:0 14px;gap:8px;font-weight:700;text-decoration:none}.tg-btn{background:linear-gradient(135deg,var(--surface),var(--surface-2))}
+.header svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.app{padding-top:var(--header-height);height:100%}.main{height:calc(100vh - var(--header-height) - var(--footer-height));display:flex;flex-direction:column}
+.part-header-stack{padding:14px 16px 0}.part-header{display:none;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--panel-shadow)}.part-header.active{display:block}.part-header p{margin:0}.part-header p+p{margin-top:4px;color:var(--muted)}
+.panels{flex:1;display:flex;gap:0;min-height:0;padding:14px 16px 16px}.panel{background:var(--surface);border:1px solid var(--line);box-shadow:var(--panel-shadow);min-width:280px;min-height:0;overflow:auto}
+.passage-panel{flex:0 0 54%;border-radius:18px 0 0 18px;padding:22px 22px 120px}.questions-panel{flex:1 1 auto;border-left:none;border-radius:0 18px 18px 0;padding:22px 22px 120px}
+.resizer{width:14px;cursor:col-resize;position:relative;flex:0 0 14px}.resizer::before{content:"";position:absolute;inset:0 4px;border-radius:999px;background:linear-gradient(180deg,transparent,var(--line),transparent)}.resizer::after{content:"↔";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:999px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-weight:800}
+.reading-passage h4{margin:0 0 14px;text-align:center;font-size:1.25em}.reading-passage p{margin:0 0 1.05em}.text-center{text-align:center}.hidden{display:none!important}
+.question-set>.questions-container>.question{margin-bottom:34px}.question-prompt{margin-bottom:18px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px}.question-prompt p{margin:0 0 6px}
+.notes-container,.flow-chart,.summary-box,.table-container,.checkbox-options{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:18px}.flow-chart .arrow{font-size:1.2em;margin:8px 0;color:var(--muted)}
+.answer-input,.answer-select,textarea{min-width:120px;border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:8px 10px;color:var(--text)}
+.answer-input:focus,.answer-select:focus,textarea:focus{outline:2px solid rgba(59,130,246,.22);border-color:#60a5fa}
+.tf-question{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:14px;background:var(--surface)}.tf-question-line{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.tf-question-number{min-width:38px;height:30px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;font-weight:800;background:var(--surface-2)}.tf-options{display:grid;gap:10px}
+.tf-option,.checkbox-options label{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--surface-2)}.tf-option input,.checkbox-options input{transform:scale(1.1)}.checkbox-options{display:grid;gap:10px}
+.matching-table{width:100%;border-collapse:collapse;min-width:620px}.matching-table th,.matching-table td{border:1px solid var(--line);padding:10px;text-align:center}.matching-table th:first-child,.matching-table td.statement{text-align:left}
+.clickable-cell{cursor:pointer;transition:background .18s ease}.clickable-cell:hover{background:rgba(59,130,246,.14)}.clickable-cell.selected{background:rgba(59,130,246,.25)}
+.footer{position:fixed;bottom:0;left:0;right:0;z-index:1000;height:var(--footer-height);background:var(--surface);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.footer-left,.footer-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.part-btn{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-weight:700}
+.part-btn.active{background:var(--accent-2);color:var(--surface);border-color:transparent} body[data-contrast="white-black"] .part-btn.active,body[data-contrast="yellow-black"] .part-btn.active{background:var(--accent);color:#111}
+.submit-btn{background:linear-gradient(135deg,var(--accent),#ef4444);color:#fff;border:none;font-weight:800;padding:12px 18px;border-radius:12px;cursor:pointer}
+.review-banner{display:none;margin-bottom:16px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(2,132,199,.12),rgba(124,58,237,.12));border:1px solid var(--line)} body.review-mode .review-banner{display:block}
+.drawer-backdrop,.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.45);z-index:2000;display:none}.drawer-backdrop.show,.modal-backdrop.show{display:block}
+.options-drawer{position:fixed;right:0;top:0;height:100vh;width:min(420px,92vw);z-index:2100;background:var(--surface);border-left:1px solid var(--line);box-shadow:-30px 0 60px rgba(0,0,0,.18);transform:translateX(100%);transition:transform .24s ease;display:flex;flex-direction:column}.options-drawer.show{transform:translateX(0)}
+.drawer-header,.drawer-section{padding:18px 20px}.drawer-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.drawer-section+.drawer-section{border-top:1px solid var(--line)}.option-group{display:grid;gap:10px;margin-top:12px}
+.option-chip{padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;text-align:left;font-weight:700}.option-chip.active{border-color:transparent;background:linear-gradient(135deg,var(--accent),#ef4444);color:#fff}.drawer-actions{margin-top:auto;padding:20px}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.97);z-index:2200;width:min(980px,94vw);max-height:88vh;display:none;background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 26px 70px rgba(0,0,0,.25);overflow:hidden}.modal.show{display:flex;flex-direction:column;transform:translate(-50%,-50%) scale(1)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--line)}.modal-body{padding:20px;overflow:auto}.score-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.score-card{padding:16px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line)}.score-value{font-size:30px;font-weight:900;margin-top:6px}.result-list{display:grid;gap:10px}
+.result-row{display:grid;grid-template-columns:58px 1fr 1fr 90px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}.result-row.correct{background:var(--success-bg)}.result-row.incorrect{background:var(--danger-bg)}.result-badge{width:44px;height:32px;display:grid;place-items:center;font-weight:900;border-radius:10px;border:1px solid var(--line);background:var(--surface)}.muted{color:var(--muted)}
+.review-card{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;background:var(--surface)}.review-card.correct{background:var(--success-bg)}.review-card.incorrect{background:var(--danger-bg)}
+.review-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}.review-q{font-weight:900;font-size:1.05em}.review-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.review-answer-box{padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}.explanation-block{padding:14px;border-radius:12px;background:var(--surface);border:1px dashed var(--line)}.explanation-block strong{display:block;margin-bottom:6px}.evidence-quote{margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--surface-2)}
+.annotation.user-highlight{background:var(--highlight);border-radius:3px;padding:.02em 0}.annotation.user-note{text-decoration:underline 2px solid var(--accent);text-underline-offset:3px;cursor:pointer}
+.review-evidence{background:rgba(250,204,21,.28);border-radius:4px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.06)} .review-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;margin-right:6px;border-radius:999px;background:#000;color:#fff;font-size:12px;font-weight:900;vertical-align:middle}
+.context-menu{position:fixed;z-index:2300;display:none;min-width:180px;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.18);overflow:hidden}.context-item{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);background:var(--surface)}.context-item:last-child{border-bottom:none}.context-item:hover{background:var(--surface-2)}
+.note-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2400;display:none;width:min(520px,92vw);background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 28px 70px rgba(0,0,0,.26)} .note-modal.show{display:block}.note-modal .inner{padding:18px}.note-modal textarea{width:100%;min-height:140px;resize:vertical}
+.tooltip{position:fixed;z-index:2500;display:none;max-width:300px;background:var(--accent-2);color:var(--surface);padding:10px 12px;border-radius:10px;box-shadow:0 16px 30px rgba(0,0,0,.2);font-size:.92em}.tooltip.show{display:block}
+.review-passages .reading-passage{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line)} body.review-mode .exam-only{display:none!important}
+@media (max-width:980px){.header{grid-template-columns:1fr;height:auto;padding:12px}.header-center{order:3}.header-right{justify-content:space-between}.app{padding-top:134px}.main{height:calc(100vh - 134px - var(--footer-height))}.panels{flex-direction:column}.passage-panel,.questions-panel{border-radius:18px;min-width:0}.resizer{display:none}.score-grid,.review-answer-grid,.result-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-contrast="default" data-text-size="medium">
+<div class="header">
+  <div class="header-left"><div class="wordmark">IELTS</div><div class="taker-id pill">Test taker ID <strong>Candidate 01</strong></div></div>
+  <div class="header-center"><div class="timer-wrap" id="timerWrap"><span id="timerDisplay">60:00</span></div></div>
+  <div class="header-right">
+    <button class="icon-btn" type="button" aria-label="Connection"><svg viewBox="0 0 24 24"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M12 20h.01"/></svg></button>
+    <button class="icon-btn" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg></button>
+    <a class="tg-btn" href="https://t.me/jasurbeks_ielts" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M21 3 3.7 10.2c-.8.3-.8 1.4 0 1.7l4.1 1.2 1.6 5.2c.2.8 1.2 1 1.7.4l2.3-2.7 4.2 3.1c.7.5 1.7.1 1.9-.8L22 4.3A1 1 0 0 0 21 3Z"/><path d="M8 13.2 18 6.5"/></svg><span>Join us on Telegram</span></a>
+    <button id="openOptionsTop" class="menu-btn" type="button" aria-label="Options">☰</button>
+  </div>
+</div>
+<div class="app"><div class="main">
+  <div class="part-header-stack"><div id="passage-header-container">
+<div class="part-header" id="part-header-1">
+<p><strong>Part 1</strong></p>
+<p>Read the text and answer questions 1-13.</p>
+</div>
+<div class="part-header hidden" id="part-header-2">
+<p><strong>Part 2</strong></p>
+<p>Read the text and answer questions 14-26.</p>
+</div>
+<div class="part-header hidden" id="part-header-3">
+<p><strong>Part 3</strong></p>
+<p>Read the text and answer questions 27-40.</p>
+</div>
+</div></div>
+  <div class="panels">
+    <div class="panel passage-panel" id="passagePanel">
+      <div class="review-banner" id="reviewBanner"><strong>Review mode is on.</strong> Timer is hidden, all 40 questions are visible, and the evidence in the passages is highlighted with question badges.</div>
+      <div id="passageContent">
+<div class="reading-passage" id="passage-text-1">
+<h4 class="text-center">The Forgotten Forest</h4>
+<p style="font-style: italic; text-align: center;">Found only in the Deep South of America, longleaf pine woodlands have dwindled to about 3 percent of their former range, but new efforts are under way to restore them.</p>
+<p><strong>A</strong> THE BEAUTY AND THE BIODIVERSITY of the longleaf pine forest are well-kept secrets, even in its native South. Yet it is among the richest ecosystems in North America, rivaling tallgrass prairies and the ancient forests of the Pacific Northwest in the number of species it shelters. And like those two other disappearing wildlife habitats, longleaf is also critically endangered.</p>
+<p><strong>B</strong> In longleaf pine forests, trees grow widely scattered, creating an open, parklike environment, more like a savanna than a forest. The trees are not so dense as to block the sun. This openness creates a forest floor that is among the most diverse in the world, where plants such as many-flowered grass pinks, trumpet pitcher plants, Venus flytraps, lavender ladies and pineland bog-buttons grow. As many as 50 different species of wildflowers, shrubs, grasses and ferns have been cataloged in just a single square meter.</p>
+<p><strong>C</strong> Once, nearly 92 million acres of longleaf forest flourished from Virginia to Texas, the only place in the world where it is found. By the turn of the 21st century, however, virtually all of it had been logged, paved or farmed into oblivion. Only about 3 percent of the original range still supports longleaf forest, and only about 10,000 acres of that is uncut old-growth—the rest is forest that has regrown after cutting. An estimated 100,000 of those acres are still vanishing every year. However, a quiet movement to reverse this trend is rippling across the region. Governments, private organisations and individual conservationists are looking for ways to protect and preserve the remaining longleaf and to plant new forests for future generations.</p>
+<p><strong>D</strong> Figuring out how to bring back the piney woods also will allow biologists to help the plants and animals that depend on this habitat. Nearly two-thirds of the declining, threatened or endangered species in the southeastern United States are associated with longleaf. The outright destruction of longleaf is only part of their story, says Mark Danaher, the biologist for South Carolina's Francis Marion National Forest. He says the demise of these animals and plants also is tied to a lack of fire, which once swept through the southern forests on a regular basis. "Fire is absolutely critical for this ecosystem and for the species that depend on it," says Danaher.</p>
+<p><strong>E</strong> Name just about any species that occurs in longleaf and you can find a connection to fire. Bachman's sparrow is a secretive bird with a beautiful song that echoes across the longleaf flatwoods. It tucks its nest on the ground beneath clumps of wiregrass and little bluestem in the open understory. But once fire has been absent for several years, and a tangle of shrubs starts to grow, the sparrows disappear. Gopher tortoises, the only native land tortoises east of the Mississippi, are also abundant in longleaf. A keystone species for these forests, its burrows provide homes and safety to more than 300 species of vertebrates and invertebrates ranging from eastern diamond-back rattlesnakes to gopher frogs. If fire is suppressed, however, the tortoises are choked out. "If we lose fire," says Bob Mitchell, an ecologist at the Jones Center, "we lose wildlife."</p>
+<p><strong>F</strong> Without fire, we also lose longleaf. Fire knocks back the oaks and other hardwoods that can grow up to overwhelm longleaf forests. "They are fire forests," Mitchell says. "They evolved in the lightning capital of the eastern United States." And it wasn't only lightning strikes that set the forest aflame. "Native Americans also lit fires to keep the forest open," Mitchell says. "So did the early pioneers. They helped create the longleaf pine forests that we know today."</p>
+<p><strong>G</strong> Fire also changes how nutrients flow throughout longleaf ecosystems, in ways we are just beginning to understand. For example, researchers have discovered that frequent fires provide extra calcium, which is critical for egg production, to endangered red-cockaded woodpeckers. Frances James, a retired avian ecologist from Florida State University, has studied these small black-and-white birds for more than two decades in Florida's sprawling Apalachicola National Forest. When she realised female woodpeckers laid larger clutches in the first breeding season after their territories were burned, she and her colleagues went searching for answers. "We learned calcium is stashed away in woody shrubs when the forest is not burned," James says. "But when there is a fire, a pulse of calcium moves down into the soil and up into the longleaf." Eventually, this calcium makes its way up the food chain to a tree-dwelling species of ant, which is the red-cockaded's favorite food. The result: more calcium for the birds, which leads to more eggs, more young and more woodpeckers.</p>
+<p><strong>H</strong> Today, fire is used as a vital management tool for preserving both longleaf and its wildlife. Most of these fires are prescribed burns, deliberately set with a drip torch. Although the public often opposes any type of fire—and the smoke that goes with it—these frequent, low-intensity burns reduce the risk of catastrophic conflagrations. "Forests are going to burn," says Amadou Diop, NWF's southern forests restoration manager. "It's just a question of when. With prescribed burns, we can pick the time and the place."</p>
+<p><strong>I</strong> Diop is spearheading a new NWF effort to restore longleaf. "It's a species we need to go back to," he says. Educating landowners about the advantages of growing longleaf is part of the program, he adds, which will soon be under way in nine southern states. "Right now, most longleaf is on public land," says Jerry McCollum, president of the Georgia Wildlife Federation. "Private land is where we need to work," he adds, pointing out that more than 90 percent of the acreage within the historic range of longleaf falls under this category.</p>
+<p><strong>J</strong> Interest among private landowners is growing throughout the South, but restoring longleaf is not an easy task. The herbaceous layer—the understory of wiregrasses and other plants – also needs to be re-created. In areas where the land has not been chewed up by farming, but converted to loblolly or slash pine plantations, the seed bank of the longleaf forest usually remains viable beneath the soil. In time, this original vegetation can be coaxed back. Where agriculture has destroyed the seeds, however, wiregrass must be replanted. Right now, the expense is prohibitive, but researchers are searching for low-cost solutions.</p>
+<p><strong>K</strong> Bringing back longleaf is not for the short-sighted, however. Few of us will be alive when the pines being planted today become mature forests in 70 to 80 years. But that is not stopping longleaf enthusiasts. "Today, it's getting hard to find longleaf seedlings to buy," one of the private landowners says. "Everyone wants them. Longleaf is in a resurgence."</p>
+</div>
+<div class="reading-passage hidden" id="passage-text-2">
+<h4 class="text-center">Tidal Power in Britain</h4>
+<p><strong>A</strong> Tidal power, also called tidal energy, is a form of hydropower that converts the energy of tides into useful forms of power-mainly electricity. Although not yet widely used, tidal power has potential for future electricity generation. Tides are more predictable than wind energy and solar power. Among sources of renewable energy, tidal power has traditionally suffered from relatively high cost and limited availability of sites with sufficiently high tidal ranges or flow velocities, thus constricting its total availability. However, many recent technological developments and improvements, both in design and turbine technology, indicate that the total availability of tidal power may be much higher than previously assumed, and that economic and environmental costs may be brought down to competitive levels. Undersea turbines which produce electricity from the tides are set to become an important source of renewable energy for Britain. It is still too early to predict the extent of the impact they may have, but all the signs are that they will play a significant role in the future.</p>
+<p><strong>B</strong> Operating on the same principle as wind turbines, the power in sea turbines comes from tidal currents which turn blades similar to ships' propellers, but, unlike wind, the tides are predictable and the power input is constant. The technology raises the prospect of Britain becoming self-sufficient in renewable energy and drastically reducing its carbon dioxide emissions. If tide, wind and wave power are all developed, Britain would be able to close gas, coal and nuclear power plants and export renewable power to other parts of Europe. Unlike wind power, which Britain originally developed and then abandoned for 20 years allowing the Dutch to make it a major industry, undersea turbines could become a big export earner to island nations such as Japan and New Zealand.</p>
+<p><strong>C</strong> Tidal sites have already been identified that will produce one sixth or more of the UK's power and at prices competitive with modern gas turbines and undercutting those of the already ailing nuclear industry. One site alone, the Pentland Firth, between Orkney and mainland Scotland, could produce 10% of the country's electricity with banks of turbines under the sea, and another at Alderney in the Channel Islands three times the 1,200 megawatts of Britain's largest and newest nuclear plant, Sizewell B, in Suffolk. Other sites identified include the Bristol Channel and the west coast of Scotland, particularly the channel between Campbeltown and Northern Ireland.</p>
+<p><strong>D</strong> Work on designs for the new turbine blades and sites are well advanced at the University of Southampton's sustainable energy research group. The first station is expected to be installed off Lynmouth in Devon shortly to test the technology in a venture jointly funded by the department of Trade and Industry and the European Union. AbuBakr Bahaj, in charge of the Southampton research, said: 'The prospects for energy from tidal currents are far better than from wind because the flows of water are predictable and constant. The technology for dealing with the hostile saline environment under the sea has been developed in the North Sea oil industry and much is already known about turbine blade design, because of wind power and ship propellers. There are a few technical difficulties, but I believe in the next five to ten years we will be installing commercial marine turbine farms.' Southampton has been awarded £215,000 over three years to develop the turbines and is working with Marine Current Turbines, a subsidiary of IT power, on the Lynmouth project. EU research has now identified 106 potential sites for tidal power, 80% round the coasts of Britain. The best sites are between islands or around heavily indented coasts where there are strong tidal currents.</p>
+<p><strong>E</strong> A marine turbine blade needs to be only one third of the size of a wind generator to produce three times as much power. The blades will be about 20 meters in diameter, so around 30 meters of water is required. Unlike wind power, there are unlikely to be environmental objections. Fish and other creatures are thought unlikely to be at risk from the relatively slow-turning blades. Each turbine will be mounted on a tower which will connect to the national power supply grid via underwater cables. The towers will stick out of the water and be lit, to warn shipping, and also be designed to be lifted out of the water for maintenance and to clean seaweed from the blades.</p>
+<p><strong>F</strong> Dr. Bahaj has done most work on the Alderney site, where there are powerful currents. The single undersea turbine farm would produce far more power than needed for the Channel Islands and most would be fed into the French Grid and be re-imported into Britain via the cable under the Channel.</p>
+<p><strong>G</strong> One technical difficulty is cavitation, where low pressure behind a turning blade causes air bubbles. These can cause vibration and damage the blades of the turbines. Dr. Bahaj said: "We have to test a number of blade types to avoid this happening or at least make sure it does not damage the turbines or reduce performance. Another slight concern is submerged debris floating into the blades. So far we do not know how much of a problem it might be. We will have to make the turbines robust because the sea is a hostile environment, but all the signs are good that we can do it."</p>
+</div>
+<div class="reading-passage hidden" id="passage-text-3">
+<h4 class="text-center">The Columbian Exchange</h4>
+<p><strong>A</strong> Millions of years ago, continental drift carried the Old World and New World apart, splitting North and South America from Eurasia and Africa. That separation lasted so long that it fostered divergent evolution; for instance, the development of rattlesnakes on one side of the Atlantic and of vipers on the other. After 1492, human voyagers in part reversed this tendency. Their artificial re-establishment of connections through the commingling of Old and New World plants, animals, and bacteria, commonly known as the Columbian Exchange, is one of the more spectacular and significant ecological events of the past millennium.</p>
+<p><strong>B</strong> When Europeans first touched the shores of the Americas, Old World crops such as wheat, barley, rice, and turnips had not travelled west across the Atlantic, and New World crops such as maize, white potatoes, sweet potatoes, and manioc had not travelled east to Europe. In the Americas, there were no horses, cattle, sheep, or goats, all animals of Old World origin. Except for the llama, alpaca, dog, a few fowl, and guinea pig, the New World had no equivalents to the domesticated animals associated with the Old World, nor did it have the pathogens associated with the Old World's dense populations of humans and such associated creatures as chickens, cattle, black rats, and Aedes aegypti mosquitoes. Among these germs were those that carried smallpox, measles, chickenpox, influenza, malaria, and yellow fever.</p>
+<p><strong>C</strong> As might be expected, the Europeans who settled on the east coast of the United States cultivated crops like wheat and apples, which they had brought with them. European weeds, which the colonists did not cultivate, and, in fact, preferred to uproot, also fared well in the New World. John Josselyn, an Englishman and amateur naturalist who visited New England twice in the seventeenth century, left us a list, "Of Such Plants as Have Sprung Up since the English Planted and Kept Cattle in New England," which included couch grass, dandelion, shepherd's purse, groundsel, sow thistle, and chickweed.</p>
+<p>One of these, a plantain (Plantago major), was named "Englishman's Foot" by the Amerindians of New England and Virginia who believed that it would grow only where the English "have trodden, and was never known before the English came into this country". Thus, as they intentionally sowed Old World crop seeds, the European settlers were unintentionally contaminating American fields with weed seeds. More importantly, they were stripping and burning forests, exposing the native minor flora to direct sunlight, and the hooves and teeth of Old World livestock. The native flora could not tolerate the stress. The imported weeds could, because they had lived with large numbers of grazing animals for thousands of years.</p>
+<p><strong>D</strong> Cattle and horses were brought ashore in the early 1600s and found hospitable climate and terrain in North America. Horses arrived in Virginia as early as 1620 and in Massachusetts in 1629. Many wandered free with little more evidence of their connection to humanity than collars with a hook at the bottom to catch on fences as they tried to leap over them to get at crops. Fences were not for keeping livestock in, but for keeping livestock out.</p>
+<p><strong>E</strong> Native American resistance to the Europeans was ineffective. Indigenous peoples suffered from white brutality, alcoholism, the killing and driving off of game, and the expropriation of farmland, but all these together are insufficient to explain the degree of their defeat. The crucial factor was not people, plants, or animals, but germs. Smallpox was the worst and the most spectacular of the infectious diseases mowing down the Native Americans. The first recorded pandemic of that disease in British North America detonated among the Algonquin of Massachusetts in the early 1630s. William Bradford of Plymouth Plantation wrote that the victims "fell down so generally of this disease as they were in the end not able to help one another, no, not to make a fire nor fetch a little water to drink, nor any to bury the dead". The missionaries and the traders who ventured into the American interior told the same appalling story about smallpox and the indigenes. In 1738 alone, the epidemic destroyed half the Cherokee; in 1759 nearly half the Catawbas; in the first years of the next century, two thirds of the Omahas and perhaps half the entire population between the Missouri River and New Mexico; in 1837-38 nearly every last one of the Mandans and perhaps half the people of the high plains.</p>
+<p><strong>F</strong> The export of America's native animals has not revolutionised Old World agriculture or ecosystems as the introduction of European animals to the New World did. America's grey squirrels and muskrats and a few others have established themselves east of the Atlantic and west of the Pacific, but that has not made much of a difference. Some of America's domesticated animals are raised in the Old World, but turkeys have not displaced chickens and geese, and guinea pigs have proved useful in laboratories, but have not usurped rabbits in the butcher shops.</p>
+<p><strong>G</strong> The New World's great contribution to the Old is in crop plants. Maize, white potatoes, sweet potatoes, various squashes, chiles, and manioc have become essentials in the diets of hundreds of millions of Europeans, Africans, and Asians. Their influence on Old World peoples, like that of wheat and rice on New World peoples, goes far to explain the global population explosion of the past three centuries. The Columbian Exchange has been an indispensable factor in that demographic explosion.</p>
+<p><strong>H</strong> All this had nothing to do with superiority or inferiority of biosystems in any absolute sense. It has to do with environmental contrasts. Amerindians were accustomed to living in one particular kind of environment, Europeans and Africans in another. When the Old World peoples came to America, they brought with them all their plants, animals, and germs, creating a kind of environment to which they were already adapted, and so they increased in number. Amerindians had not adapted to European germs, and so initially their numbers plunged. That decline has reversed in our time as Amerindian populations have adapted to the Old World's environmental influence, but the demographic triumph of the invaders, which was the most spectacular feature of the Old World's invasion of the New, still stands.</p>
+</div>
+</div>
+    </div>
+    <div class="resizer exam-only" id="resizer"></div>
+    <div class="panel questions-panel" id="questionsPanel">
+      <div id="examQuestions">
+<div class="question-set" id="questions-1">
+<div class="questions-container">
+<div class="question" data-q-end="5" data-q-start="1">
+<div class="question-prompt">
+<p><strong>Questions 1-5</strong></p>
+<p>Complete the notes below.</p>
+<p>Choose <strong>NO MORE THAN TWO WORDS</strong> from the passage for each answer.</p>
+<p>Write your answers in boxes 1-5 on your answer sheet.</p>
+</div>
+<div class="notes-container">
+<p><strong>Forest fire ensures that:</strong></p>
+<p>Birds can locate their <input autocomplete="off" class="answer-input" id="q1" placeholder="1" type="text"/> in the ground.</p>
+<p>The burrows of a species of <input autocomplete="off" class="answer-input" id="q2" placeholder="2" type="text"/> provide homes to many other animals.</p>
+<p>Hardwoods such as <input autocomplete="off" class="answer-input" id="q3" placeholder="3" type="text"/> can grow and outnumber long-leaf trees.</p>
+<p>Apart from fires lit by lightning:</p>
+<p>Fires are created by <input autocomplete="off" class="answer-input" id="q4" placeholder="4" type="text"/> and settlers.</p>
+<p>Fires deliberately lit are called <input autocomplete="off" class="answer-input" id="q5" placeholder="5" type="text"/></p>
+</div>
+</div>
+<div class="question" data-q-end="9" data-q-start="6">
+<div class="question-prompt">
+<p><strong>Questions 6-9</strong></p>
+<p>Complete the flow-chart below.</p>
+<p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+<p>Write your answers in boxes 6-9 on your answer sheet.</p>
+</div>
+<div class="flow-chart">
+<p><strong>How to increase the number of cockaded woodpeckers</strong></p>
+<p>Calcium stored in <input autocomplete="off" class="answer-input" id="q6" placeholder="6" type="text"/></p>
+<div class="arrow">↓</div>
+<p>Shrubs are burned</p>
+<div class="arrow">↓</div>
+<p>Calcium released into <input autocomplete="off" class="answer-input" id="q7" placeholder="7" type="text"/></p>
+<div class="arrow">↓</div>
+<p>Travel up to the leaves</p>
+<div class="arrow">↓</div>
+<p><input autocomplete="off" class="answer-input" id="q8" placeholder="8" type="text"/> are eaten</p>
+<div class="arrow">↓</div>
+<p>Number of <input autocomplete="off" class="answer-input" id="q9" placeholder="9" type="text"/> increases</p>
+<div class="arrow">↓</div>
+<p>More cockaded woodpeckers</p>
+</div>
+</div>
+<div class="question" data-q-end="13" data-q-start="10">
+<div class="question-prompt">
+<p><strong>Questions 10-13</strong></p>
+<p>Do the following statements agree with the information given in Reading Passage 1?</p>
+<p>In boxes 10-13 on your answer sheet, write</p>
+<ul style="list-style: none; padding-left: 0;">
+<li><strong>TRUE</strong> if the statement agrees with the information</li>
+<li><strong>FALSE</strong> if the statement contradicts the information</li>
+<li><strong>NOT GIVEN</strong> if there is no information on this</li>
+</ul>
+</div>
+<div class="tf-question" data-q-end="10" data-q-start="10">
+<div class="tf-question-line"><span class="tf-question-number">10</span><span class="tf-question-text">The sparse distribution of longleaf pine trees leads to the most diversity of species.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q10" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q10" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q10" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+<div class="tf-question" data-q-end="11" data-q-start="11">
+<div class="tf-question-line"><span class="tf-question-number">11</span><span class="tf-question-text">It is easier to restore forests converted to farms than forests converted to plantations.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q11" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q11" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q11" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+<div class="tf-question" data-q-end="12" data-q-start="12">
+<div class="tf-question-line"><span class="tf-question-number">12</span><span class="tf-question-text">The cost to restore forest is increasing recently.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q12" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q12" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q12" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+<div class="tf-question" data-q-end="13" data-q-start="13">
+<div class="tf-question-line"><span class="tf-question-number">13</span><span class="tf-question-text">Few can live to see the replanted forest reach its maturity.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q13" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q13" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q13" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="question-set hidden" id="questions-2">
+<div class="questions-container">
+<div class="question" data-q-end="17" data-q-start="14">
+<div class="question-prompt">
+<p><strong>Questions 14-17</strong></p>
+<p>Reading Passage 2 has six paragraphs, A-F.</p>
+<p>Which paragraph contains the following information?</p>
+<p>Write the correct letter, A-F, in boxes 14-17 on your answer sheet</p>
+<p><strong>NB</strong> You may use any letter more than once.</p>
+</div>
+<div class="tf-question" data-q-end="14" data-q-start="14">
+<div class="tf-question-line"><span class="tf-question-number">14</span><span class="tf-question-text">the location of the first test site</span></div>
+<div class="tf-options">
+<select class="answer-select" name="q14">
+<option value="">Select</option>
+<option value="A">A</option>
+<option value="B">B</option>
+<option value="C">C</option>
+<option value="D">D</option>
+<option value="E">E</option>
+<option value="F">F</option>
+<option value="F">G</option>
+</select>
+</div>
+</div>
+<div class="tf-question" data-q-end="15" data-q-start="15">
+<div class="tf-question-line"><span class="tf-question-number">15</span><span class="tf-question-text">bringing the power produced on one site back into Britain again</span></div>
+<div class="tf-options">
+<select class="answer-select" name="q15">
+<option value="">Select</option>
+<option value="A">A</option>
+<option value="B">B</option>
+<option value="C">C</option>
+<option value="D">D</option>
+<option value="E">E</option>
+<option value="F">F</option>
+<option value="F">G</option>
+</select>
+</div>
+</div>
+<div class="tf-question" data-q-end="16" data-q-start="16">
+<div class="tf-question-line"><span class="tf-question-number">16</span><span class="tf-question-text">a potentially promising alternative energy for island countries</span></div>
+<div class="tf-options">
+<select class="answer-select" name="q16">
+<option value="">Select</option>
+<option value="A">A</option>
+<option value="B">B</option>
+<option value="C">C</option>
+<option value="D">D</option>
+<option value="E">E</option>
+<option value="F">F</option>
+<option value="F">G</option>
+</select>
+</div>
+</div>
+<div class="tf-question" data-q-end="17" data-q-start="17">
+<div class="tf-question-line"><span class="tf-question-number">17</span><span class="tf-question-text">possibility of applying technique from another field due to its stable feature</span></div>
+<div class="tf-options">
+<select class="answer-select" name="q17">
+<option value="">Select</option>
+<option value="A">A</option>
+<option value="B">B</option>
+<option value="C">C</option>
+<option value="D">D</option>
+<option value="E">E</option>
+<option value="F">F</option>
+<option value="F">G</option>
+</select>
+</div>
+</div>
+</div>
+<div class="question" data-q-end="22" data-q-start="18">
+<div class="question-prompt">
+<p><strong>Questions 18-22</strong></p>
+<p>Choose <strong>FIVE</strong> letters, A-I.</p>
+<p>Write the correct letters in boxes 18-22 on your answer sheet.</p>
+<p>Which <strong>FIVE</strong> of the following statements about tidal power are made by the author?</p>
+</div>
+<div class="checkbox-options">
+<label><input name="q18-22" type="checkbox" value="A"/> A It is best produced in the scene of particular coastlines.</label>
+<label><input name="q18-22" type="checkbox" value="B"/> B It would take place all other ways of energy in Britain.</label>
+<label><input name="q18-22" type="checkbox" value="C"/> C It is a more reliable source of energy than wind power.</label>
+<label><input name="q18-22" type="checkbox" value="D"/> D It would cut down on air pollution.</label>
+<label><input name="q18-22" type="checkbox" value="E"/> E It could generate a lot of carbon dioxide to the environment.</label>
+<label><input name="q18-22" type="checkbox" value="F"/> F It could contribute to the closure of many existing power stations in Britain.</label>
+<label><input name="q18-22" type="checkbox" value="G"/> G It could be the most expensive energy in Britain.</label>
+<label><input name="q18-22" type="checkbox" value="H"/> H It could be a means of increasing national income.</label>
+<label><input name="q18-22" type="checkbox" value="I"/> I It could compensate for the shortage of inland sites.</label>
+</div>
+</div>
+<div class="question" data-q-end="26" data-q-start="23">
+<div class="question-prompt">
+<p><strong>Questions 23-26</strong></p>
+<p>Summary</p>
+<p>Complete the following summary of the paragraphs of Reading Passage, using <strong>NO MORE THAN TWO WORDS</strong> from the Reading Passage for each answer.</p>
+<p>Write your answers in boxes 23-26 on your answer sheet.</p>
+</div>
+<div class="summary-box">
+<p>Marine turbine has small environmental impact, for example, sea life would not in danger due to the fact that blades are comparatively <input autocomplete="off" class="answer-input" id="q23" placeholder="23" type="text"/>. Each tower equipped with turbine can be raised for <input autocomplete="off" class="answer-input" id="q24" placeholder="24" type="text"/> and extracted seaweed from the blades. However, one practical issue is that air bubble may result from the <input autocomplete="off" class="answer-input" id="q25" placeholder="25" type="text"/> (behind blades). This is known as <input autocomplete="off" class="answer-input" id="q26" placeholder="26" type="text"/>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="question-set hidden" id="questions-3">
+<div class="questions-container">
+<div class="question" data-q-end="34" data-q-start="27">
+<div class="question-prompt">
+<p><strong>Questions 27-34</strong></p>
+<p>Reading Passage 3 has eight paragraphs A-H.</p>
+<p>Which paragraph contains the following information?</p>
+<p>Write the correct letter A-H in boxes 27-34 on your answer sheet.</p>
+</div>
+<div class="table-container">
+<table class="matching-table">
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+<th>F</th>
+<th>G</th>
+<th>H</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="statement"><strong>27</strong> A description of an imported species that is named after the English colonists</td>
+<td class="clickable-cell" data-question="27" data-value="A" onclick="selectCell(this, 27, 'A')"></td>
+<td class="clickable-cell" data-question="27" data-value="B" onclick="selectCell(this, 27, 'B')"></td>
+<td class="clickable-cell" data-question="27" data-value="C" onclick="selectCell(this, 27, 'C')"></td>
+<td class="clickable-cell" data-question="27" data-value="D" onclick="selectCell(this, 27, 'D')"></td>
+<td class="clickable-cell" data-question="27" data-value="E" onclick="selectCell(this, 27, 'E')"></td>
+<td class="clickable-cell" data-question="27" data-value="F" onclick="selectCell(this, 27, 'F')"></td>
+<td class="clickable-cell" data-question="27" data-value="G" onclick="selectCell(this, 27, 'G')"></td>
+<td class="clickable-cell" data-question="27" data-value="H" onclick="selectCell(this, 27, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>28</strong> The reason why both the New World and Old World experienced population growth</td>
+<td class="clickable-cell" data-question="28" data-value="A" onclick="selectCell(this, 28, 'A')"></td>
+<td class="clickable-cell" data-question="28" data-value="B" onclick="selectCell(this, 28, 'B')"></td>
+<td class="clickable-cell" data-question="28" data-value="C" onclick="selectCell(this, 28, 'C')"></td>
+<td class="clickable-cell" data-question="28" data-value="D" onclick="selectCell(this, 28, 'D')"></td>
+<td class="clickable-cell" data-question="28" data-value="E" onclick="selectCell(this, 28, 'E')"></td>
+<td class="clickable-cell" data-question="28" data-value="F" onclick="selectCell(this, 28, 'F')"></td>
+<td class="clickable-cell" data-question="28" data-value="G" onclick="selectCell(this, 28, 'G')"></td>
+<td class="clickable-cell" data-question="28" data-value="H" onclick="selectCell(this, 28, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>29</strong> The formation of new continents explained</td>
+<td class="clickable-cell" data-question="29" data-value="A" onclick="selectCell(this, 29, 'A')"></td>
+<td class="clickable-cell" data-question="29" data-value="B" onclick="selectCell(this, 29, 'B')"></td>
+<td class="clickable-cell" data-question="29" data-value="C" onclick="selectCell(this, 29, 'C')"></td>
+<td class="clickable-cell" data-question="29" data-value="D" onclick="selectCell(this, 29, 'D')"></td>
+<td class="clickable-cell" data-question="29" data-value="E" onclick="selectCell(this, 29, 'E')"></td>
+<td class="clickable-cell" data-question="29" data-value="F" onclick="selectCell(this, 29, 'F')"></td>
+<td class="clickable-cell" data-question="29" data-value="G" onclick="selectCell(this, 29, 'G')"></td>
+<td class="clickable-cell" data-question="29" data-value="H" onclick="selectCell(this, 29, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>30</strong> The reason why the indigenous population declined</td>
+<td class="clickable-cell" data-question="30" data-value="A" onclick="selectCell(this, 30, 'A')"></td>
+<td class="clickable-cell" data-question="30" data-value="B" onclick="selectCell(this, 30, 'B')"></td>
+<td class="clickable-cell" data-question="30" data-value="C" onclick="selectCell(this, 30, 'C')"></td>
+<td class="clickable-cell" data-question="30" data-value="D" onclick="selectCell(this, 30, 'D')"></td>
+<td class="clickable-cell" data-question="30" data-value="E" onclick="selectCell(this, 30, 'E')"></td>
+<td class="clickable-cell" data-question="30" data-value="F" onclick="selectCell(this, 30, 'F')"></td>
+<td class="clickable-cell" data-question="30" data-value="G" onclick="selectCell(this, 30, 'G')"></td>
+<td class="clickable-cell" data-question="30" data-value="H" onclick="selectCell(this, 30, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>31</strong> An overall description of the species lacked in the Old World and New World</td>
+<td class="clickable-cell" data-question="31" data-value="A" onclick="selectCell(this, 31, 'A')"></td>
+<td class="clickable-cell" data-question="31" data-value="B" onclick="selectCell(this, 31, 'B')"></td>
+<td class="clickable-cell" data-question="31" data-value="C" onclick="selectCell(this, 31, 'C')"></td>
+<td class="clickable-cell" data-question="31" data-value="D" onclick="selectCell(this, 31, 'D')"></td>
+<td class="clickable-cell" data-question="31" data-value="E" onclick="selectCell(this, 31, 'E')"></td>
+<td class="clickable-cell" data-question="31" data-value="F" onclick="selectCell(this, 31, 'F')"></td>
+<td class="clickable-cell" data-question="31" data-value="G" onclick="selectCell(this, 31, 'G')"></td>
+<td class="clickable-cell" data-question="31" data-value="H" onclick="selectCell(this, 31, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>32</strong> A description of some animal species being ineffective in affecting the Old World</td>
+<td class="clickable-cell" data-question="32" data-value="A" onclick="selectCell(this, 32, 'A')"></td>
+<td class="clickable-cell" data-question="32" data-value="B" onclick="selectCell(this, 32, 'B')"></td>
+<td class="clickable-cell" data-question="32" data-value="C" onclick="selectCell(this, 32, 'C')"></td>
+<td class="clickable-cell" data-question="32" data-value="D" onclick="selectCell(this, 32, 'D')"></td>
+<td class="clickable-cell" data-question="32" data-value="E" onclick="selectCell(this, 32, 'E')"></td>
+<td class="clickable-cell" data-question="32" data-value="F" onclick="selectCell(this, 32, 'F')"></td>
+<td class="clickable-cell" data-question="32" data-value="G" onclick="selectCell(this, 32, 'G')"></td>
+<td class="clickable-cell" data-question="32" data-value="H" onclick="selectCell(this, 32, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>33</strong> An overall explanation of the success of the Old World species invasion</td>
+<td class="clickable-cell" data-question="33" data-value="A" onclick="selectCell(this, 33, 'A')"></td>
+<td class="clickable-cell" data-question="33" data-value="B" onclick="selectCell(this, 33, 'B')"></td>
+<td class="clickable-cell" data-question="33" data-value="C" onclick="selectCell(this, 33, 'C')"></td>
+<td class="clickable-cell" data-question="33" data-value="D" onclick="selectCell(this, 33, 'D')"></td>
+<td class="clickable-cell" data-question="33" data-value="E" onclick="selectCell(this, 33, 'E')"></td>
+<td class="clickable-cell" data-question="33" data-value="F" onclick="selectCell(this, 33, 'F')"></td>
+<td class="clickable-cell" data-question="33" data-value="G" onclick="selectCell(this, 33, 'G')"></td>
+<td class="clickable-cell" data-question="33" data-value="H" onclick="selectCell(this, 33, 'H')"></td>
+</tr>
+<tr>
+<td class="statement"><strong>34</strong> An account of European animals taking roots in the New World</td>
+<td class="clickable-cell" data-question="34" data-value="A" onclick="selectCell(this, 34, 'A')"></td>
+<td class="clickable-cell" data-question="34" data-value="B" onclick="selectCell(this, 34, 'B')"></td>
+<td class="clickable-cell" data-question="34" data-value="C" onclick="selectCell(this, 34, 'C')"></td>
+<td class="clickable-cell" data-question="34" data-value="D" onclick="selectCell(this, 34, 'D')"></td>
+<td class="clickable-cell" data-question="34" data-value="E" onclick="selectCell(this, 34, 'E')"></td>
+<td class="clickable-cell" data-question="34" data-value="F" onclick="selectCell(this, 34, 'F')"></td>
+<td class="clickable-cell" data-question="34" data-value="G" onclick="selectCell(this, 34, 'G')"></td>
+<td class="clickable-cell" data-question="34" data-value="H" onclick="selectCell(this, 34, 'H')"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="question" data-q-end="38" data-q-start="35">
+<div class="question-prompt">
+<p><strong>Questions 35-38</strong></p>
+<p>Do the following statements agree with the claims of the writer in Reading Passage 3?</p>
+<p>In boxes 35-38 on your answer sheet write</p>
+<ul style="list-style: none; padding-left: 0;">
+<li><strong>TRUE</strong> if the statement agrees with the information</li>
+<li><strong>FALSE</strong> if the statement contradicts the information</li>
+<li><strong>NOT GIVEN</strong> if there is no information on this</li>
+</ul>
+</div>
+<div class="tf-question" data-q-end="35" data-q-start="35">
+<div class="tf-question-line"><span class="tf-question-number">35</span><span class="tf-question-text">European settlers built fences to keep their cattle and horses inside.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q35" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q35" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q35" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+<div class="tf-question" data-q-end="36" data-q-start="36">
+<div class="tf-question-line"><span class="tf-question-number">36</span><span class="tf-question-text">The indigenous people had been brutally killed by the European colonists.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q36" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q36" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q36" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+<div class="tf-question" data-q-end="37" data-q-start="37">
+<div class="tf-question-line"><span class="tf-question-number">37</span><span class="tf-question-text">America's domesticated animals, such as turkey, became popular in the Old World.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q37" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q37" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q37" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+<div class="tf-question" data-q-end="38" data-q-start="38">
+<div class="tf-question-line"><span class="tf-question-number">38</span><span class="tf-question-text">Crop exchange between the two worlds played a major role in world population growth.</span></div>
+<div class="tf-options">
+<label class="tf-option"><input name="q38" type="radio" value="TRUE"/> TRUE</label>
+<label class="tf-option"><input name="q38" type="radio" value="FALSE"/> FALSE</label>
+<label class="tf-option"><input name="q38" type="radio" value="NOT GIVEN"/> NOT GIVEN</label>
+</div>
+</div>
+</div>
+<div class="question" data-q-end="40" data-q-start="39">
+<div class="question-prompt">
+<p><strong>Questions 39-40</strong></p>
+<p>Answer the questions below using <strong>NO MORE THAN THREE WORDS</strong> from the passage for each answer.</p>
+<p>Write your answers in boxes 39-40 on your answer sheet.</p>
+</div>
+<div class="notes-container">
+<p>39 Who reported the same story of European diseases among the indigenes from the American interior? <input autocomplete="off" class="answer-input" id="q39" placeholder="39" type="text"/></p>
+<p>40 What is the still existing feature of the Old World's invasion of the New? <input autocomplete="off" class="answer-input" id="q40" placeholder="40" type="text"/></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+      <div id="reviewQuestions" class="hidden"></div>
+    </div>
+  </div>
+</div></div>
+<div class="footer"><div class="footer-left"><button class="part-btn" data-part="1">Part 1</button><button class="part-btn" data-part="2">Part 2</button><button class="part-btn" data-part="3">Part 3</button></div><div class="footer-right"><button id="openOptionsBottom" class="plain-btn" type="button">Options</button><button id="submitBtn" class="submit-btn" type="button">Submit the test</button></div></div>
+<div id="drawerBackdrop" class="drawer-backdrop"></div>
+<aside id="optionsDrawer" class="options-drawer" aria-hidden="true"><div class="drawer-header"><strong>Options</strong><button id="closeDrawer" class="icon-btn" type="button" aria-label="Close options">✕</button></div><div class="drawer-section"><div><strong>Contrast</strong></div><div class="option-group" id="contrastGroup"><button class="option-chip active" data-contrast="default" type="button">Black on white</button><button class="option-chip" data-contrast="white-black" type="button">White on black</button><button class="option-chip" data-contrast="yellow-black" type="button">Yellow on black</button></div></div><div class="drawer-section"><div><strong>Text size</strong></div><div class="option-group" id="sizeGroup"><button class="option-chip" data-size="small" type="button">Small</button><button class="option-chip active" data-size="medium" type="button">Medium</button><button class="option-chip" data-size="large" type="button">Large</button></div></div><div class="drawer-actions"><button id="submitFromDrawer" class="submit-btn" type="button" style="width:100%">Submit the test</button></div></aside>
+<div id="modalBackdrop" class="modal-backdrop"></div>
+<section id="resultsModal" class="modal" aria-hidden="true"><div class="modal-header"><strong>Test results</strong><button id="closeResults" class="icon-btn" type="button" aria-label="Close results">✕</button></div><div class="modal-body"><div class="score-grid"><div class="score-card"><div class="muted">Score</div><div class="score-value" id="scoreValue">0 / 40</div></div><div class="score-card"><div class="muted">Estimated band</div><div class="score-value" id="bandValue">0.0</div></div></div><div style="display:flex;justify-content:flex-end;margin-bottom:16px;"><button id="reviewBtn" class="plain-btn" type="button">Review answers</button></div><div class="result-list" id="resultList"></div></div></section>
+<div id="contextMenu" class="context-menu"><div class="context-item" data-action="highlight">Highlight</div><div class="context-item" data-action="note">Note</div><div class="context-item" data-action="clear">Clear</div><div class="context-item" data-action="clearAll">Clear All</div></div>
+<div id="noteModal" class="note-modal"><div class="inner"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><strong>Add note</strong><button id="closeNoteModal" class="icon-btn" type="button">✕</button></div><textarea id="noteText" placeholder="Write your note here..."></textarea><div style="display:flex;justify-content:flex-end;gap:10px;margin-top:12px;"><button id="cancelNote" class="plain-btn" type="button">Cancel</button><button id="saveNote" class="submit-btn" type="button">Save note</button></div></div></div>
+<div id="noteTooltip" class="tooltip"></div>
+<script>
+const QUESTION_DATA = {"1": {"part": 1, "answer": "nest", "text": "Birds can locate their ____ in the ground.", "evidence": "It tucks its nest on the ground beneath clumps of wiregrass and little bluestem in the open understory.", "explanation": "Fire keeps the understory open, so Bachman's sparrow can nest on the ground."}, "2": {"part": 1, "answer": "tortoise", "text": "The burrows of a species of ____ provide homes to many other animals.", "evidence": "Gopher tortoises, the only native land tortoises east of the Mississippi, are also abundant in longleaf. A keystone species for these forests, its burrows provide homes and safety to more than 300 species of vertebrates and invertebrates", "explanation": "The species is the gopher tortoise, whose burrows shelter many others."}, "3": {"part": 1, "answer": "oaks", "text": "Hardwoods such as ____ can grow and outnumber long-leaf trees.", "evidence": "Fire knocks back the oaks and other hardwoods that can grow up to overwhelm longleaf forests.", "explanation": "Without fire, oaks and other hardwoods can overwhelm longleaf forests."}, "4": {"part": 1, "answer": "Native Americans", "text": "Fires are created by ____ and settlers.", "evidence": "Native Americans also lit fires to keep the forest open. So did the early pioneers.", "explanation": "The passage states that Native Americans and early pioneers deliberately lit fires."}, "5": {"part": 1, "answer": "prescribed burns", "text": "Fires deliberately lit are called ____.", "evidence": "Most of these fires are prescribed burns, deliberately set with a drip torch.", "explanation": "The technical term used for deliberate management fires is prescribed burns."}, "6": {"part": 1, "answer": "shrubs", "text": "Calcium stored in ____.", "evidence": "We learned calcium is stashed away in woody shrubs when the forest is not burned.", "explanation": "Before burning, calcium is stored in woody shrubs."}, "7": {"part": 1, "answer": "soil", "text": "Calcium released into ____.", "evidence": "But when there is a fire, a pulse of calcium moves down into the soil and up into the longleaf.", "explanation": "Fire moves calcium into the soil."}, "8": {"part": 1, "answer": "ants", "text": "____ are eaten.", "evidence": "Eventually, this calcium makes its way up the food chain to a tree-dwelling species of ant, which is the red-cockaded's favorite food.", "explanation": "The birds eat ants carrying the calcium up the food chain."}, "9": {"part": 1, "answer": "eggs", "text": "Number of ____ increases.", "evidence": "The result: more calcium for the birds, which leads to more eggs, more young and more woodpeckers.", "explanation": "Extra calcium leads to more eggs being produced."}, "10": {"part": 1, "answer": "TRUE", "text": "The sparse distribution of longleaf pine trees leads to the most diversity of species.", "evidence": "In longleaf pine forests, trees grow widely scattered, creating an open, parklike environment... This openness creates a forest floor that is among the most diverse in the world", "explanation": "The passage directly links sparse tree spacing with exceptional diversity."}, "11": {"part": 1, "answer": "FALSE", "text": "It is easier to restore forests converted to farms than forests converted to plantations.", "evidence": "In areas where the land has not been chewed up by farming, but converted to loblolly or slash pine plantations, the seed bank ... usually remains viable ... Where agriculture has destroyed the seeds, however, wiregrass must be replanted.", "explanation": "The passage says plantation land is easier to restore because the original seed bank often survives there."}, "12": {"part": 1, "answer": "NOT GIVEN", "text": "The cost to restore forest is increasing recently.", "evidence": "Right now, the expense is prohibitive, but researchers are searching for low-cost solutions.", "explanation": "We are told the current cost is very high, but there is no statement that it is rising."}, "13": {"part": 1, "answer": "TRUE", "text": "Few can live to see the replanted forest reach its maturity.", "evidence": "Few of us will be alive when the pines being planted today become mature forests in 70 to 80 years.", "explanation": "The statement matches the passage almost word for word."}, "14": {"part": 2, "answer": "D", "text": "the location of the first test site", "evidence": "The first station is expected to be installed off Lynmouth in Devon shortly to test the technology", "explanation": "Paragraph D names the first test site: off Lynmouth in Devon."}, "15": {"part": 2, "answer": "F", "text": "bringing the power produced on one site back into Britain again", "evidence": "most would be fed into the French Grid and be re-imported into Britain via the cable under the Channel.", "explanation": "Paragraph F describes electricity being sent out and then re-imported into Britain."}, "16": {"part": 2, "answer": "B", "text": "a potentially promising alternative energy for island countries", "evidence": "undersea turbines could become a big export earner to island nations such as Japan and New Zealand.", "explanation": "Paragraph B identifies island nations as promising users of the technology."}, "17": {"part": 2, "answer": "D", "text": "possibility of applying technique from another field due to its stable feature", "evidence": "The technology for dealing with the hostile saline environment under the sea has been developed in the North Sea oil industry", "explanation": "Paragraph D explains that expertise from another field, the oil industry, can be applied here."}, "18": {"part": 2, "answer": "A", "text": "It is best produced in the scene of particular coastlines.", "evidence": "The best sites are between islands or around heavily indented coasts where there are strong tidal currents.", "explanation": "The author says tidal power works best in certain coastal settings."}, "19": {"part": 2, "answer": "C", "text": "It is a more reliable source of energy than wind power.", "evidence": "unlike wind, the tides are predictable and the power input is constant.", "explanation": "The passage portrays tidal energy as more predictable and reliable than wind."}, "20": {"part": 2, "answer": "D", "text": "It would cut down on air pollution.", "evidence": "drastically reducing its carbon dioxide emissions.", "explanation": "Lower carbon dioxide emissions mean less air pollution."}, "21": {"part": 2, "answer": "F", "text": "It could contribute to the closure of many existing power stations in Britain.", "evidence": "Britain would be able to close gas, coal and nuclear power plants", "explanation": "The author explicitly says other power stations could be closed."}, "22": {"part": 2, "answer": "H", "text": "It could be a means of increasing national income.", "evidence": "undersea turbines could become a big export earner to island nations such as Japan and New Zealand.", "explanation": "An export earner would boost national income."}, "23": {"part": 2, "answer": "slow", "text": "blades are comparatively ____.", "evidence": "Fish and other creatures are thought unlikely to be at risk from the relatively slow-turning blades.", "explanation": "The summary paraphrases 'relatively slow-turning' as slow."}, "24": {"part": 2, "answer": "maintenance", "text": "Each tower can be raised for ____.", "evidence": "be designed to be lifted out of the water for maintenance and to clean seaweed from the blades.", "explanation": "The tower can be lifted for maintenance."}, "25": {"part": 2, "answer": "low pressure", "text": "air bubble may result from the ____ (behind blades).", "evidence": "low pressure behind a turning blade causes air bubbles.", "explanation": "The bubbles are caused by low pressure behind the blade."}, "26": {"part": 2, "answer": "cavitation", "text": "This is known as ____.", "evidence": "One technical difficulty is cavitation, where low pressure behind a turning blade causes air bubbles.", "explanation": "The name of this problem is cavitation."}, "27": {"part": 3, "answer": "C", "text": "A description of an imported species that is named after the English colonists", "evidence": "One of these, a plantain (Plantago major), was named \"Englishman's Foot\" by the Amerindians", "explanation": "Paragraph C gives the imported plant called 'Englishman's Foot.'"}, "28": {"part": 3, "answer": "G", "text": "The reason why both the New World and Old World experienced population growth", "evidence": "Their influence on Old World peoples, like that of wheat and rice on New World peoples, goes far to explain the global population explosion", "explanation": "Paragraph G links crop exchange in both directions to population growth."}, "29": {"part": 3, "answer": "A", "text": "The formation of new continents explained", "evidence": "continental drift carried the Old World and New World apart, splitting North and South America from Eurasia and Africa.", "explanation": "Paragraph A explains the geological separation of the continents."}, "30": {"part": 3, "answer": "E", "text": "The reason why the indigenous population declined", "evidence": "The crucial factor was not people, plants, or animals, but germs. Smallpox was the worst", "explanation": "Paragraph E makes it clear that disease was the decisive cause of decline."}, "31": {"part": 3, "answer": "B", "text": "An overall description of the species lacked in the Old World and New World", "evidence": "In the Americas, there were no horses, cattle, sheep, or goats, all animals of Old World origin.", "explanation": "Paragraph B lists the species absent from each side."}, "32": {"part": 3, "answer": "F", "text": "A description of some animal species being ineffective in affecting the Old World", "evidence": "America's grey squirrels and muskrats and a few others have established themselves east of the Atlantic ... but that has not made much of a difference.", "explanation": "Paragraph F says these exported animals did not significantly affect the Old World."}, "33": {"part": 3, "answer": "H", "text": "An overall explanation of the success of the Old World species invasion", "evidence": "It has to do with environmental contrasts.", "explanation": "Paragraph H gives the big-picture explanation: environmental adaptation."}, "34": {"part": 3, "answer": "D", "text": "An account of European animals taking roots in the New World", "evidence": "Cattle and horses were brought ashore in the early 1600s and found hospitable climate and terrain in North America.", "explanation": "Paragraph D describes European livestock becoming established in the New World."}, "35": {"part": 3, "answer": "FALSE", "text": "European settlers built fences to keep their cattle and horses inside.", "evidence": "Fences were not for keeping livestock in, but for keeping livestock out.", "explanation": "The statement says the opposite of the passage."}, "36": {"part": 3, "answer": "TRUE", "text": "The indigenous people had been brutally killed by the European colonists.", "evidence": "Indigenous peoples suffered from white brutality", "explanation": "The writer explicitly mentions white brutality against indigenous peoples."}, "37": {"part": 3, "answer": "FALSE", "text": "America's domesticated animals, such as turkey, became popular in the Old World.", "evidence": "turkeys have not displaced chickens and geese", "explanation": "The passage says these animals did not become dominant or especially influential."}, "38": {"part": 3, "answer": "TRUE", "text": "Crop exchange between the two worlds played a major role in world population growth.", "evidence": "The Columbian Exchange has been an indispensable factor in that demographic explosion.", "explanation": "The writer clearly says the exchange was indispensable to global population growth."}, "39": {"part": 3, "answer": "missionaries and traders", "text": "Who reported the same story of European diseases among the indigenes from the American interior?", "evidence": "The missionaries and the traders who ventured into the American interior told the same appalling story", "explanation": "The answer comes directly from the sentence naming both groups."}, "40": {"part": 3, "answer": "demographic triumph", "text": "What is the still existing feature of the Old World's invasion of the New?", "evidence": "the demographic triumph of the invaders ... still stands.", "explanation": "The surviving feature is described as the demographic triumph of the invaders."}};
+let currentPart = 1, timeLeft = 3600, timerId = null, selectedRange = null, contextTarget = null, reviewMode = false;
+const timerDisplay = document.getElementById('timerDisplay'), timerWrap = document.getElementById('timerWrap'), passageContent = document.getElementById('passageContent'), examQuestions = document.getElementById('examQuestions'), reviewQuestions = document.getElementById('reviewQuestions'), questionsPanel = document.getElementById('questionsPanel'), passagePanel = document.getElementById('passagePanel'), contextMenu = document.getElementById('contextMenu'), noteModal = document.getElementById('noteModal'), noteText = document.getElementById('noteText'), noteTooltip = document.getElementById('noteTooltip'), modalBackdrop = document.getElementById('modalBackdrop'), resultsModal = document.getElementById('resultsModal'), drawerBackdrop = document.getElementById('drawerBackdrop'), optionsDrawer = document.getElementById('optionsDrawer');
+const escapeHtml = str => String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const normalize = value => String(value || '').trim().replace(/\s+/g,' ').toLowerCase();
+function renderTimer(){const mins=String(Math.floor(timeLeft/60)).padStart(2,'0'), secs=String(timeLeft%60).padStart(2,'0'); timerDisplay.textContent=`${mins}:${secs}`;}
+function startTimer(){if(timerId) clearInterval(timerId); timerId=setInterval(()=>{ if(!reviewMode && timeLeft>0){ timeLeft--; renderTimer(); } },1000);}
+function setPart(part){currentPart=part; document.querySelectorAll('.part-btn').forEach(btn=>btn.classList.toggle('active', Number(btn.dataset.part)===part)); document.querySelectorAll('.part-header').forEach(el=>el.classList.remove('active')); const activeHeader=document.getElementById(`part-header-${part}`); if(activeHeader) activeHeader.classList.add('active'); if(reviewMode){const qa=document.getElementById(`review-part-${part}`); if(qa) qa.scrollIntoView({behavior:'smooth',block:'start'}); const pa=document.getElementById(`passage-text-${part}`); if(pa) pa.scrollIntoView({behavior:'smooth',block:'start'}); return;} [1,2,3].forEach(p=>{ const psg=document.getElementById(`passage-text-${p}`), qs=document.getElementById(`questions-${p}`); if(psg) psg.classList.toggle('hidden', p!==part); if(qs) qs.classList.toggle('hidden', p!==part); });}
+function openDrawer(){drawerBackdrop.classList.add('show'); optionsDrawer.classList.add('show');} function closeDrawer(){drawerBackdrop.classList.remove('show'); optionsDrawer.classList.remove('show');}
+function openResults(){modalBackdrop.classList.add('show'); resultsModal.classList.add('show');} function closeResults(){resultsModal.classList.remove('show'); if(!noteModal.classList.contains('show')) modalBackdrop.classList.remove('show');}
+function openNoteModal(){modalBackdrop.classList.add('show'); noteModal.classList.add('show'); noteText.value=''; noteText.focus();} function closeNoteModal(){noteModal.classList.remove('show'); if(!resultsModal.classList.contains('show')) modalBackdrop.classList.remove('show');}
+function getCheckboxSet(){return Array.from(document.querySelectorAll('input[name="q18-22"]:checked')).map(el=>el.value).sort();}
+function getUserAnswer(q){q=Number(q); if(q>=18 && q<=22) return getCheckboxSet().join(', ') || 'No answer'; const input=document.getElementById(`q${q}`); if(input) return input.value.trim() || 'No answer'; const radio=document.querySelector(`input[name="q${q}"]:checked`); if(radio) return radio.value; const select=document.querySelector(`select[name="q${q}"]`); if(select) return select.value || 'No answer'; const cell=document.querySelector(`.clickable-cell[data-question="${q}"].selected`); if(cell) return cell.dataset.value; return 'No answer';}
+function isCorrect(q){q=Number(q); const expected=QUESTION_DATA[q].answer; if(q>=18 && q<=22) return getCheckboxSet().includes(expected); return normalize(getUserAnswer(q))===normalize(expected);}
+function computeScore(){let score=0; for(let q=1;q<=40;q++) if(isCorrect(q)) score++; return score;}
+function estimateBand(score){if(score>=39) return 9.0; if(score>=37) return 8.5; if(score>=35) return 8.0; if(score>=33) return 7.5; if(score>=30) return 7.0; if(score>=27) return 6.5; if(score>=23) return 6.0; if(score>=19) return 5.5; if(score>=15) return 5.0; if(score>=13) return 4.5; return 4.0;}
+function buildResultRows(){const rows=[]; for(let q=1;q<=40;q++){ rows.push(`<div class="result-row ${isCorrect(q)?'correct':'incorrect'}"><div class="result-badge">${q}</div><div><div class="muted">User answer</div><div>${escapeHtml(getUserAnswer(q))}</div></div><div><div class="muted">Correct answer</div><div>${escapeHtml(String(QUESTION_DATA[q].answer))}</div></div><div><strong>${isCorrect(q)?'Correct':'Wrong'}</strong></div></div>`);} document.getElementById('resultList').innerHTML=rows.join('');}
+function submitTest(){const score=computeScore(); document.getElementById('scoreValue').textContent=`${score} / 40`; document.getElementById('bandValue').textContent=estimateBand(score).toFixed(1); buildResultRows(); openResults();}
+function showAllPassagesForReview(){ passageContent.classList.add('review-passages'); [1,2,3].forEach(p=>{ const el=document.getElementById(`passage-text-${p}`); if(el) el.classList.remove('hidden'); });}
+function renderReviewQuestions(){const byPart={1:[],2:[],3:[]}; for(let q=1;q<=40;q++){const d=QUESTION_DATA[q]; byPart[d.part].push(`<div class="review-card ${isCorrect(q)?'correct':'incorrect'}" id="review-q-${q}"><div class="review-top"><div><div class="review-q">Question ${q}</div><div>${escapeHtml(d.text)}</div></div><div><strong>${isCorrect(q)?'✓ Correct':'✕ Wrong'}</strong></div></div><div class="review-answer-grid"><div class="review-answer-box"><div class="muted">User answer</div><div>${escapeHtml(getUserAnswer(q))}</div></div><div class="review-answer-box"><div class="muted">Correct answer</div><div>${escapeHtml(String(d.answer))}</div></div></div><div class="explanation-block"><strong>Explanation</strong><div>${escapeHtml(d.explanation)}</div><div class="evidence-quote"><strong>Evidence</strong>${escapeHtml(d.evidence)}</div></div></div>`);} reviewQuestions.innerHTML=`<div id="review-part-1"><div class="question-prompt"><p><strong>Part 1 review</strong></p></div>${byPart[1].join('')}</div><div id="review-part-2"><div class="question-prompt"><p><strong>Part 2 review</strong></p></div>${byPart[2].join('')}</div><div id="review-part-3"><div class="question-prompt"><p><strong>Part 3 review</strong></p></div>${byPart[3].join('')}</div>`; examQuestions.classList.add('hidden'); reviewQuestions.classList.remove('hidden');}
+function unwrap(el){const parent=el.parentNode; if(!parent) return; while(el.firstChild) parent.insertBefore(el.firstChild, el); parent.removeChild(el); parent.normalize();}
+function findTextNodeMatch(root, needle){const walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null); const lower=needle.toLowerCase(); while(walker.nextNode()){const node=walker.currentNode, txt=node.nodeValue || ''; const idx=txt.toLowerCase().indexOf(lower); if(idx!==-1 && txt.trim()) return {node, idx};} return null;}
+function highlightEvidence(questionNumber, evidence){const part=QUESTION_DATA[questionNumber].part; const root=document.getElementById(`passage-text-${part}`); if(!root) return; const match=findTextNodeMatch(root, evidence); if(!match) return; const range=document.createRange(); range.setStart(match.node, match.idx); range.setEnd(match.node, match.idx + evidence.length); const span=document.createElement('span'); span.className='review-evidence'; const badge=document.createElement('span'); badge.className='review-badge'; badge.textContent=questionNumber; span.appendChild(badge); try{const frag=range.extractContents(); span.appendChild(frag); range.insertNode(span);}catch(e){}}
+function highlightAllEvidence(){for(let q=1;q<=40;q++) highlightEvidence(q, QUESTION_DATA[q].evidence);}
+function clearReviewEvidence(){document.querySelectorAll('.review-evidence').forEach(el=>unwrap(el)); passageContent.classList.remove('review-passages');}
+function enterReviewMode(){reviewMode=true; document.body.classList.add('review-mode'); timerWrap.style.visibility='hidden'; closeResults(); clearReviewEvidence(); showAllPassagesForReview(); renderReviewQuestions(); highlightAllEvidence();}
+function wrapSelectedRange(className, attrs={}){ if(!selectedRange || selectedRange.collapsed) return null; const span=document.createElement('span'); span.className=`annotation ${className}`; Object.entries(attrs).forEach(([k,v])=>span.dataset[k]=v); try{const frag=selectedRange.extractContents(); span.appendChild(frag); selectedRange.insertNode(span);}catch(e){return null;} window.getSelection().removeAllRanges(); selectedRange=null; return span;}
+function showTooltipForNote(target){const note=target.dataset.note || ''; noteTooltip.textContent=note; noteTooltip.classList.add('show'); const rect=target.getBoundingClientRect(); requestAnimationFrame(()=>{const tt=noteTooltip.getBoundingClientRect(); let left=rect.left + rect.width/2 - tt.width/2, top=rect.top - tt.height - 10; if(left<8) left=8; if(left + tt.width > window.innerWidth - 8) left=window.innerWidth - tt.width - 8; if(top<8) top=rect.bottom + 10; noteTooltip.style.left=left+'px'; noteTooltip.style.top=top+'px';});}
+function hideTooltip(){noteTooltip.classList.remove('show');}
+function updateSelectedRange(){const sel=window.getSelection(); if(sel && sel.rangeCount && !sel.isCollapsed){const range=sel.getRangeAt(0); const valid=passagePanel.contains(range.commonAncestorContainer) || questionsPanel.contains(range.commonAncestorContainer); if(valid) selectedRange=range.cloneRange();}}
+function placeContextMenu(x,y){contextMenu.style.display='block'; const rect=contextMenu.getBoundingClientRect(); let left=x, top=y; if(left + rect.width > window.innerWidth - 8) left = window.innerWidth - rect.width - 8; if(top + rect.height > window.innerHeight - 8) top = window.innerHeight - rect.height - 8; contextMenu.style.left=left+'px'; contextMenu.style.top=top+'px';}
+function closeContextMenu(){contextMenu.style.display='none'; contextTarget=null;}
+function clearAllUserAnnotations(){document.querySelectorAll('.user-highlight, .user-note').forEach(el=>unwrap(el)); hideTooltip();}
+function initContextMenu(){[passagePanel, questionsPanel].forEach(panel=>panel.addEventListener('contextmenu', e=>{e.preventDefault(); updateSelectedRange(); const targetAnno=e.target.closest('.user-highlight, .user-note'); contextTarget=targetAnno; const hasSelection=selectedRange && !selectedRange.collapsed && String(selectedRange).trim(); contextMenu.querySelector('[data-action="highlight"]').style.display=hasSelection?'flex':'none'; contextMenu.querySelector('[data-action="note"]').style.display=hasSelection?'flex':'none'; contextMenu.querySelector('[data-action="clear"]').style.display=targetAnno?'flex':'none'; placeContextMenu(e.clientX, e.clientY);})); document.addEventListener('selectionchange', updateSelectedRange); document.addEventListener('click', e=>{ if(!contextMenu.contains(e.target)) closeContextMenu(); if(!e.target.closest('.user-note')) hideTooltip();}); document.addEventListener('mouseover', e=>{const note=e.target.closest('.user-note'); if(note) showTooltipForNote(note);}); document.addEventListener('mouseout', e=>{if(e.target.closest('.user-note')) hideTooltip();}); document.addEventListener('click', e=>{const note=e.target.closest('.user-note'); if(note) showTooltipForNote(note);});}
+contextMenu.addEventListener('click', e=>{const item=e.target.closest('.context-item'); if(!item) return; const action=item.dataset.action; if(action==='highlight') wrapSelectedRange('user-highlight'); else if(action==='note'){ if(selectedRange && !selectedRange.collapsed) openNoteModal(); } else if(action==='clear' && contextTarget) unwrap(contextTarget); else if(action==='clearAll') clearAllUserAnnotations(); closeContextMenu();});
+document.getElementById('saveNote').addEventListener('click', ()=>{const text=noteText.value.trim(); if(!text) return; const span=wrapSelectedRange('user-note', {note:text}); closeNoteModal(); if(span) showTooltipForNote(span);});
+document.getElementById('cancelNote').addEventListener('click', closeNoteModal); document.getElementById('closeNoteModal').addEventListener('click', closeNoteModal);
+document.getElementById('openOptionsTop').addEventListener('click', openDrawer); document.getElementById('openOptionsBottom').addEventListener('click', openDrawer); document.getElementById('closeDrawer').addEventListener('click', closeDrawer); drawerBackdrop.addEventListener('click', closeDrawer);
+document.getElementById('submitBtn').addEventListener('click', submitTest); document.getElementById('submitFromDrawer').addEventListener('click', ()=>{closeDrawer(); submitTest();}); document.getElementById('closeResults').addEventListener('click', closeResults); document.getElementById('reviewBtn').addEventListener('click', enterReviewMode); modalBackdrop.addEventListener('click', ()=>{closeResults(); closeNoteModal();});
+document.querySelectorAll('#contrastGroup .option-chip').forEach(btn=>btn.addEventListener('click', ()=>{document.body.dataset.contrast=btn.dataset.contrast; document.querySelectorAll('#contrastGroup .option-chip').forEach(b=>b.classList.toggle('active', b===btn));}));
+document.querySelectorAll('#sizeGroup .option-chip').forEach(btn=>btn.addEventListener('click', ()=>{document.body.dataset.textSize=btn.dataset.size; document.querySelectorAll('#sizeGroup .option-chip').forEach(b=>b.classList.toggle('active', b===btn));}));
+document.querySelectorAll('.part-btn').forEach(btn=>btn.addEventListener('click', ()=>setPart(Number(btn.dataset.part))));
+(function initResizer(){const resizer=document.getElementById('resizer'), left=document.getElementById('passagePanel'); let startX=0,startWidth=0; resizer.addEventListener('mousedown', e=>{startX=e.clientX; startWidth=left.getBoundingClientRect().width; const onMove=ev=>{const total=resizer.parentElement.getBoundingClientRect().width; let next=startWidth + (ev.clientX - startX); const min=280,max=total - 280 - 14; next=Math.max(min, Math.min(max,next)); left.style.flexBasis=next+'px';}; const onUp=()=>{window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp);}; window.addEventListener('mousemove', onMove); window.addEventListener('mouseup', onUp);});})();
+document.querySelectorAll('.clickable-cell').forEach(cell=>cell.addEventListener('click', ()=>{const q=cell.dataset.question; document.querySelectorAll(`.clickable-cell[data-question="${q}"]`).forEach(c=>c.classList.remove('selected')); cell.classList.add('selected');}));
+window.selectCell = function(cell, questionNum, value){ document.querySelectorAll(`.clickable-cell[data-question="${questionNum}"]`).forEach(c=>c.classList.remove('selected')); cell.classList.add('selected'); cell.dataset.value=value; };
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){closeContextMenu(); closeDrawer(); closeResults(); closeNoteModal();}});
+document.querySelectorAll('.part-header').forEach(el=>el.classList.remove('hidden')); renderTimer(); startTimer(); initContextMenu(); setPart(1);
+</script>
+</body>
+</html>

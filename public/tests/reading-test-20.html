@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>IELTS Full Reading Practice</title>
+    <style>
+        /* All CSS styles remain exactly the same as in the original code */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            line-height: 1.4;
+            font-size: 16px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 60px;
+        }
+
+        .ielts-logo {
+            display: none;
+        }
+
+        .test-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .audio-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .audio-icon {
+            width: 16px;
+            height: 16px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>') no-repeat center;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .telegram-link {
+            color: #0088cc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .telegram-link:hover {
+            text-decoration: underline;
+        }
+
+        .telegram-link::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: currentColor;
+            -webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-1.37.2-1.64l16.56-6.4c.75-.29 1.4.22 1.2.94l-2.67 12.61c-.22.95-1.13 1.18-1.78.73l-4.5-3.32l-2.23 2.15c-.47.44-1.29.21-1.48-.37z"/></svg>');
+            mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-1.37.2-1.64l16.56-6.4c.75-.29 1.4.22 1.2.94l-2.67 12.61c-.22.95-1.13 1.18-1.78.73l-4.5-3.32l-2.23 2.15c-.47.44-1.29.21-1.48-.37z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        #volume-slider {
+            -webkit-appearance: none;
+            width: 80px;
+            height: 4px;
+            background: #ddd;
+            outline: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        #volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+        }
+
+        #volume-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            border: none;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            opacity: 0.7;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon:hover {
+            opacity: 1;
+        }
+        
+        #play-pause-btn {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .main-container {
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            height: calc(100vh - 60px); /* Full height minus header */
+        }
+
+        .panels-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .passage-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px; /* Minimum width */
+        }
+
+        /* Passage Content */
+        .text-center {
+            text-align: center;
+        }
+        .reading-passage h4 {
+            font-family: 'Merriweather', serif; /* Oqlangan serif shrift */
+            font-size: 22px; /* Biroz kattaroq */
+            font-weight: 600; /* O‘rtacha qalinlik */
+            color: #2c3e50; /* To‘q kulrang ko‘k rang */
+            line-height: 1.4; /* Qulay satr oralig‘i */
+            margin-bottom: 20px; /* Ko‘proq bo‘shliq */
+            text-align: center;
+            border-bottom: 2px solid #4a90e2; /* Ko‘k chegara */
+            padding-bottom: 5px; /* Chegara bilan matn oralig‘i */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Engil soya */
+        }
+       
+        .reading-passage p {
+            margin-bottom: 1.2em;
+        }
+
+        .question ul li label {
+            display: block;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .questions-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px; /* Minimum width */
+            border-left: 1px solid #e0e0e0;
+        }
+
+        .resizer {
+            width: 10px;
+            cursor: col-resize;
+            background-color: #f0f0f0;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="30" viewBox="0 0 10 30"><path d="M4 11h2v2H4zM4 15h2v2H4zM4 19h2v2H4z" fill="%23888"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+            flex-grow: 0;
+        }
+
+        /* Left Panel */
+        .left-panel {
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            display: none;
+            width: 50%;
+            padding: 20px;
+            position: relative;
+        }
+
+        .help-button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .help-button:hover {
+            background: #357abd;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .people-section {
+            margin-bottom: 30px;
+        }
+
+        .people-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+        }
+
+        .people-table th {
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+
+        .people-table td {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+        }
+
+        .person-name {
+            font-size: 16px;
+        }
+
+        .question-number {
+            background: white;
+            border: 1px solid #4a90e2;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #4a90e2;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .assigned-responsibility {
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+        }
+
+        .responsibilities-section {
+            margin-bottom: 30px;
+        }
+
+        .responsibility-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .responsibility-item {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: move;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .responsibility-item:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .responsibility-item.dragging {
+            opacity: 0.5;
+        }
+
+        .questions-section {
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .instruction {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* Map Styles */
+        .map-container {
+            position: relative;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .map-svg {
+            border: 2px solid #333;
+            background: white;
+        }
+
+        .map-room {
+            fill: #f9f9f9;
+            stroke: #333;
+            stroke-width: 1;
+        }
+
+        .map-text {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            text-anchor: middle;
+            fill: #333;
+        }
+
+        .map-number {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-anchor: middle;
+            fill: #333;
+        }
+
+        .room-labels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .room-label {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: move;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .room-label:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .room-label.dragging {
+            opacity: 0.5;
+        }
+
+        /* Navigation Arrows */
+        .nav-arrows {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            z-index: 101;
+        }
+
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-arrow:hover {
+            background: #555;
+        }
+
+        .nav-arrow:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Navigation - Exact Match */
+        .nav-row {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+        
+            padding: 0;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            z-index: 100;
+        }
+
+        .footer__questionWrapper___1tZ46 {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+
+        .footer__questionNo___3WNct {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .footer__questionNo___3WNct:hover {
+            background-color: #f8f9fa;
+        }
+
+        .section-prefix {
+            font-size: 16px;
+        }
+
+        .sectionNr {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .attemptedCount {
+            font-size: 14px;
+            color: #666;
+            margin-left: 5px;
+            font-weight: 400; /* Normal weight */
+        }
+
+        @media (max-width: 768px) {
+            .attemptedCount {
+                display: none;
+            }
+        }
+
+        .footer__questionWrapper___1tZ46.selected .attemptedCount {
+            display: none;
+        }
+
+        .footer__subquestionWrapper___9GgoP {
+            display: none;
+            gap: 2px;
+            margin-left: 10px;
+        }
+
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP {
+            display: flex;
+        }
+
+        .subQuestion {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ccc;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+
+        .subQuestion.answered {
+            background-color: #e9ecef;
+            border-color: #ddd;
+        }
+        .subQuestion.correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .subQuestion.incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .subQuestion:hover {
+            background-color: #f0f0f0;
+            border-color: #999;
+        }
+
+        .subQuestion.active {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #4a90e2;
+        }
+
+        .subQuestion.completed {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .footer__deliverButton___3FM07 {
+            margin-left: auto;
+            margin-right: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, border-color 0.2s;
+            min-width: 170px;
+            justify-content: center;
+        }
+
+        .footer__deliverButton___3FM07:hover {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+
+        .footer__deliverButton___3FM07:disabled {
+            background: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            border-color: #ddd;
+        }
+
+        .fa-check::before {
+            content: "✓";
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Context Menu */
+        .context-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 140px;
+        }
+
+        .context-menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .context-menu-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .highlight {
+            background-color: #ffff00;
+        }
+
+        .comment-highlight {
+            background-color: #90EE90;
+            position: relative;
+            cursor: help;
+        }
+
+        .comment-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .comment-highlight:hover .comment-tooltip {
+            opacity: 1;
+        }
+
+        .question {
+            margin-bottom: 40px;
+        }
+        .question p {
+            margin-bottom: 10px;
+        }
+        .question ul, .question .people-table {
+            margin-top: 0;
+        }
+        .question-prompt {
+            margin-bottom: 20px;
+        }
+        .question ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .question ul li {
+            margin-bottom: 5px;
+        }
+        .answer-input {
+            border: 1px solid #888;
+            border-radius: 4px;
+            background-color: #fff;
+            padding: 2px 5px;
+            font-size: 16px;
+            text-align: center;
+            margin-right: 4px;
+            margin-left: 4px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            height: 28px; /* Standard height */
+            width: 150px; /* Standard width */
+        }
+        .answer-input.active-input {
+            border-color: #4a90e2;
+            box-shadow: 0 0 3px 1px rgba(74, 144, 226, 0.5);
+        }
+        .answer-input::placeholder {
+            color: #999;
+            font-weight: bold;
+            text-align: center;
+        }
+        .answer-input.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .answer-input.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .answer-input {
+    z-index: 10;
+    position: relative;
+    pointer-events: auto;
+}
+        .drag-drop-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            align-items: flex-start;
+        }
+        .recommendations-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            min-height: 200px;
+        }
+        .drag-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: move;
+            font-size: 16px;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .drag-item:hover {
+            background: #e9ecef;
+        }
+        .drag-item.dragging {
+            opacity: 0.5;
+        }
+        .drag-item.selected {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
+        }
+        .drop-zone {
+            border: 2px dashed #aaa;
+            border-radius: 4px;
+            width: 50%;
+            margin-top: 19px;
+            margin-bottom: 5px;
+            transition: background-color 0.2s, border-color 0.2s;
+            padding: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .drop-zone.drag-over {
+            background-color: #e6f4ff;
+            border-color: #4a90e2;
+        }
+        .drop-zone.correct {
+            background-color: #e9f7ef;
+            border-color: #28a745;
+            border-style: solid;
+        }
+        .drop-zone.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            border-style: solid;
+        }
+        .drop-zone.disabled {
+            pointer-events: none;
+        }
+        .drop-zone .drag-item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            padding: 2px;
+        }
+        .drag-options-container {
+            margin-top: 10px;
+        }
+        .drag-options-container .drag-item {
+            display: block;
+            width: fit-content;
+            font-size: 15px;
+            padding: 0.5px 10px;
+            margin-bottom: 5px;
+        }
+        .drag-options-container .drag-item:last-child {
+            margin-bottom: 0;
+        }
+        .q-number {
+            color: #888;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .questions-container {
+            width: 100%;
+        }
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .part-header {
+            background-color: #f1f2ec;
+            padding: 15px 20px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            margin: 10px 20px;
+            border-radius: 5px;
+        }
+        .part-header p {
+            margin: 0;
+        }
+        .part-header p:first-child {
+            margin-bottom: 5px;
+        }
+
+        .question li.correct {
+            color: #155724;
+            font-weight: bold;
+        }
+        .question li.incorrect {
+            color: #721c24;
+        }
+        .question li.correct::before {
+            content: '✔ ';
+            color: #28a745;
+        }
+        .question li.incorrect::before {
+            content: '✖ ';
+            color: #dc3545;
+        }
+
+        .example-box {
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .timer-container {
+            display: flex;
+            position: relative;
+            cursor: default;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            align-items: center;
+        }
+        .timer-container .timer-tooltip {
+            display: none;
+        }
+
+        .timer-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+        }
+
+        .timer-controls button {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .timer-controls button:hover {
+            background: #e0e0e0;
+        }
+
+        .timer-controls button svg {
+            width: 20px;
+            height: 20px;
+            fill: #333;
+        }
+
+        .audio-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(40, 40, 40, 0.9);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+        .audio-modal-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            max-width: 500px;
+            padding: 20px;
+        }
+        .audio-modal-content p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #eee;
+        }
+        .audio-modal-icon {
+            margin-bottom: 20px;
+        }
+        .modal-play-btn {
+            background-color: #000;
+            color: white;
+            border: 1px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        .modal-play-btn:hover {
+            background-color: #333;
+        }
+        #goto-widget {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        #goto-input {
+            width: 80px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #goto-btn {
+            padding: 4px 10px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Styles for TRUE/FALSE/NOT GIVEN questions */
+        .tf-question {
+            margin-bottom: 25px;
+            padding: 10px 0px;
+            border-radius: 4px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .tf-question-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 5px 0px;
+            border-radius: 4px;
+        }
+        .tf-question-number, .question-number-box {
+            border: 2px solid #ccc;
+            padding: 2px 8px;
+            margin-right: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: border-color 0.3s;
+            display: inline-block;
+        }
+        .tf-question-text {
+            padding-top: 3px;
+        }
+        .tf-options {
+            padding-left: 5px;
+        }
+        .tf-option {
+            display: block;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .tf-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .tf-question.correct .tf-question-line {
+            background-color: #e9f7ef;
+        }
+        .tf-question.incorrect .tf-question-line {
+            background-color: #f8d7da;
+        }
+        .matching-question-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .matching-options-bank {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .matching-questions {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .matching-question-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+        .matching-question-item > span {
+            flex: 1;
+        }
+        .matching-question-item.correct {
+            background-color: #e9f7ef;
+            border-color: #28a745 !important;
+        }
+        .matching-question-item.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545 !important;
+        }
+        .matching-question-item .drop-zone {
+            width: 200px;
+            flex-shrink: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #aaa;
+        }
+        .matching-options-bank .drag-item {
+            font-size: 15px;
+            text-align: center;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+        }
+
+        .questions-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px; /* Minimum width */
+            border-left: 1px solid #e0e0e0;
+        }
+        .matching-question-item.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545 !important;
+        }
+        .summary-completion-container {
+            margin-top: 20px;
+        }
+        .summary-text p {
+            line-height: 2.5;
+            font-size: 16px;
+        }
+        .summary-drop-zone {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            max-width:200px;
+            height: 25px;
+            border: 2px dashed #999;
+            border-radius: 4px;
+            margin: 0 5px;
+            padding: 0 5px;
+            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+            color: #aaa;
+            font-weight: bold;
+        }
+        .summary-drop-zone.filled {
+            border-color: #4a90e2;
+        }
+        .summary-drop-zone.active-input {
+             border-color: #4a90e2;
+             box-shadow: none;
+        }
+        .summary-drop-zone .drag-item {
+            font-size: 15px;
+            font-weight: bold;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .summary-options-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .summary-options-bank .drag-item {
+            flex-grow: 1;
+            min-width: 100px;
+            text-align: center;
+        }
+        .multi-choice-question {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 3px solid transparent;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .multi-choice-option {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .multi-choice-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .multi-choice-option input[type="checkbox"],
+        .multi-choice-option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.3);
+            accent-color: #4a90e2;
+        }
+        .multi-choice-option.correct {
+            background-color: #e9f7ef;
+        }
+        .multi-choice-option.incorrect {
+            background-color: #f8d7da;
+        }
+        .matching-question-item.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545 !important;
+        }
+        .matching-question-item .drop-zone.filled {
+            border-color: #4a90e2;
+        }
+        .matching-question-item .drop-zone {
+            width: 200px;
+            height: 40px;
+        }
+        .paragraph-matching-question {
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        .paragraph-matching-question .answer-input {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .matching-form-container {
+            margin-top: 20px;
+        }
+        .matching-form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .matching-form-label {
+            width: 180px;
+            flex-shrink: 0;
+        }
+
+        /* Results Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .results-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .results-details-container {
+            overflow-y: auto;
+            padding-right: 10px; /* For scrollbar */
+        }
+        .result-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr;
+            gap: 15px;
+            padding: 8px 5px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+        .result-row.incorrect {
+            background-color: #f8d7da;
+        }
+        .result-row .q-num {
+            font-weight: bold;
+        }
+        .result-row .user-ans {
+            color: #555;
+        }
+        .result-row .correct-ans {
+            color: #155724;
+            font-weight: 500;
+        }
+        .correct-answer-display {
+            font-weight: bold;
+            color: #28a745;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        .correct-answer-highlight, .tf-option.correct-answer-highlight, .multi-choice-option.correct-answer-highlight {
+            background-color: #d4edda !important;
+            border: 1px solid #c3e6cb !important;
+            border-radius: 4px;
+            padding: 4px;
+        }
+        .correct-answer-highlight {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+        }
+        .centered-title {
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+    
+/* ===== Inspera upgrade ===== */
+body{-webkit-touch-callout:none}
+.header{height:70px;padding:10px 18px;gap:16px;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.main-container{margin-top:70px;height:calc(100vh - 70px)}
+.header-left,.header-center,.header-right{display:flex;align-items:center}.header-left{gap:16px;min-width:360px;flex:1}.header-center{justify-content:center;flex:0 0 auto}.header-right{justify-content:flex-end;gap:10px;min-width:360px;flex:1}
+.ielts-brand{font-size:64px;font-weight:900;letter-spacing:-2px;color:#e61d2b;line-height:1}.test-taker-id{font-size:18px;font-weight:700;color:#1d1d1f;white-space:nowrap}
+.header-pill-icon,.header-menu-btn,.header-telegram-btn{height:42px;display:inline-flex;align-items:center;justify-content:center;border-radius:21px;border:1px solid #d7d7d7;background:#f5f5f7;transition:all .2s ease}
+.header-pill-icon{width:42px;color:#2b2b2b}.header-pill-icon:hover,.header-menu-btn:hover{background:#ececef}.header-menu-btn{width:42px;font-size:24px;cursor:pointer}.header-telegram-btn{padding:0 18px;min-width:180px;background:#fff;color:#0066d6;text-decoration:none;font-weight:700;white-space:nowrap}.header-telegram-btn:hover{background:#f2f7ff;border-color:#8ab7f8;transform:translateY(-1px)}
+.timer-center{display:flex;align-items:center;gap:12px}.timer-display{font-size:22px;font-weight:500;min-width:72px;text-align:center}.timer-controls{margin-left:0}.timer-controls button{width:40px;height:40px;border-radius:999px;border:1px solid #d0d0d0;background:#f3f3f3}body.review-active .header-center{visibility:hidden}
+#passage-header-container .part-header{margin:10px 20px 0;border-radius:0 0 18px 18px;background:#eef1f5;padding:18px 28px}.reading-passage h4{font-family:Georgia,'Times New Roman',serif}.nav-row{height:86px;padding:0 16px;box-shadow:0 -1px 0 rgba(0,0,0,.08)}.footer__deliverButton___3FM07{border-radius:14px;min-width:170px;background:#f3f4f6}
+.options-drawer{position:fixed;inset:0;background:#f3f3f4;z-index:3000;display:none}.options-drawer.open{display:block}.options-panel{width:min(1260px,calc(100vw - 48px));margin:24px auto;color:#111}.options-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}.options-title-row h2{font-size:68px;font-weight:500}.options-close{border:none;background:none;font-size:76px;line-height:1;cursor:pointer;color:#111}.options-card{background:#fff;border:1px solid #d7d7d7;border-radius:18px;overflow:hidden}.options-submit{width:100%;border:none;background:#ff1144;color:#fff;font-size:38px;text-align:left;padding:28px 44px;border-radius:18px;cursor:pointer;margin-bottom:34px}.options-row{display:flex;align-items:center;justify-content:space-between;padding:30px 44px;font-size:36px;cursor:pointer}.options-row+.options-row{border-top:1px solid #d7d7d7}.options-row .arrow{font-size:52px}.options-subpanel{display:none;padding:0 24px 24px 24px}.options-subpanel.open{display:block}.options-choice-group{display:flex;gap:14px;flex-wrap:wrap;padding:0 18px 18px 18px}.options-choice{border:1px solid #d0d0d0;background:#fff;border-radius:14px;padding:14px 18px;font-size:18px;cursor:pointer;min-width:130px;text-align:center;font-weight:700}.options-choice.active{background:#111;color:#fff;border-color:#111}
+.results-modal .modal-content{max-width:980px;width:min(92vw,980px);max-height:88vh;border-radius:28px;padding:28px 28px 22px}.results-modal .modal-close-btn{font-size:52px;top:10px;right:16px}.results-summary{font-size:22px}.results-actions{display:flex;gap:18px;justify-content:center;margin:18px 0 20px}.results-action-btn{border:none;border-radius:20px;padding:18px 32px;font-size:20px;font-weight:800;cursor:pointer}.results-action-btn.primary{background:#020c1a;color:#fff}.results-action-btn.secondary{background:#ececec;color:#222}.result-row{display:grid;grid-template-columns:70px 1.5fr 1fr;gap:15px;padding:14px 16px;border-radius:10px;margin-bottom:8px;align-items:start;cursor:pointer}.result-row.incorrect{background:#f3dede}.result-row.correct{background:#e6f4ea}.result-row .jump-hint{font-size:14px;color:#666;margin-top:4px;display:block}
+.review-explanation{margin-top:12px;padding:14px 16px;border-radius:12px;border:1px solid #d8d8d8;background:#fafafa;font-size:14px;line-height:1.55}.review-card-correct{box-shadow:inset 0 0 0 2px #37a35b;border-radius:10px}.review-card-wrong{box-shadow:inset 0 0 0 2px #d94b58;border-radius:10px}.evidence-hit{background:#ffe98a;border-radius:4px;padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}.evidence-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#111;color:#fff;border-radius:999px;font-size:11px;font-weight:800;margin-right:5px;vertical-align:middle}
+.highlight{background:#fff278;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}.comment-highlight{text-decoration:underline 2px #1d4ed8;text-underline-offset:3px;background:transparent;position:relative;cursor:pointer}.comment-tooltip{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 10px);background:#111;color:#fff;padding:10px 12px;border-radius:10px;font-size:13px;max-width:260px;min-width:120px;white-space:normal;opacity:0;visibility:hidden;transition:opacity .12s ease;z-index:1002;box-shadow:0 8px 22px rgba(0,0,0,.28)}.comment-tooltip::after{content:'';position:absolute;left:50%;transform:translateX(-50%);top:100%;border:6px solid transparent;border-top-color:#111}.comment-highlight:hover .comment-tooltip,.comment-highlight.note-open .comment-tooltip{opacity:1;visibility:visible}
+.note-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:3500;display:none;align-items:center;justify-content:center}.note-modal-overlay.open{display:flex}.note-modal{width:min(540px,92vw);background:#fff;border-radius:22px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.note-modal h3{font-size:24px;margin-bottom:12px}.note-modal textarea{width:100%;min-height:140px;resize:vertical;border:1px solid #d0d0d0;border-radius:12px;padding:14px;font:inherit}.note-modal-actions{display:flex;justify-content:flex-end;gap:12px;margin-top:16px}.note-modal-actions button{border:none;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer}.note-modal-actions .save-note{background:#111;color:#fff}.note-modal-actions .cancel-note{background:#ececec}.context-menu{min-width:180px;z-index:3600}
+.contrast-default,.contrast-default body,.contrast-default .passage-panel,.contrast-default .questions-panel{background:#fff;color:#111}.contrast-dark body,.contrast-dark .passage-panel,.contrast-dark .questions-panel,.contrast-dark .nav-row,.contrast-dark .modal-content,.contrast-dark .options-card,.contrast-dark .note-modal{background:#0f0f10!important;color:#fff!important}.contrast-dark .part-header,.contrast-dark .summary-drop-zone,.contrast-dark .example-box,.contrast-dark .footer__deliverButton___3FM07,.contrast-dark .subQuestion,.contrast-dark .options-row,.contrast-dark .options-choice{background:#121315!important;color:#fff!important;border-color:#3a3a3a!important}.contrast-dark .answer-input,.contrast-dark select,.contrast-dark input[type=text]{background:#000!important;color:#fff!important;border-color:#6c6c6c!important}.contrast-dark .reading-passage h4,.contrast-dark .test-taker-id,.contrast-dark .timer-display,.contrast-dark .sectionNr,.contrast-dark .section-prefix,.contrast-dark .question,.contrast-dark p,.contrast-dark li,.contrast-dark label,.contrast-dark .matching-form-label,.contrast-dark .modal-content h2{color:#fff!important}.contrast-dark .result-row.correct{background:#14341f!important}.contrast-dark .result-row.incorrect{background:#3d1c20!important}.contrast-dark .review-explanation{background:#111!important;border-color:#444!important;color:#fff!important}
+.contrast-yellow body,.contrast-yellow .passage-panel,.contrast-yellow .questions-panel,.contrast-yellow .nav-row,.contrast-yellow .modal-content,.contrast-yellow .options-card,.contrast-yellow .note-modal{background:#000!important;color:#ffef62!important}.contrast-yellow .part-header,.contrast-yellow .summary-drop-zone,.contrast-yellow .example-box,.contrast-yellow .footer__deliverButton___3FM07,.contrast-yellow .subQuestion,.contrast-yellow .options-row,.contrast-yellow .options-choice{background:#070707!important;color:#ffef62!important;border-color:#8d8200!important}.contrast-yellow .answer-input,.contrast-yellow select,.contrast-yellow input[type=text]{background:#000!important;color:#ffef62!important;border-color:#ffef62!important}.contrast-yellow .reading-passage h4,.contrast-yellow .test-taker-id,.contrast-yellow .timer-display,.contrast-yellow .sectionNr,.contrast-yellow .section-prefix,.contrast-yellow .question,.contrast-yellow p,.contrast-yellow li,.contrast-yellow label,.contrast-yellow .matching-form-label,.contrast-yellow .modal-content h2{color:#ffef62!important}.contrast-yellow .result-row.correct{background:#203100!important}.contrast-yellow .result-row.incorrect{background:#3b1900!important}.contrast-yellow .review-explanation{background:#080808!important;border-color:#8d8200!important;color:#ffef62!important}
+body.text-small{font-size:14px}body.text-small .answer-input,body.text-small select,body.text-small input,body.text-small label,body.text-small p,body.text-small li,body.text-small .matching-form-label,body.text-small .tf-option,body.text-small .multi-choice-option{font-size:14px!important}body.text-medium{font-size:16px}body.text-large{font-size:18px}body.text-large .answer-input,body.text-large select,body.text-large input,body.text-large label,body.text-large p,body.text-large li,body.text-large .matching-form-label,body.text-large .tf-option,body.text-large .multi-choice-option{font-size:18px!important}
+@media (max-width:1200px){.options-title-row h2{font-size:48px}.options-submit,.options-row{font-size:28px}.header-left,.header-right{min-width:0}.ielts-brand{font-size:48px}}@media (max-width:900px){.header{padding:10px}.test-taker-id{display:none}.header-telegram-btn{min-width:unset;padding:0 12px;font-size:14px}.timer-display{font-size:18px}}
+
+</style>
+</head>
+<body>
+    <div class="header">
+        <div class="timer-container">
+            <span class="timer-display">60:00</span>
+            <div class="timer-controls">
+                <button id="timer-toggle-btn" title="Pause/Resume Timer">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8 5v14l11-7L8 5z"/></svg>
+                </button>
+                <button id="timer-reset-btn" title="Reset Timer">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="header-center">
+            <div class="ielts-brand">IELTS</div>
+    </div>
+
+    <div class="main-container" id="main-container">
+        <div id="passage-header-container">
+            <div id="part-header-1" class="part-header">
+                <p><strong>Part 1</strong></p>
+                <p>Read the text and answer questions 1-13.</p>
+            </div>
+            <div id="part-header-2" class="part-header hidden">
+                <p><strong>Part 2</strong></p>
+                <p>Read the text and answer questions 14-26.</p>
+            </div>
+            <div id="part-header-3" class="part-header hidden">
+                <p><strong>Part 3</strong></p>
+                <p>Read the text and answer questions 27-40.</p>
+            </div>
+        </div>
+        <div class="panels-container">
+            <div class="passage-panel" id="passage-panel">
+                <div id="passage-text-1" class="reading-passage">
+                    <h4 class="text-center">A brief history of canned food</h4>
+                    <p>In 1795, the French government had a problem: they faced the fact that it is not easy to win battles abroad when your soldiers are hungry and malnourished. That year they established a 12,000-franc prize for whoever could find a way to preserve food – from milk and meat to fruits and vegetables. French chef Nicolas Appert took more than a decade to develop a process that involved cooking food in glass jars and then using seals made of cork to make them airtight. In 1810, he published a book whose title translates as "The art of preserving all animal and vegetable substances for several years", and collected his prize money. Appert's achievement didn't escape the notice of British merchant and inventor Peter Durand, who applied for a British patent later that year. Durand used techniques similar to Appert's, although he adapted the model to include the use of tin vessels as well as glass jars.</p>
+                    <p>Following these discoveries, canned food was initially produced for soldiers and explorers. But even after people became aware of the existence of bacteria in the late 19th century, canning companies couldn't work out exactly why some of their turned bad. And even into the 20th century, newspapers were full of accounts not only of food poisoning but also of cases of the fatal disease botulism resulting from people eating canned food. For that reason, many continued to look upon canned food with suspicion and fear.</p>
+                    <p>The US food manufacturer, The Heinz Company, realized bad cans were bad for business. From the 1890s to 1920s, the company insisted on weekly manicures for its canning-factory workers to ensure that any bacteria beneath employees' fingernails stayed out of the food. Heinz employees were required to shower and change their clothing regularly. In an era when food-factory hygiene was not universally adopted, what might have been considered a nuisance by workers was at least good for consumers.</p>
+                    <p>Some canning companies killed bacteria with chemical additives such as sodium benzoate, which is still used today in canned food, and formaldehydes, which are now known to cause cancer. Some of the larger canning companies, such as Heinz, Libby, and Campbell's, installed expensive steam-retort technology developed in the 1870s. Steam retorts worked like steam engines, using pressure to raise canning temperatures high enough to make food safe. Yet some batches of cans, even when made with this advanced technique, would explode after months on the shelf, while the contents of other cans might mysteriously sour. Smaller canning manufacturers relied on the open kettle method* and they had even less consistent results.</p>
+                    <p>US canning companies eventually banded together to discover the scientific principles affecting the canning process. In 1913, they launched the Research Laboratory of the National Canners Association in order to look into the elusive bacteriology responsible for all manner of spoiled canned food. The research done by the laboratory in the decades that followed helped resolve the problem of spoiled food and led to improved flavor, color, nutritional value, and texture.</p>
+                    <p>Before this time, canning companies had discovered through trial and error that the best way to avoid bad cans was to cook food at high temperatures for long periods, an approach that sacrificed flavor. 'Food safety and palatability were often at cross-purposes,' remarks food historian Gabriella Petrick. For string beans, for instance, long cooking times in hot water leach out the green color, creating an unattractive grayish-toned bean. The addition of salt was one technique employed in the early 20th century to prevent this happening, thereby maintaining the visual appeal of the product and restoring a certain amount of taste.</p>
+                    <p>One of the major canning innovations of the 20th century was the development of aseptic processing. This technique, which involves sterilizing the container separately from the food, was invented in Switzerland in the 1960s for processing milk, but is now used widely for canned tomatoes and many juices. Small volumes of food are heated to a precise temperature and for a precise time in order to avoid overcooking and preserve color and nutrients, explains food scientist Philip Nelson, who won the 2007 World Food Prize in recognition of his research on making aseptic processing workable on a large industrial scale.</p>
+                    <p>Today, despite all the modern alternatives, Appert's technology still reigns supreme for long-term storage. More than two centuries on, the simple can is still the best solution for the safe and effective preservation of a wide range of foodstuffs worldwide.</p>
+                    <p><em>*open kettle method: food is cooked in a covered container and then poured while hot into sterile jars</em></p>
+                </div>
+                <div id="passage-text-2" class="reading-passage hidden">
+                    <h4 class="text-center">Viking Ireland</h4>
+                    <p><strong>A</strong>&nbsp;&nbsp;When Irish archaeologists working under Dublin's South Great George's Street unearthed the remains of four young men buried with fragments of Viking shields, daggers and personal ornaments, the excavation appeared to be simply more evidence of the Viking presence in Ireland. At least 77 Viking burial sites have been found across the basis of artefacts that accompanied them, and the South Great George's Street burials seemed to be further examples. Yet when archaeologist Linzi Simpson sent the remains for analysis, the tests showed that men had been buried in Irish soil years, or even decades, before the accepted date for the establishment of the first year-round Viking settlement in Dublin.</p>
+                    <p><strong>B</strong>&nbsp;&nbsp;Simpson's findings are now adding new weight to an idea gaining growing acceptance – that instead of a sudden, calamitous invasion, the arrival of the Vikings in Ireland started with small-scale settlements and trade links connected Ireland with northern Europe. And, further, that those trading contacts may have occurred generations before the violent raids described un contemporary texts, works written by monks living in isolated monasteries. These were often the only places where literate people lived and were especially targeted by Viking raiders for their food suppliers and treasures. Scholars are continuing to examine the texts written by monks, but are also considering the limitations of using them. 'Most researches accept now that the raids were not the first contact, as the old texts suggest,' says Viking expert Gareth Williams. 'How did the Vikings know where all those monasteries were? It's because there was already contact. They were already trading before those raids happened.'</p>
+                    <p><strong>C</strong>&nbsp;&nbsp;Although the earlier dates for a Viking presence in Dublin that have been identified by Simpson and independent archeologists differ from the later dates by only a few decades, when combined with other evidence, they are challenging the chronology of Viking settlement in Ireland. Since the 1960s, archaeologists have been gathering information about the mid-ninth-century settlement that lay under the sidewalks of Fishamble Street in Dublin. According to archeologist Ruth Jonson, the Vikings started with sporadic summer raids, but after some years of profitable plunder, they decided to stay, and built settlements for the winter.</p>
+                    <p><strong>D</strong>&nbsp;&nbsp;Carbon dating, which measures the age of organic materials based on the amount of radioactive carbon 14 remaining in a specimen, usually gives a range of likely dates for the time of death. The older the material, the wider the range. In the case of the four individuals excavated at the South Great George's Street site, Simpson found that two of them had a 95 per cent probability of having died between 670 and 680, with a 68 per cent probability of death occurring between 690 and 790. Thus, the entire most likely range was before the first documented arrival of Vikings in 795. A third individual lived slightly later, with a 95 per cent probability of having died between 680 and 882. The dates were not what Simpson had thought they would be. 'These dates seem impossibly early and difficult to reconcile with the available historical and archeological sources,' she says.</p>
+                    <p><strong>E</strong>&nbsp;&nbsp;The fourth individual excavated at South Great George's Street was the most intact of the group, and revealed the most about the lives and hardships of Vikings at this time. A powerfully built man in his late teens or early 20s, he was approximately 1.70m. tall by the day's standards, with the muscular torso and upper limbs that would have come from hard, ocean-going rowing. His bones showed streets associated with heavy lifting beginning in childhood. Unlike the three other men, he was not buried with weapons. Like one of the other men found at the site, he had a congenital deformity at the base of his spine, perhaps indicating they were relatives. Carbon dating gave a wider range for his lifetime, showing a 95 per cent probability he died between 786 and 955.</p>
+                    <p><strong>F</strong>&nbsp;&nbsp;Tests were also carried out on the four South Great George's Street men's isotopic oxygen levels. Such tests indicate where a person spent their childhood based on a chemical signature left by groundwater in developing teeth. The results showed that the two men with the spinal had spent their childhood in Scandinavia. However, the other two had spent their childhoods in Ireland or Scotland, another sign of permanent settlement by Viking families and not just summertime raids by warriors.</p>
+                    <p><strong>G</strong>&nbsp;&nbsp;The evidence of an earlier-than-expected Viking presence in Ireland, based as it is on forensic tests conducted on a handful of burials, may seem slight. But seemingly small pieces of evidence can overturn well-established conventions in archaeology. Both Simpson and Johnson stress more excavations and tests will be needed before anyone can rewrite the history of Viking settlement, and such work is years away. Williams adds, 'There are two possibilities raised by (Simpson's) work. Either there was Viking activity earlier than we've realized in Ireland, or there is something in the water or soil in Dublin skewing the data, and both possibilities need further research.' Nevertheless, Williams agrees with Simpson and others that the chronology of the Viking presence in Ireland is uncertain, and that they were possibly trading or raiding in Ireland before 795. 'It's a poorly documented part of history,' says Williams. 'But before there was Viking settlement, there was this big trading zone in the North Sea. Did it extend to the Irish Sea? We don't have any evidence to say that, but it could be just a question of time.'</p>
+                </div>
+                <div id="passage-text-3" class="reading-passage hidden">
+                    <h4 class="text-center">Sea Change for Salinity</h4>
+                    <p><strong>A</strong>&nbsp;&nbsp;Beneath the flat, impassive surface of Australia lie hidden mountains, valleys and gorges - ancient traps and channels for the deadly salt that is stealthily killing so much of the Australian landscape. The war on salt is calling forth new weapons. A suite of high technologies used by geologists to see underground and prospect for gold and minerals is now being used to pinpoint the presence of salt beneath the landscape, and predict where it might move.</p>
+                    <p><strong>B</strong>&nbsp;&nbsp;Unless this process is clearly understood, warns Chief of Exploration and Mining Dr Neil Phillips, the hard work now underway of planning and tree-planting on the surface may be rendered ineffective: salt can still sneak past and erupt, following one of the ancient river channels formed millions of years ago. The use of airborne electromagnetic to detect salt hidden beneath the landscape has been around for a decade, but the past two years have seen a major development in its precision and powers of detection. Like the use of radar in battles, it has the potential to turn the tide of the struggle in favour of the defence by helping to pinpoint, plot and predict the movements of the foe.</p>
+                    <p><strong>C</strong>&nbsp;&nbsp;Angus Howell, who farms near Warrenbayne, in Southeast Australia, saw his first outbreak of salt in 1948. Over the ensuing decades the patches spread and multiplied until they consumed almost 100 hectares. By the late 1970s, Howell and his fellow farmers had decided it was time for action and established a government-funded "Landcare" group in a bid to save Australia's farmland. But despite a mounting effort by scientists, farmers and governments, the 'white death' continued to encroach. Small successes were eclipsed by larger defeats and fresh outbreaks.</p>
+                    <p><strong>D</strong>&nbsp;&nbsp;'The technical solutions just aren't there yet for dealing with broadacre salinity, nor are the social and economic solutions. How do you introduce the land-use changes that are needed when people still need to make a living?' Howell asks. There is no satisfactory solution yet. Part of the problem has lain in salt's ability to mount ambushes, emerging somewhere new, sometimes unexpected and unexplained, beating plans to intercept it. Only now are scientists starting to really disclose its secret subterranean stores and passages.</p>
+                    <p><strong>E</strong>&nbsp;&nbsp;The need for such knowledge is pressing. Salt has already afflicted six million hectares of once-productive country. At present rates it is predicted that, by 2050. it will have sterilised a total of 17 million hectares and the waters of Australia's Murray River will regularly exceed the World Health Organisation's salt limits for drinking water. Defeating this assault may take centuries, not decades.</p>
+                    <p><strong>F</strong>&nbsp;&nbsp;Electromagnetic surveys measure the electrical conductivity of soil to reveal the distribution of salt and the nature and variability of the regolith - the weathered rock and sediment that may lie above the bedrock. Magnetic surveys measure small differences in the Earth's magnetic field, enabling scientists to probe the deep past and reconstruct ancient landscapes - rivers, basins and faults now buried under tens of metres of sediments. These features help to reveal where groundwater is stored, dictate the direction of groundwater movement, and are critical to predicting or ruling out salinity hot-spots.</p>
+                    <p><strong>G</strong>&nbsp;&nbsp;Radiometric analysis is based on the detection of radiation emitted by elements contained in rocks and soils, allowing scientists to delineate landforms. These factors influence the mobility of salt through the soil profile and help determine where to plant particular crop species to tackle the problem. Using data from the Murray River region, scientists have revealed a network of ancient drainage channels buried metres beneath the current landscape. These buried channels may carry salt and sometimes run at right angles to channels on the surface. This implies that the salt could move underground in quite a different direction to what one would expect by looking at surface slope and drainage.</p>
+                    <p><strong>H</strong>&nbsp;&nbsp;One of the biggest advances in detection, says Professor Neil Phillips, has come with the integration of different techniques such as magnetics, electromagnetics and radiomagnetics, and ground mapping. Individually, these technologies only gave clues to what was going on underground. Together they provide a far more revealing picture of the subsurface landscape, several hundred metres deep. Advanced airborne electromagnetics, in particular, enables scientists to take 'slices' of the landscape at depths of five metres, ten metres, fifteen metres and so on, to determine where salt may be stored at depth. This is building up a four-dimensional picture of the subsurface landscape, enabling researchers to understand movements of salt in width, depth, breadth and time. From such technologies it will be possible to locate salt stores, identify how saline they are, look at man-made and natural changes to the landscape that may cause it to mobilise, and then predict where it will head to and over what time span. This in turn will give the salt warriors time to model various ways of containing or curbing the menace, see what works best and then try it out on the ground.</p>
+                </div>
+            </div>
+            <div class="resizer" id="resizer"></div>
+            <div class="questions-panel" id="questions-panel">
+                <div id="questions-1" class="question-set">
+                    <div class="questions-container">
+                        <div class="question" data-q-start="1" data-q-end="8">
+                            <div class="question-prompt">
+                                <p><strong>Questions 1-8</strong><br>Complete the notes below.</p>
+                                <p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+                                <p>Write your answers in boxes 1-8 on your answer sheet.</p>
+                            </div>
+                            <div class="summary-text">
+                                <p class="centered-title">Solving problems in the preservation of food</p>
+                                <p><strong>Early inventions</strong></p>
+                                <p><strong>1795</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• French government needs supply of preserved food to feed the nation's <input type="text" class="answer-input" id="q1" placeholder="1"></p>
+                                <p><strong>early 1810</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Appert preserves food in glass jars – using <input type="text" class="answer-input" id="q2" placeholder="2"></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Durand adapts Appert's process for containers made of <input type="text" class="answer-input" id="q3" placeholder="3"></p>
+                                <p><strong>Dealing with problems of canned food going bad</strong></p>
+                                <p><strong>1870s</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• development of steam-retort technology in which <input type="text" class="answer-input" id="q4" placeholder="4"> helps achieve high temperature</p>
+                                <p><strong>1890s</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• Heinz company introduces regulations to reduce risk of <input type="text" class="answer-input" id="q5" placeholder="5"> entering the product</p>
+                                <p><strong>1913</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• companies from across the US set up organisation for the purpose of <input type="text" class="answer-input" id="q6" placeholder="6"> into bacteriology</p>
+                                <p><strong>1960s</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• technology developed for use with <input type="text" class="answer-input" id="q7" placeholder="7"> is adapted for the sterilisation of cans</p>
+                                <p><strong>Preserving the appearance of food</strong></p>
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;• <input type="text" class="answer-input" id="q8" placeholder="8"> was used in 20th century to avoid loss of colour during cooking process</p>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="9" data-q-end="13">
+                            <div class="question-prompt">
+                                <p><strong>Questions 9-13</strong><br>Do the following statements agree with the information given in Reading Passage 1?</p>
+                                <p>In boxes 9-13 on your answer sheet, write</p>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li><strong>TRUE</strong> if the statement agrees with the information</li>
+                                    <li><strong>FALSE</strong> if the statement contradicts with the information</li>
+                                    <li><strong>NOT GIVEN</strong> if there is no information on this</li>
+                                </ul>
+                            </div>
+                            <div class="tf-question" data-q-start="9" data-q-end="9">
+                                <div class="tf-question-line"><span class="tf-question-number">9</span><span class="tf-question-text">Peter Durand based his food preservation methods on a process that had recently won a cash prize from the French government.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q9" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q9" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="10" data-q-end="10">
+                                <div class="tf-question-line"><span class="tf-question-number">10</span><span class="tf-question-text">The first canned food products were aimed at the general public.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q10" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q10" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="11" data-q-end="11">
+                                <div class="tf-question-line"><span class="tf-question-number">11</span><span class="tf-question-text">Canned food producers often denied responsibility for cases of food poisoning.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q11" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q11" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="12" data-q-end="12">
+                                <div class="tf-question-line"><span class="tf-question-number">12</span><span class="tf-question-text">The Heinz Company's regulations regarding employees' personal hygiene led to an increase in sales of their products.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q12" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q12" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="13" data-q-end="13">
+                                <div class="tf-question-line"><span class="tf-question-number">13</span><span class="tf-question-text">The use of chemical additives was abandoned following the adoption of steam techniques.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q13" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q13" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="questions-2" class="question-set hidden">
+                    <div class="questions-container">
+                        <div class="question" data-q-start="14" data-q-end="19">
+                            <div class="question-prompt">
+                                <p><strong>Questions 14-19</strong><br>Reading Passage 2 has seven sections, A-G.</p>
+                                <p>Choose the correct heading for each section from the list of headings below.</p>
+                                <p>Write the correct number, i-viii, in boxes 14-19 on your answer sheet.</p>
+                            </div>
+                            <div class="example-box" style="font-size: 15px;">
+                                <p><strong>List of Headings</strong></p>
+                                <ul style="list-style-type: none; margin-left: 0;">
+                                    <li><strong>i</strong> A possible genetic link between the Vikings and the Irish</li>
+                                    <li><strong>ii</strong> An assumed similarity with previous discoveries</li>
+                                    <li><strong>iii</strong> The need for additional data</li>
+                                    <li><strong>iv</strong> An insight into the lifestyle of a particular Viking</li>
+                                    <li><strong>v</strong> Doubts about the truth of historical documents</li>
+                                    <li><strong>vi</strong> A research technique providing unexpected information</li>
+                                    <li><strong>vii</strong> The locations particular Vikings grew up</li>
+                                    <li><strong>viii</strong> A decision to remain in Ireland for longer periods</li>
+                                </ul>
+                            </div>
+                            <div class="matching-form-container">
+                                <div class="matching-form-row">
+                                    <label for="q14" class="matching-form-label"><strong>14</strong>&nbsp;&nbsp;Section B</label>
+                                    <select class="answer-input" id="q14"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q15" class="matching-form-label"><strong>15</strong>&nbsp;&nbsp;Section C</label>
+                                    <select class="answer-input" id="q15"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q16" class="matching-form-label"><strong>16</strong>&nbsp;&nbsp;Section D</label>
+                                    <select class="answer-input" id="q16"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q17" class="matching-form-label"><strong>17</strong>&nbsp;&nbsp;Section E</label>
+                                    <select class="answer-input" id="q17"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q18" class="matching-form-label"><strong>18</strong>&nbsp;&nbsp;Section F</label>
+                                    <select class="answer-input" id="q18"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q19" class="matching-form-label"><strong>19</strong>&nbsp;&nbsp;Section G</label>
+                                    <select class="answer-input" id="q19"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="20" data-q-end="23">
+                            <div class="question-prompt">
+                                <p><strong>Questions 20-23</strong><br>Look at the following statements (Questions 20-23) and the list of experts below.</p>
+                                <p>Match each statement with the correct expert, A, B or C</p>
+                                <p>Write the correct letter A, B or C in boxes 20-23 on your answer sheet.</p>
+                                <p><strong>NB</strong> You may use any letter more than once.</p>
+                            </div>
+                            <div class="example-box" style="font-size: 15px;">
+                                <p><strong>List of Experts</strong></p>
+                                <ul style="list-style-type: upper-alpha; margin-left: 20px;">
+                                    <li>A Linzi Simpson</li>
+                                    <li>B Gareth Williams</li>
+                                    <li>C Ruth Johnson</li>
+                                </ul>
+                            </div>
+                            <div class="matching-form-container">
+                                <div class="matching-form-row">
+                                    <label for="q20" class="matching-form-label"><strong>20</strong>&nbsp;&nbsp;The Vikings were aware of the financial benefits of staying in Ireland.</label>
+                                    <select class="answer-input" id="q20"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q21" class="matching-form-label"><strong>21</strong>&nbsp;&nbsp;Written accounts reporting when the Vikings arrived in Ireland may not be accurate.</label>
+                                    <select class="answer-input" id="q21"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q22" class="matching-form-label"><strong>22</strong>&nbsp;&nbsp;The inconsistency in sets of data came as a surprise.</label>
+                                    <select class="answer-input" id="q22"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q23" class="matching-form-label"><strong>23</strong>&nbsp;&nbsp;It may be the case that the archaeological evidence gathered so far is being affected by geological factors.</label>
+                                    <select class="answer-input" id="q23"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="24" data-q-end="26">
+                            <div class="question-prompt">
+                                <p><strong>Questions 24-26</strong><br>Complete the summary below.</p>
+                                <p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+                                <p>Write your answers in boxes 24-26 on your answer sheet.</p>
+                            </div>
+                            <div class="summary-text">
+                                <p class="centered-title">The fourth Viking of South Great George's Street</p>
+                                <p>When the remains of the fourth Viking were excavated at South Great George's Street, it became clear that they were of a male who was tall by <input type="text" class="answer-input" id="q24" placeholder="24"> of that time. Due to strenuous physical activity, his <input type="text" class="answer-input" id="q25" placeholder="25"> as well as his arms were well developed, but several of his bones indicated stresses that would have dated from his <input type="text" class="answer-input" id="q26" placeholder="26">.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="questions-3" class="question-set hidden">
+                    <div class="questions-container">
+                        <div class="question" data-q-start="27" data-q-end="33">
+                            <div class="question-prompt">
+                                <p><strong>Questions 27-33</strong><br>Reading Passage 3 has eight sections A-H.</p>
+                                <p>Which section A-H contains the following information (Questions 27-33)?</p>
+                                <p>For questions 27-33, write the correct letter A-H on your answer sheet, together with the number of each question.</p>
+                                <p>You may use any letter more than once.</p>
+                            </div>
+                            <div class="matching-form-container">
+                                <div class="matching-form-row">
+                                    <label for="q27" class="matching-form-label"><strong>27</strong>&nbsp;&nbsp;a prediction of the future risk of salt to water supplies.</label>
+                                    <select class="answer-input" id="q27"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q28" class="matching-form-label"><strong>28</strong>&nbsp;&nbsp;the reason why technologies must be combined to be effective</label>
+                                    <select class="answer-input" id="q28"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q29" class="matching-form-label"><strong>29</strong>&nbsp;&nbsp;a reference to the recent improvements in the accuracy of airborne electromagnetics</label>
+                                    <select class="answer-input" id="q29"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q30" class="matching-form-label"><strong>30</strong>&nbsp;&nbsp;the organization of concerned farmers into an official body</label>
+                                    <select class="answer-input" id="q30"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q31" class="matching-form-label"><strong>31</strong>&nbsp;&nbsp;the estimated length of time salinity is likely to be a problem</label>
+                                    <select class="answer-input" id="q31"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q32" class="matching-form-label"><strong>32</strong>&nbsp;&nbsp;a summary of stages in a proposed plan of action to combat the salt problem</label>
+                                    <select class="answer-input" id="q32"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q33" class="matching-form-label"><strong>33</strong>&nbsp;&nbsp;the possibility that current re-vegetation practices are a waste of time</label>
+                                    <select class="answer-input" id="q33"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option><option value="E">E</option><option value="F">F</option><option value="G">G</option><option value="H">H</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="34" data-q-end="36">
+                            <div class="question-prompt">
+                                <p><strong>Questions 34-36</strong><br>Look at the list of techniques (Questions 34-36) and the list of uses which follows it.</p>
+                                <p>Match each technique with the correct use, A, B, C or D.</p>
+                                <p>For questions 34-36, write the correct letter A-D on your answer sheet, together with the number of each question.</p>
+                            </div>
+                            <div class="example-box" style="font-size: 15px;">
+                                <p><strong>List of techniques</strong></p>
+                                <ul style="list-style-type: none; margin-left: 0;">
+                                    <li><strong>34</strong> Electromagnetic surveys</li>
+                                    <li><strong>35</strong> Radiometric analysis</li>
+                                    <li><strong>36</strong> Airborne electromagnetics</li>
+                                </ul>
+                                <p><strong>List of uses</strong></p>
+                                <ul style="list-style-type: upper-alpha; margin-left: 20px;">
+                                    <li>A can help farmers choose the best location for plants</li>
+                                    <li>B can show the composition of the top layer of the ground</li>
+                                    <li>C can detect how far below ground the salt is</li>
+                                    <li>D can determine how old the salt is in a particular area</li>
+                                </ul>
+                            </div>
+                            <div class="matching-form-container">
+                                <div class="matching-form-row">
+                                    <label for="q34" class="matching-form-label"><strong>34</strong>&nbsp;&nbsp;Electromagnetic surveys</label>
+                                    <select class="answer-input" id="q34"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q35" class="matching-form-label"><strong>35</strong>&nbsp;&nbsp;Radiometric analysis</label>
+                                    <select class="answer-input" id="q35"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q36" class="matching-form-label"><strong>36</strong>&nbsp;&nbsp;Airborne electromagnetics</label>
+                                    <select class="answer-input" id="q36"><option value=""></option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="37" data-q-end="40">
+                            <div class="question-prompt">
+                                <p><strong>Questions 37-40</strong><br>For questions 37-40, choose the correct letter, A, B, C or D.</p>
+                                <p>Write the correct letter A-D on your answer sheet, together with the number of each question.</p>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="37" data-q-end="37">
+                                <p><strong>37</strong>&nbsp;&nbsp;What link does the writer make between salt and gold?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q37" value="A"> They can both be found in the same locations.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q37" value="B"> Both have been found to have an impact on the landscape.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q37" value="C"> The same techniques can be used to find both.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q37" value="D"> Neither are present in mountainous areas.</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="38" data-q-end="38">
+                                <p><strong>38</strong>&nbsp;&nbsp;What is the 'process' referred to in Section B?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q38" value="A"> the killing of vegetation by salt</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q38" value="B"> salt's ability to travel below ground</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q38" value="C"> the ability of trees to decrease salt levels</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q38" value="D"> the detection of salt by tracing other minerals</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="39" data-q-end="39">
+                                <p><strong>39</strong>&nbsp;&nbsp;According to Angus Howell, one problem in the fight against salinity is that</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q39" value="A"> not enough farmers are concerned about the fight.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q39" value="B"> farmers' requests for help have been ignored.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q39" value="C"> some possible measures may cause farmers to lose income</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q39" value="D"> the government has not provided farmers with sufficient financial support.</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="40" data-q-end="40">
+                                <p><strong>40</strong>&nbsp;&nbsp;Which of the following best describes the writer's view of the salinity problem in Australia?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q40" value="A"> Farmers are fighting an enemy that moves secretly and hides well</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q40" value="B"> Farmers have been able to contain this enemy in a small area.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q40" value="C"> Farmers have already had significant success in fighting this problem.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q40" value="D"> Farmers need to form more organised groups to solve this problem.</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="previousQuestion()" id="prevBtn">‹</button>
+        <button class="nav-arrow" onclick="nextQuestion()" id="nextBtn">›</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-row perScorableItem" aria-label="Questions">
+        <div class="footer__questionWrapper___1tZ46 selected multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(1)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">1</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 13</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(1)"><span class="sr-only">Question 1</span><span aria-hidden="true">1</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(2)"><span class="sr-only">Question 2</span><span aria-hidden="true">2</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(3)"><span class="sr-only">Question 3</span><span aria-hidden="true">3</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(4)"><span class="sr-only">Question 4</span><span aria-hidden="true">4</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(5)"><span class="sr-only">Question 5</span><span aria-hidden="true">5</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(6)"><span class="sr-only">Question 6</span><span aria-hidden="true">6</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(7)"><span class="sr-only">Question 7</span><span aria-hidden="true">7</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(8)"><span class="sr-only">Question 8</span><span aria-hidden="true">8</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(9)"><span class="sr-only">Question 9</span><span aria-hidden="true">9</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(10)"><span class="sr-only">Question 10</span><span aria-hidden="true">10</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(11)"><span class="sr-only">Question 11</span><span aria-hidden="true">11</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(12)"><span class="sr-only">Question 12</span><span aria-hidden="true">12</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(13)"><span class="sr-only">Question 13</span><span aria-hidden="true">13</span></button>
+            </div>
+        </div>
+        
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(2)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">2</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 13</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(14)"><span class="sr-only">Question 14</span><span aria-hidden="true">14</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(15)"><span class="sr-only">Question 15</span><span aria-hidden="true">15</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(16)"><span class="sr-only">Question 16</span><span aria-hidden="true">16</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(17)"><span class="sr-only">Question 17</span><span aria-hidden="true">17</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(18)"><span class="sr-only">Question 18</span><span aria-hidden="true">18</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(19)"><span class="sr-only">Question 19</span><span aria-hidden="true">19</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(20)"><span class="sr-only">Question 20</span><span aria-hidden="true">20</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(21)"><span class="sr-only">Question 21</span><span aria-hidden="true">21</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(22)"><span class="sr-only">Question 22</span><span aria-hidden="true">22</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(23)"><span class="sr-only">Question 23</span><span aria-hidden="true">23</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(24)"><span class="sr-only">Question 24</span><span aria-hidden="true">24</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(25)"><span class="sr-only">Question 25</span><span aria-hidden="true">25</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(26)"><span class="sr-only">Question 26</span><span aria-hidden="true">26</span></button>
+            </div>
+        </div>
+        
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(3)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">3</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 14</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(27)"><span class="sr-only">Question 27</span><span aria-hidden="true">27</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(28)"><span class="sr-only">Question 28</span><span aria-hidden="true">28</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(29)"><span class="sr-only">Question 29</span><span aria-hidden="true">29</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(30)"><span class="sr-only">Question 30</span><span aria-hidden="true">30</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(31)"><span class="sr-only">Question 31</span><span aria-hidden="true">31</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(32)"><span class="sr-only">Question 32</span><span aria-hidden="true">32</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(33)"><span class="sr-only">Question 33</span><span aria-hidden="true">33</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(34)"><span class="sr-only">Question 34</span><span aria-hidden="true">34</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(35)"><span class="sr-only">Question 35</span><span aria-hidden="true">35</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(36)"><span class="sr-only">Question 36</span><span aria-hidden="true">36</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(37)"><span class="sr-only">Question 37</span><span aria-hidden="true">37</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(38)"><span class="sr-only">Question 38</span><span aria-hidden="true">38</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(39)"><span class="sr-only">Question 39</span><span aria-hidden="true">39</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(40)"><span class="sr-only">Question 40</span><span aria-hidden="true">40</span></button>
+            </div>
+        </div>
+        
+        <button id="deliver-button" aria-label="Review your answers" class="footer__deliverButton___3FM07">
+            <i class="fa fa fa-check" aria-hidden="true"></i>
+            <span>Check Answers</span>
+        </button>
+    </nav>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <div id="menu-highlight" class="context-menu-item" onclick="highlightText()">
+            Highlight
+        </div>
+        <div id="menu-note" class="context-menu-item" onclick="addNote()">
+            Note
+        </div>
+        <div id="menu-clear" class="context-menu-item" onclick="clearHighlight()">
+            Clear
+        </div>
+        <div id="menu-clear-all" class="context-menu-item" onclick="clearAllHighlights()">
+            Clear All
+        </div>
+    </div>
+
+    <div id="results-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeResultsModal()">&times;</button>
+            <h2>Results</h2>
+            <div class="results-summary">
+                <p>Score: <span id="results-score"></span> / 40</p>
+                <p>IELTS Band: <span id="results-band"></span></p>
+            </div>
+            <div id="results-details" class="results-details-container">
+                <!-- Results for each question will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  let currentPassage = 1, currentQuestion = 1, timeInSeconds = 3600, timerInterval = null;
+  let selectedRange = null, draggedItem = null, submitted = false, reviewMode = false, notePendingRange = null;
+  const passageToQuestions = {1:[1,13],2:[14,26],3:[27,40]};
+  const questionToPassage = {}; Object.entries(passageToQuestions).forEach(([p,[s,e]])=>{for(let i=s;i<=e;i++) questionToPassage[i]=Number(p)});
+  const correctAnswers = {1:'soldiers',2:'cork',3:'tin',4:'pressure',5:'bacteria',6:'research',7:'milk',8:'salt',9:'TRUE',10:'FALSE',11:'NOT GIVEN',12:'NOT GIVEN',13:'FALSE',14:'v',15:'viii',16:'vi',17:'iv',18:'vii',19:'iii',20:'C',21:'B',22:'A',23:'B',24:'standards',25:'torso',26:'childhood',27:'E',28:'H',29:'B',30:'C',31:'E',32:'H',33:'B',34:'B',35:'A',36:'C',37:'C',38:'B',39:'C',40:'A'};
+  const reviewData = {
+    1:{explanation:'The government needed preserved food to feed its troops.', evidence:'they faced the fact that it is not easy to win battles abroad when your soldiers are hungry and malnourished.'},
+    2:{explanation:'Appert used glass jars sealed with cork to make them airtight.', evidence:'using seals made of cork to make them airtight.'},
+    3:{explanation:'Durand adapted the process by using tin vessels.', evidence:'he adapted the model to include the use of tin vessels as well as glass jars.'},
+    4:{explanation:'Steam retorts used pressure to raise temperatures.', evidence:'using pressure to raise canning temperatures high enough to make food safe.'},
+    5:{explanation:'Heinz hygiene rules were designed to stop bacteria getting into food.', evidence:'to ensure that any bacteria beneath employees\' fingernails stayed out of the food.'},
+    6:{explanation:'The laboratory was launched to carry out research into bacteriology.', evidence:'they launched the Research Laboratory of the National Canners Association in order to look into the elusive bacteriology.'},
+    7:{explanation:'Aseptic processing was invented in Switzerland for milk.', evidence:'was invented in Switzerland in the 1960s for processing milk.'},
+    8:{explanation:'Salt helped preserve colour and some taste.', evidence:'The addition of salt was one technique employed in the early 20th century to prevent this happening.'},
+    9:{explanation:'Durand used techniques similar to Appert, whose work had won the French prize.', evidence:'Appert\'s achievement didn\'t escape the notice of British merchant and inventor Peter Durand, who applied for a British patent later that year.'},
+    10:{explanation:'The first canned food was made for soldiers and explorers, not ordinary consumers.', evidence:'canned food was initially produced for soldiers and explorers.'},
+    11:{explanation:'The passage mentions poisoning cases but says nothing about producers denying responsibility.', evidence:'newspapers were full of accounts not only of food poisoning but also of cases of the fatal disease botulism.'},
+    12:{explanation:'The passage says the rules were good for consumers, but it does not say sales increased.', evidence:'what might have been considered a nuisance by workers was at least good for consumers.'},
+    13:{explanation:'Chemical additives were still used even after steam-retort technology existed.', evidence:'sodium benzoate, which is still used today in canned food ... Some of the larger canning companies ... installed expensive steam-retort technology.'},
+    14:{explanation:'Section B questions old written accounts and says raids were not the first contact.', evidence:'Most researches accept now that the raids were not the first contact, as the old texts suggest.'},
+    15:{explanation:'Section C says Vikings stayed over winter after profitable raids.', evidence:'after some years of profitable plunder, they decided to stay, and built settlements for the winter.'},
+    16:{explanation:'Section D describes carbon dating giving unexpectedly early dates.', evidence:'The dates were not what Simpson had thought they would be.'},
+    17:{explanation:'Section E gives detailed insight into one particular Viking\'s body and life.', evidence:'A powerfully built man in his late teens or early 20s ... with the muscular torso and upper limbs.'},
+    18:{explanation:'Section F explains where the men spent their childhoods using oxygen isotope tests.', evidence:'The results showed that the two men ... had spent their childhood in Scandinavia.'},
+    19:{explanation:'Section G says more excavations and tests are needed before rewriting history.', evidence:'more excavations and tests will be needed before anyone can rewrite the history of Viking settlement.'},
+    20:{explanation:'Ruth Johnson says Vikings stayed after profitable plunder.', evidence:'According to archeologist Ruth Jonson, the Vikings started with sporadic summer raids, but after some years of profitable plunder, they decided to stay.'},
+    21:{explanation:'Gareth Williams doubts the reliability of the old texts.', evidence:'Most researches accept now that the raids were not the first contact, as the old texts suggest, says Viking expert Gareth Williams.'},
+    22:{explanation:'Simpson says the dates were impossibly early and surprising.', evidence:'These dates seem impossibly early and difficult to reconcile.'},
+    23:{explanation:'Williams suggests soil or water in Dublin may be skewing the data.', evidence:'there is something in the water or soil in Dublin skewing the data.'},
+    24:{explanation:'He was tall by the standards of that period.', evidence:'he was approximately 1.70m. tall by the day\'s standards.'},
+    25:{explanation:'The text specifically mentions his muscular torso and upper limbs.', evidence:'with the muscular torso and upper limbs that would have come from hard, ocean-going rowing.'},
+    26:{explanation:'The bones showed stresses beginning in childhood.', evidence:'His bones showed stresses associated with heavy lifting beginning in childhood.'},
+    27:{explanation:'Section E predicts danger to the Murray River water supply.', evidence:'the waters of Australia\'s Murray River will regularly exceed the World Health Organisation\'s salt limits for drinking water.'},
+    28:{explanation:'Section H says technologies alone only gave clues, but together they reveal far more.', evidence:'Individually, these technologies only gave clues to what was going on underground. Together they provide a far more revealing picture.'},
+    29:{explanation:'Section B mentions precision and powers of detection improving recently.', evidence:'the past two years have seen a major development in its precision and powers of detection.'},
+    30:{explanation:'Section C says farmers set up a Landcare group.', evidence:'Howell and his fellow farmers had decided it was time for action and established a government-funded "Landcare" group.'},
+    31:{explanation:'Section E says defeating salinity may take centuries.', evidence:'Defeating this assault may take centuries, not decades.'},
+    32:{explanation:'Section H outlines locating salt, identifying salinity, predicting movement, modelling solutions, and trying them on the ground.', evidence:'it will be possible to locate salt stores ... predict where it will head to ... model various ways ... and then try it out on the ground.'},
+    33:{explanation:'Section B warns that surface planning and tree-planting may be ineffective without understanding underground movement.', evidence:'the hard work now underway of planning and tree-planting on the surface may be rendered ineffective.'},
+    34:{explanation:'Electromagnetic surveys reveal conductivity and the regolith, the top weathered layer.', evidence:'Electromagnetic surveys measure the electrical conductivity of soil ... and the nature and variability of the regolith.'},
+    35:{explanation:'Radiometric analysis helps determine where to plant particular crops.', evidence:'help determine where to plant particular crop species to tackle the problem.'},
+    36:{explanation:'Airborne electromagnetics takes depth slices to show where salt may be stored.', evidence:'enables scientists to take "slices" of the landscape ... to determine where salt may be stored at depth.'},
+    37:{explanation:'The writer says technologies used to prospect for gold are now being used to find salt.', evidence:'high technologies used by geologists to see underground and prospect for gold and minerals is now being used to pinpoint the presence of salt.'},
+    38:{explanation:'The process is salt moving secretly underground along ancient channels.', evidence:'salt can still sneak past and erupt, following one of the ancient river channels formed millions of years ago.'},
+    39:{explanation:'Howell says some land-use changes are hard because people still need to make a living.', evidence:'How do you introduce the land-use changes that are needed when people still need to make a living?'},
+    40:{explanation:'The whole passage presents salt as a hidden enemy that moves stealthily beneath the ground.', evidence:'the deadly salt that is stealthily killing so much of the Australian landscape.'}
+  };
+  const header = document.querySelector('.header');
+  const passagePanel = document.getElementById('passage-panel');
+  const questionsPanel = document.getElementById('questions-panel');
+  const resizer = document.getElementById('resizer');
+  const deliverButton = document.getElementById('deliver-button');
+  const contextMenu = document.getElementById('contextMenu');
+  const resultsModal = document.getElementById('results-modal');
+  const escapeHtml = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const normalizeAnswer = v => String(v ?? '').trim().replace(/\s+/g,' ').toLowerCase();
+  const svgWifi = () => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>';
+  const svgBell = () => '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 1 0-14 0v5L3 18v1h18v-1l-2-2Z"/></svg>';
+  header.innerHTML = `<div class="header-left"><div class="ielts-brand">IELTS</div><div class="test-taker-id">Test taker ID: 000-000-000</div></div><div class="header-center"><div class="timer-center"><span class="timer-display">60:00</span><div class="timer-controls"><button id="timer-toggle-btn" title="Pause/Resume Timer"><svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg></button><button id="timer-reset-btn" title="Reset Timer"><svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg></button></div></div></div><div class="header-right"><div class="header-pill-icon">${svgWifi()}</div><div class="header-pill-icon">${svgBell()}</div><a class="header-telegram-btn" href="https://t.me/jasurbeks_ielts" target="_blank" rel="noopener">Join us on Telegram</a><button type="button" class="header-menu-btn" id="header-options-btn" aria-label="Options">☰</button></div>`;
+  document.body.insertAdjacentHTML('beforeend', `<div id="optionsDrawer" class="options-drawer"><div class="options-panel"><div class="options-title-row"><h2>Options</h2><button class="options-close" id="optionsCloseBtn">×</button></div><button class="options-submit" id="submitFromDrawer">Submit the test <span style="float:right">›</span></button><div class="options-card"><div class="options-row" id="contrastToggleRow"><span>Contrast</span><span class="arrow">›</span></div><div class="options-subpanel" id="contrastPanel"><div class="options-choice-group"><button class="options-choice active" data-contrast="default">Black on white</button><button class="options-choice" data-contrast="dark">White on black</button><button class="options-choice" data-contrast="yellow">Yellow on black</button></div></div><div class="options-row" id="textSizeToggleRow"><span>Text size</span><span class="arrow">›</span></div><div class="options-subpanel" id="textSizePanel"><div class="options-choice-group"><button class="options-choice" data-size="small">Small</button><button class="options-choice active" data-size="medium">Medium</button><button class="options-choice" data-size="large">Large</button></div></div></div></div></div><div id="noteModalOverlay" class="note-modal-overlay"><div class="note-modal"><h3>Add note</h3><textarea id="noteText" placeholder="Write your note here..."></textarea><div class="note-modal-actions"><button class="cancel-note" id="noteCancelBtn">Cancel</button><button class="save-note" id="noteSaveBtn">Save note</button></div></div></div>`);
+  resultsModal.classList.add('results-modal');
+  resultsModal.querySelector('.modal-content').insertAdjacentHTML('beforeend', `<div class="results-actions"><button class="results-action-btn primary" id="reviewAnswersBtn">Review answers</button><button class="results-action-btn secondary" id="closeResultsBtn">Close</button></div>`);
+  const dom = {timerDisplay:header.querySelector('.timer-display'), timerToggleButton:header.querySelector('#timer-toggle-btn'), timerResetButton:header.querySelector('#timer-reset-btn'), headerOptionsButton:header.querySelector('#header-options-btn'), optionsDrawer:document.getElementById('optionsDrawer'), optionsCloseBtn:document.getElementById('optionsCloseBtn'), submitFromDrawer:document.getElementById('submitFromDrawer'), contrastPanel:document.getElementById('contrastPanel'), textSizePanel:document.getElementById('textSizePanel'), noteOverlay:document.getElementById('noteModalOverlay'), noteText:document.getElementById('noteText'), noteCancelBtn:document.getElementById('noteCancelBtn'), noteSaveBtn:document.getElementById('noteSaveBtn'), reviewAnswersBtn:document.getElementById('reviewAnswersBtn'), closeResultsBtn:document.getElementById('closeResultsBtn'), resultsScore:document.getElementById('results-score'), resultsBand:document.getElementById('results-band'), resultsDetails:document.getElementById('results-details')};
+  const setPlayIcon = ()=>dom.timerToggleButton.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M8 5v14l11-7z"/></svg>';
+  const setPauseIcon = ()=>dom.timerToggleButton.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 0 24 24" width="22"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>';
+  const updateTimerDisplay = ()=>{const m=Math.floor(timeInSeconds/60), s=timeInSeconds%60; dom.timerDisplay.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`};
+  function startTimer(){clearInterval(timerInterval); timerInterval=setInterval(()=>{timeInSeconds--; if(timeInSeconds<0){timeInSeconds=0; pauseTimer(); submitTest();} updateTimerDisplay();},1000); setPauseIcon();}
+  function pauseTimer(){clearInterval(timerInterval); timerInterval=null; setPlayIcon();}
+  function toggleTimer(){timerInterval ? pauseTimer() : startTimer()}
+  function resetTimer(){timeInSeconds=3600; updateTimerDisplay(); startTimer()}
+  function getUserAnswer(q){ const select=document.querySelector(`select#q${q}`); if(select) return select.value||''; const input=document.querySelector(`input#q${q}[type="text"]`); if(input) return input.value||''; const radio=document.querySelector(`input[name="q${q}"]:checked`); if(radio) return radio.value; return ''; }
+  function evaluateQuestion(q){ const user=getUserAnswer(q); const correct=correctAnswers[q]; return {userAnswer:user||'Not Answered', correctAnswer:correct, isCorrect: !!user && normalizeAnswer(user)===normalizeAnswer(correct)}; }
+  function findQuestionCard(q){ return document.querySelector(`[data-q-start="${q}"][data-q-end="${q}"]`) || document.getElementById(`q${q}`)?.closest('.matching-form-row') || document.getElementById(`q${q}`)?.closest('.summary-text p') || document.querySelector(`input[name="q${q}"]`)?.closest('.tf-question, .multi-choice-question'); }
+  function stripPreviousMarks(){ document.querySelectorAll('.review-explanation').forEach(el=>el.remove()); document.querySelectorAll('.review-card-correct,.review-card-wrong').forEach(el=>el.classList.remove('review-card-correct','review-card-wrong')); document.querySelectorAll('.correct-answer-display').forEach(el=>el.remove()); document.querySelectorAll('.correct-answer-highlight,.correct,.incorrect').forEach(el=>el.classList.remove('correct-answer-highlight','correct','incorrect')); document.querySelectorAll('.subQuestion').forEach(btn=>btn.classList.remove('correct','incorrect')); clearAllEvidenceHighlights(); }
+  function calculateBandScore(score){ if(score>=39) return '9.0'; const map={40:'9.0',39:'9.0',38:'8.5',37:'8.5',36:'8.0',35:'8.0',34:'7.5',33:'7.5',32:'7.0',31:'7.0',30:'7.0',29:'6.5',28:'6.5',27:'6.5',26:'6.0',25:'6.0',24:'6.0',23:'5.5',22:'5.5',21:'5.5',20:'5.5',19:'5.0',18:'5.0',17:'5.0',16:'5.0',15:'5.0',14:'4.5',13:'4.5',12:'4.0',11:'4.0',10:'4.0',9:'3.5',8:'3.5',7:'3.0',6:'3.0',5:'2.5',4:'2.5',3:'2.0',2:'2.0',1:'1.0',0:'0'}; return map[score] || '0'; }
+  function closeResultsModal(){ resultsModal.classList.add('hidden'); }
+  function renderResults(){ stripPreviousMarks(); let score=0; dom.resultsDetails.innerHTML=''; for(let q=1;q<=40;q++){ const {userAnswer, correctAnswer, isCorrect}=evaluateQuestion(q); if(isCorrect) score++; const row=document.createElement('div'); row.className=`result-row ${isCorrect?'correct':'incorrect'}`; row.innerHTML=`<span class="q-num">Q${q}</span><span class="user-ans"><strong>Your answer:</strong> ${escapeHtml(userAnswer)}<span class="jump-hint">Click to jump to the question.</span></span><span class="correct-ans"><strong>Correct:</strong> ${escapeHtml(correctAnswer)}</span>`; row.addEventListener('click', ()=>{ closeResultsModal(); document.body.classList.remove('review-active'); goToQuestion(q); }); dom.resultsDetails.appendChild(row); const nav=document.querySelector(`.subQuestion[onclick="goToQuestion(${q})"]`); if(nav) nav.classList.add(isCorrect?'correct':'incorrect'); } dom.resultsScore.textContent=String(score); dom.resultsBand.textContent=calculateBandScore(score); resultsModal.classList.remove('hidden'); submitted=true; }
+  function submitTest(){ renderResults(); closeOptionsDrawer(); pauseTimer(); }
+  function clearAllEvidenceHighlights(){ document.querySelectorAll('.evidence-hit').forEach(span=>{ const p=span.parentNode; while(span.firstChild) p.insertBefore(span.firstChild, span); p.removeChild(span); p.normalize(); }); }
+  function applyEvidenceHighlight(q, text){ if(!text) return; const passage=document.getElementById(`passage-text-${questionToPassage[q]}`); if(!passage) return; const walker=document.createTreeWalker(passage, NodeFilter.SHOW_TEXT, {acceptNode(node){return node.nodeValue && node.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}}); let node; const target=text.trim(); while((node=walker.nextNode())){ const raw=node.nodeValue; const idx=raw.toLowerCase().indexOf(target.toLowerCase()); if(idx!==-1){ const range=document.createRange(); range.setStart(node, idx); range.setEnd(node, idx+target.length); const span=document.createElement('span'); span.className='evidence-hit'; span.innerHTML=`<span class="evidence-badge">${q}</span>`; try{ const contents=range.extractContents(); span.appendChild(contents); range.insertNode(span); }catch(e){} break; } } }
+  function showCorrectAnswerInline(q, res){ const correct=correctAnswers[q]; const select=document.querySelector(`select#q${q}`); const text=document.querySelector(`input#q${q}[type="text"]`); const radio=document.querySelector(`input[name="q${q}"]`); if(text){ text.classList.add(res.isCorrect?'correct':'incorrect'); if(!res.isCorrect){ const s=document.createElement('span'); s.className='correct-answer-display'; s.textContent=` → ${correct}`; text.insertAdjacentElement('afterend', s);} } else if(select){ select.classList.add(res.isCorrect?'correct':'incorrect'); if(!res.isCorrect){ const s=document.createElement('span'); s.className='correct-answer-display'; s.textContent=` → ${correct}`; select.insertAdjacentElement('afterend', s);} } else if(radio){ const c=radio.closest('.tf-question, .multi-choice-question'); const chosen=c?.querySelector(`input[name="q${q}"]:checked`)?.closest('.tf-option, .multi-choice-option'); const corr=c?.querySelector(`input[value="${correct}"]`)?.closest('.tf-option, .multi-choice-option'); if(chosen) chosen.classList.add(res.isCorrect?'correct':'incorrect'); if(corr) corr.classList.add('correct-answer-highlight'); } }
+  function enterReviewMode(){ submitTest(); closeResultsModal(); document.body.classList.add('review-active'); clearAllEvidenceHighlights(); for(let q=1;q<=40;q++){ const card=findQuestionCard(q); if(!card) continue; const res=evaluateQuestion(q); card.classList.add(res.isCorrect?'review-card-correct':'review-card-wrong'); const data=reviewData[q] || {explanation:'Review the answer in context.',evidence:''}; const box=document.createElement('div'); box.className='review-explanation'; box.innerHTML=`<div><strong>Question ${q}</strong></div><div><strong>Your answer:</strong> ${escapeHtml(res.userAnswer)}</div><div><strong>Correct answer:</strong> ${escapeHtml(correctAnswers[q])}</div><div><strong>Explanation:</strong> ${escapeHtml(data.explanation)}</div><div><strong>Evidence:</strong> ${escapeHtml(data.evidence)}</div>`; card.appendChild(box); applyEvidenceHighlight(q, data.evidence); showCorrectAnswerInline(q,res);} goToQuestion(1); }
+  function switchToPart(part){ currentPassage=part; document.querySelectorAll('.reading-passage,.question-set,.part-header').forEach(el=>el.classList.add('hidden')); document.getElementById(`passage-text-${part}`)?.classList.remove('hidden'); document.getElementById(`questions-${part}`)?.classList.remove('hidden'); document.getElementById(`part-header-${part}`)?.classList.remove('hidden'); document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach((w,i)=>w.classList.toggle('selected', i===part-1)); updateNavigation(); }
+  function goToQuestion(q){ currentQuestion=Number(q); const part=questionToPassage[currentQuestion]; if(part!==currentPassage) switchToPart(part); updateNavigation(); const el=findQuestionCard(currentQuestion); if(el) el.scrollIntoView({behavior:'smooth', block:'center'}); }
+  function previousQuestion(){ if(currentQuestion>1) goToQuestion(currentQuestion-1); }
+  function nextQuestion(){ if(currentQuestion<40) goToQuestion(currentQuestion+1); }
+  function isQuestionAnswered(q){ return !!String(getUserAnswer(q)).trim(); }
+  function updateNavigation(){ document.querySelectorAll('.subQuestion').forEach(btn=>{ const q=Number(btn.textContent.trim()); btn.classList.toggle('active', q===currentQuestion); if(!submitted) btn.classList.toggle('answered', isQuestionAnswered(q)); }); document.getElementById('prevBtn').disabled=currentQuestion<=1; document.getElementById('nextBtn').disabled=currentQuestion>=40; [[1,1,13],[2,14,26],[3,27,40]].forEach(([part,s,e])=>{ let answered=0; for(let i=s;i<=e;i++) if(isQuestionAnswered(i)) answered++; const span=document.querySelector(`.footer__questionNo___3WNct[onclick="switchToPart(${part})"] .attemptedCount`); if(span) span.textContent=`${answered} of ${e-s+1}`;}); }
+  function openOptionsDrawer(){ dom.optionsDrawer.classList.add('open'); }
+  function closeOptionsDrawer(){ dom.optionsDrawer.classList.remove('open'); }
+  function setContrast(mode){ document.documentElement.classList.remove('contrast-default','contrast-dark','contrast-yellow'); document.body.classList.remove('contrast-default','contrast-dark','contrast-yellow'); const cls=mode==='dark'?'contrast-dark':mode==='yellow'?'contrast-yellow':'contrast-default'; document.documentElement.classList.add(cls); document.body.classList.add(cls); document.querySelectorAll('[data-contrast]').forEach(b=>b.classList.toggle('active', b.dataset.contrast===mode)); }
+  function setTextSize(size){ document.body.classList.remove('text-small','text-medium','text-large'); document.body.classList.add(`text-${size}`); document.querySelectorAll('[data-size]').forEach(b=>b.classList.toggle('active', b.dataset.size===size)); }
+  function initResize(e){ e.preventDefault(); const startX=e.clientX, startWidth=passagePanel.getBoundingClientRect().width; const total=document.querySelector('.panels-container').getBoundingClientRect().width; const move=ev=>{ const newWidth=startWidth + (ev.clientX-startX); const min=260, max=total-min-resizer.getBoundingClientRect().width; if(newWidth>=min && newWidth<=max) passagePanel.style.flex=`0 0 ${newWidth}px`; }; const up=()=>{ window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); }; window.addEventListener('mousemove', move); window.addEventListener('mouseup', up); }
+  function normalizeSelection(range){ if(!range || range.collapsed || !range.toString().trim()) return null; const container=range.commonAncestorContainer.nodeType===1?range.commonAncestorContainer:range.commonAncestorContainer.parentElement; if(!container || (!passagePanel.contains(container) && !questionsPanel.contains(container))) return null; return range; }
+  function getElementPath(el){ const path=[]; while(el && el!==document.body){ let i=0, sib=el; while((sib=sib.previousElementSibling)) i++; path.unshift(`${el.tagName}:${i}`); el=el.parentElement; } return path.join('>'); }
+  function getElementFromPath(path){ let root=document.body; for(const part of (path||'').split('>')){ if(!part) continue; const [tag, idxStr]=part.split(':'); const matches=Array.from(root.children).filter(ch=>ch.tagName===tag); root=matches[Number(idxStr)]; if(!root) return null; } return root; }
+  function unwrapElement(el){ const p=el?.parentNode; if(!p) return; while(el.firstChild) p.insertBefore(el.firstChild, el); p.removeChild(el); p.normalize(); }
+  function closeContextMenu(){ contextMenu.style.display='none'; }
+  function wrapSelection(className, noteText=''){ const range=normalizeSelection(selectedRange); if(!range) return; const wrapper=document.createElement('span'); wrapper.className=className; try{ const contents=range.extractContents(); if(className==='comment-highlight'){ wrapper.appendChild(contents); const tip=document.createElement('span'); tip.className='comment-tooltip'; tip.textContent=noteText; wrapper.appendChild(tip); wrapper.addEventListener('click', e=>{ e.stopPropagation(); wrapper.classList.toggle('note-open'); }); } else { wrapper.appendChild(contents); } range.insertNode(wrapper); window.getSelection().removeAllRanges(); selectedRange=null; }catch(e){} }
+  function openContextMenu(evt){ const target=evt.target.closest('.highlight, .comment-highlight'); const sel=window.getSelection(); if(sel && sel.rangeCount) selectedRange=normalizeSelection(sel.getRangeAt(0)); if(!target && !selectedRange) return; evt.preventDefault(); document.getElementById('menu-highlight').style.display=selectedRange?'flex':'none'; document.getElementById('menu-note').style.display=selectedRange?'flex':'none'; document.getElementById('menu-clear').style.display=target?'flex':'none'; document.getElementById('menu-clear-all').style.display='flex'; contextMenu.dataset.clearTarget=target?getElementPath(target):''; contextMenu.style.display='block'; contextMenu.style.left=`${Math.min(evt.pageX, window.innerWidth-190)}px`; contextMenu.style.top=`${Math.min(evt.pageY, window.innerHeight-190)}px`; }
+  document.addEventListener('selectionchange', ()=>{ const sel=window.getSelection(); if(sel && sel.rangeCount) selectedRange=normalizeSelection(sel.getRangeAt(0)); });
+  window.highlightText=()=>{ wrapSelection('highlight'); closeContextMenu(); };
+  window.addNote=()=>{ notePendingRange=selectedRange; dom.noteText.value=''; dom.noteOverlay.classList.add('open'); dom.noteText.focus(); closeContextMenu(); };
+  window.clearHighlight=()=>{ const el=getElementFromPath(contextMenu.dataset.clearTarget); if(el) unwrapElement(el); closeContextMenu(); };
+  window.clearAllHighlights=()=>{ document.querySelectorAll('.highlight,.comment-highlight').forEach(unwrapElement); closeContextMenu(); };
+  passagePanel.addEventListener('contextmenu', openContextMenu); questionsPanel.addEventListener('contextmenu', openContextMenu);
+  document.addEventListener('click', e=>{ if(!contextMenu.contains(e.target)) closeContextMenu(); if(!e.target.closest('.comment-highlight')) document.querySelectorAll('.comment-highlight.note-open').forEach(el=>el.classList.remove('note-open')); });
+  dom.noteCancelBtn.addEventListener('click', ()=>{ dom.noteOverlay.classList.remove('open'); notePendingRange=null; });
+  dom.noteSaveBtn.addEventListener('click', ()=>{ const val=dom.noteText.value.trim(); if(val && notePendingRange){ selectedRange=notePendingRange; wrapSelection('comment-highlight', val); } dom.noteOverlay.classList.remove('open'); notePendingRange=null; });
+  dom.noteOverlay.addEventListener('click', e=>{ if(e.target===dom.noteOverlay) dom.noteCancelBtn.click(); });
+  deliverButton.innerHTML='<span>Options</span>';
+  deliverButton.addEventListener('click', openOptionsDrawer);
+  dom.headerOptionsButton.addEventListener('click', openOptionsDrawer);
+  dom.optionsCloseBtn.addEventListener('click', closeOptionsDrawer);
+  dom.submitFromDrawer.addEventListener('click', submitTest);
+  document.getElementById('contrastToggleRow').addEventListener('click', ()=>dom.contrastPanel.classList.toggle('open'));
+  document.getElementById('textSizeToggleRow').addEventListener('click', ()=>dom.textSizePanel.classList.toggle('open'));
+  document.querySelectorAll('[data-contrast]').forEach(b=>b.addEventListener('click', ()=>setContrast(b.dataset.contrast)));
+  document.querySelectorAll('[data-size]').forEach(b=>b.addEventListener('click', ()=>setTextSize(b.dataset.size)));
+  dom.reviewAnswersBtn.addEventListener('click', enterReviewMode); dom.closeResultsBtn.addEventListener('click', closeResultsModal); resultsModal.querySelector('.modal-close-btn').addEventListener('click', closeResultsModal);
+  dom.timerToggleButton.addEventListener('click', toggleTimer); dom.timerResetButton.addEventListener('click', resetTimer); resizer.addEventListener('mousedown', initResize);
+  document.body.addEventListener('input', updateNavigation); document.body.addEventListener('change', updateNavigation);
+  document.querySelectorAll('[data-q-start]').forEach(el=>el.addEventListener('click', ()=>{ const s=Number(el.dataset.qStart); if(!Number.isNaN(s)) currentQuestion=s; updateNavigation(); }));
+  window.nextQuestion=nextQuestion; window.previousQuestion=previousQuestion; window.goToQuestion=goToQuestion; window.switchToPart=switchToPart; window.closeResultsModal=closeResultsModal;
+  setContrast('default'); setTextSize('medium'); updateTimerDisplay(); startTimer(); switchToPart(1); goToQuestion(1); updateNavigation();
+});
+</script>
+
+
+<!-- FULLCDI highlight/note hotfix v2 -->
+
+<script>
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+  ready(function(){
+    const passagePanel=document.querySelector('.passage-panel');
+    const questionsPanel=document.querySelector('.questions-panel');
+    const contextMenu=document.getElementById('contextMenu');
+    const menuHighlight=document.getElementById('menu-highlight');
+    const menuNote=document.getElementById('menu-note');
+    const menuClear=document.getElementById('menu-clear');
+    const menuClearAll=document.getElementById('menu-clear-all');
+    const noteOverlay=document.getElementById('noteModalOverlay');
+    const noteText=document.getElementById('noteText');
+    const noteSaveBtn=document.getElementById('noteSaveBtn');
+    const noteCancelBtn=document.getElementById('noteCancelBtn');
+    if(!passagePanel || !questionsPanel || !contextMenu || !noteOverlay || !noteSaveBtn) return;
+
+    let savedRange=null;
+    let noteRange=null;
+    let targetMark=null;
+
+    function withinPanels(node){
+      if(!node) return false;
+      const el = node.nodeType===1 ? node : node.parentElement;
+      return !!(el && (passagePanel.contains(el) || questionsPanel.contains(el)));
+    }
+
+    function cloneSafeRange(range){
+      try{ return range ? range.cloneRange() : null; }catch(e){ return null; }
+    }
+
+    function normalizeRange(range){
+      if(!range || range.collapsed) return null;
+      if(!range.toString || !range.toString().trim()) return null;
+      if(!withinPanels(range.commonAncestorContainer)) return null;
+      return cloneSafeRange(range);
+    }
+
+    function captureSelection(){
+      const sel=window.getSelection();
+      if(!sel || !sel.rangeCount) return null;
+      const range=normalizeRange(sel.getRangeAt(0));
+      if(range) savedRange=range;
+      return range;
+    }
+
+    function closeContextMenu(){
+      contextMenu.style.display='none';
+      targetMark=null;
+    }
+
+    function unwrapElement(el){
+      if(!el || !el.parentNode) return;
+      const p=el.parentNode;
+      while(el.firstChild) p.insertBefore(el.firstChild, el);
+      p.removeChild(el);
+      p.normalize();
+    }
+
+    function wrapCurrentSelection(className, noteValue){
+      const range=normalizeRange(savedRange);
+      if(!range) return false;
+      const wrapper=document.createElement('span');
+      wrapper.className=className;
+      if(className==='comment-highlight'){
+        wrapper.setAttribute('tabindex','0');
+      }
+      try{
+        const frag=range.extractContents();
+        wrapper.appendChild(frag);
+        if(className==='comment-highlight'){
+          wrapper.dataset.note = noteValue || '';
+          let tip=document.createElement('span');
+          tip.className='comment-tooltip';
+          tip.textContent=noteValue || '';
+          wrapper.appendChild(tip);
+          wrapper.addEventListener('click', function(ev){
+            ev.stopPropagation();
+            document.querySelectorAll('.comment-highlight.note-open').forEach(el=>{ if(el!==wrapper) el.classList.remove('note-open'); });
+            wrapper.classList.toggle('note-open');
+          });
+        }
+        range.insertNode(wrapper);
+        window.getSelection().removeAllRanges();
+        savedRange=null;
+        return true;
+      }catch(err){
+        try{
+          range.surroundContents(wrapper);
+          if(className==='comment-highlight'){
+            wrapper.dataset.note = noteValue || '';
+            let tip=document.createElement('span');
+            tip.className='comment-tooltip';
+            tip.textContent=noteValue || '';
+            wrapper.appendChild(tip);
+          }
+          window.getSelection().removeAllRanges();
+          savedRange=null;
+          return true;
+        }catch(e){
+          return false;
+        }
+      }
+    }
+
+    function positionMenu(x,y){
+      contextMenu.style.display='block';
+      const w=Math.max(contextMenu.offsetWidth||180,180);
+      const h=Math.max(contextMenu.offsetHeight||180,180);
+      const left=Math.min(x, window.scrollX + window.innerWidth - w - 12);
+      const top=Math.min(y, window.scrollY + window.innerHeight - h - 12);
+      contextMenu.style.left=left+'px';
+      contextMenu.style.top=top+'px';
+    }
+
+    function openContextMenu(evt){
+      captureSelection();
+      targetMark = evt.target && evt.target.closest ? evt.target.closest('.highlight, .comment-highlight') : null;
+      if(!targetMark && !savedRange) return;
+      evt.preventDefault();
+      if(menuHighlight) menuHighlight.style.display = savedRange ? 'flex' : 'none';
+      if(menuNote) menuNote.style.display = savedRange ? 'flex' : 'none';
+      if(menuClear) menuClear.style.display = targetMark ? 'flex' : 'none';
+      if(menuClearAll) menuClearAll.style.display = 'flex';
+      positionMenu(evt.pageX, evt.pageY);
+    }
+
+    function openNoteModal(){
+      noteRange = normalizeRange(savedRange);
+      if(!noteRange) return;
+      noteText.value='';
+      noteOverlay.classList.add('open');
+      setTimeout(()=>noteText.focus(), 0);
+      closeContextMenu();
+    }
+
+    function saveNote(){
+      const val=(noteText.value||'').trim();
+      if(!val || !noteRange) { noteOverlay.classList.remove('open'); return; }
+      savedRange = cloneSafeRange(noteRange);
+      wrapCurrentSelection('comment-highlight', val);
+      noteRange=null;
+      noteOverlay.classList.remove('open');
+      noteText.value='';
+    }
+
+    function clearOne(){
+      if(targetMark) unwrapElement(targetMark);
+      closeContextMenu();
+    }
+
+    function clearAll(){
+      document.querySelectorAll('.highlight, .comment-highlight').forEach(unwrapElement);
+      closeContextMenu();
+    }
+
+    document.addEventListener('selectionchange', function(){ captureSelection(); });
+    ['mouseup','keyup','touchend'].forEach(ev=>document.addEventListener(ev, function(){ setTimeout(captureSelection, 0); }, true));
+    passagePanel.addEventListener('contextmenu', openContextMenu, true);
+    questionsPanel.addEventListener('contextmenu', openContextMenu, true);
+
+    if(menuHighlight){
+      menuHighlight.removeAttribute('onclick');
+      menuHighlight.addEventListener('click', function(e){ e.preventDefault(); wrapCurrentSelection('highlight'); closeContextMenu(); });
+    }
+    if(menuNote){
+      menuNote.removeAttribute('onclick');
+      menuNote.addEventListener('click', function(e){ e.preventDefault(); openNoteModal(); });
+    }
+    if(menuClear){
+      menuClear.removeAttribute('onclick');
+      menuClear.addEventListener('click', function(e){ e.preventDefault(); clearOne(); });
+    }
+    if(menuClearAll){
+      menuClearAll.removeAttribute('onclick');
+      menuClearAll.addEventListener('click', function(e){ e.preventDefault(); clearAll(); });
+    }
+    noteSaveBtn.addEventListener('click', function(e){ e.preventDefault(); saveNote(); });
+    if(noteCancelBtn) noteCancelBtn.addEventListener('click', function(e){ e.preventDefault(); noteOverlay.classList.remove('open'); noteRange=null; noteText.value=''; });
+    noteOverlay.addEventListener('click', function(e){ if(e.target===noteOverlay){ noteOverlay.classList.remove('open'); noteRange=null; } });
+
+    document.addEventListener('click', function(e){
+      if(!contextMenu.contains(e.target)) closeContextMenu();
+      if(!e.target.closest('.comment-highlight')) document.querySelectorAll('.comment-highlight.note-open').forEach(el=>el.classList.remove('note-open'));
+    }, true);
+
+    window.highlightText = function(){ wrapCurrentSelection('highlight'); closeContextMenu(); };
+    window.addNote = function(){ openNoteModal(); };
+    window.clearHighlight = function(){ clearOne(); };
+    window.clearAllHighlights = function(){ clearAll(); };
+  });
+})();
+</script>
+
+</body>
+</html>

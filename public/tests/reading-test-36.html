@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Full Reading Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            line-height: 1.4;
+            font-size: 16px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 60px;
+        }
+
+        .test-info {
+            display: flex;  
+            align-items: center;
+            gap: 30px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .timer-container {
+            display: flex;
+            position: relative;
+            cursor: default;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            align-items: center;
+        }
+
+        .timer-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+        }
+
+        .timer-controls button {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .timer-controls button:hover {
+            background: #e0e0e0;
+        }
+
+        .timer-controls button svg {
+            width: 20px;
+            height: 20px;
+            fill: #333;
+        }
+
+        .telegram-link {
+            color: #3e3e3e;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border: 2px solid #3e3e3e;
+            border-radius: 9999px;
+            background-color: #ffffff;
+            line-height: 1;
+        }
+
+        .telegram-link:hover {
+            text-decoration: underline;
+        }
+
+        .telegram-link::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: currentColor;
+            -webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-1.37.2-1.64l16.56-6.4c.75-.29 1.4.22 1.2.94l-2.67 12.61c-.22.95-1.13 1.18-1.78.73l-4.5-3.32l-2.23 2.15c-.47.44-1.29.21-1.48-.37z"/></svg>');
+            mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-1.37.2-1.64l16.56-6.4c.75-.29 1.4.22 1.2.94l-2.67 12.61c-.22.95-1.13 1.18-1.78.73l-4.5-3.32l-2.23 2.15c-.47.44-1.29.21-1.48-.37z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .main-container {
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            height: calc(100vh - 60px);
+            position: relative;
+        }
+
+        .part-header {
+            background-color: #f1f2ec;
+            padding: 15px 20px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            margin: 10px 20px;
+            border-radius: 5px;
+        }
+        .part-header p {
+            margin: 0;
+        }
+        .part-header p:first-child {
+            margin-bottom: 5px;
+        }
+
+        .panels-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .passage-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .passage-panel::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+        
+        .passage-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .passage-panel::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .passage-panel:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+        }
+
+        .reading-passage h4 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+       
+        .reading-passage p {
+            margin-bottom: 1.2em;
+        }
+
+        .questions-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px;
+            border-left: 1px solid #e0e0e0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .questions-panel::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+        
+        .questions-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .questions-panel::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .questions-panel:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+        }
+
+        .resizer {
+            position: relative;
+            background: transparent;
+            cursor: col-resize;
+            flex-shrink: 0;
+            flex-grow: 0;
+            z-index: 5;
+            width: 16px;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .resizer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            transform: translateX(-50%);
+            background-color: #3e3e3e;
+        }
+        .resizer::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            background-color: #ffffff;
+            border: 2px solid #3e3e3e;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="%233e3e3e" fill="%233e3e3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><line x1="4" y1="12" x2="20" y2="12"/></svg>');
+            background-repeat: no-repeat;
+            background-size: 60% 60%;
+            background-position: center;
+            pointer-events: none;
+        }
+
+        /* Question Styling */
+        .question {
+            margin-bottom: 40px;
+        }
+        .question-prompt {
+            margin-bottom: 20px;
+        }
+        .question-prompt p {
+            margin-bottom: 10px;
+        }
+
+        /* TF/NG Questions */
+        .tf-question {
+            margin-bottom: 25px;
+            padding: 10px 0px;
+            border-radius: 4px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .tf-question-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 5px 0px;
+            border-radius: 4px;
+        }
+        .tf-question-number {
+            border: 2px solid #ccc;
+            padding: 2px 8px;
+            margin-right: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: border-color 0.3s;
+            display: inline-block;
+            min-width: 30px;
+            text-align: center;
+        }
+        .tf-question.active-question .tf-question-number {
+            border-color: #4a90e2;
+        }
+        .tf-question-text {
+            padding-top: 3px;
+        }
+        .tf-options {
+            padding-left: 5px;
+        }
+        .tf-option {
+            display: block;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: #fff;
+        }
+        .tf-option:hover {
+            background-color: #f1f7ff;
+            border-color: #c6dcfb;
+        }
+        .tf-option:has(input[type="radio"]:checked) {
+            background-color: #cfe3f9;
+            border-color: #7db3f5;
+        }
+        .tf-option.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            border-width: 1px;
+        }
+        .tf-option.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            border-width: 1px;
+        }
+        body.results-mode .tf-option:has(input[type="radio"]:checked) {
+            box-shadow: none;
+        }
+        .tf-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        /* Flow Chart Questions */
+        .flow-chart {
+            border: 1px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .flow-chart-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            position: relative;
+        }
+        .flow-chart-arrow {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .flow-chart-text {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+            text-align: center;
+        }
+        .flow-chart-input {
+            border: 1px solid #bfbfbf;
+            border-radius: 4px;
+            background-color: #fff;
+            padding: 2px 8px;
+            font-size: 16px;
+            text-align: center;
+            font-weight: 700;
+            margin: 0 5px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            height: 28px;
+            min-width: 150px;
+            -webkit-autocomplete: none;
+            -moz-autocomplete: none;
+            autocomplete: none;
+        }
+        .flow-chart-input.active-input,
+        .flow-chart-input:focus {
+            border-color: #3581d8;
+            border-width: 2px;
+            outline: none;
+        }
+        .flow-chart-input.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .flow-chart-input.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Sentence Completion */
+        .sentence-completion {
+            margin: 20px 0;
+        }
+        .sentence-completion p {
+            line-height: 2.5;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        .sentence-input {
+            border: 1px solid #bfbfbf;
+            border-radius: 4px;
+            background-color: #fff;
+            padding: 2px 8px;
+            font-size: 16px;
+            text-align: left;
+            font-weight: 700;
+            margin: 0 5px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            height: 28px;
+            min-width: 150px;
+            -webkit-autocomplete: none;
+            -moz-autocomplete: none;
+            autocomplete: none;
+        }
+        .sentence-input.active-input,
+        .sentence-input:focus {
+            border-color: #3581d8;
+            border-width: 2px;
+            outline: none;
+        }
+        .sentence-input.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .sentence-input.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Summary Completion */
+        .summary-completion {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .summary-input {
+            border: 1px solid #bfbfbf;
+            border-radius: 4px;
+            background-color: #fff;
+            padding: 2px 8px;
+            font-size: 16px;
+            text-align: left;
+            font-weight: 700;
+            margin: 0 5px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            height: 28px;
+            min-width: 150px;
+            -webkit-autocomplete: none;
+            -moz-autocomplete: none;
+            autocomplete: none;
+        }
+        .summary-input.active-input,
+        .summary-input:focus {
+            border-color: #3581d8;
+            border-width: 2px;
+            outline: none;
+        }
+        .summary-input.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .summary-input.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Sentence Matching */
+        .sentence-matching {
+            margin: 20px 0;
+        }
+        .matching-sentence {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .matching-number {
+            font-weight: bold;
+            margin-right: 10px;
+            min-width: 30px;
+        }
+        .matching-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
+            min-width: 120px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .matching-select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        .matching-select.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .matching-select.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+        }
+
+        /* Multiple Choice */
+        .multi-choice-question {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 3px solid transparent;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .multi-choice-question .question-prompt p > strong:first-child {
+            border: 2px solid #ccc;
+            padding: 2px 8px;
+            margin-right: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: border-color 0.3s;
+            display: inline-block;
+        }
+        .multi-choice-question.active-question .question-prompt p > strong:first-child {
+            border-color: #4a90e2;
+            border-width: 2px;
+        }
+        .multi-choice-option {
+            padding: 10px 12px;
+            background-color: #fff;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .multi-choice-option:hover {
+            background-color: #f1f7ff;
+            border-color: #c6dcfb;
+        }
+        .multi-choice-option:has(input:checked) {
+            background-color: #cfe3f9;
+            border-color: #7db3f5;
+        }
+        .multi-choice-option.correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            box-shadow: inset 0 0 0 2px rgba(40, 167, 69, 0.25) !important;
+            border-width: 1px;
+            border-radius: 6px;
+        }
+        .multi-choice-option.incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            box-shadow: inset 0 0 0 2px rgba(220, 53, 69, 0.25) !important;
+            border-width: 1px;
+            border-radius: 6px;
+        }
+        .multi-choice-option.correct-answer-highlight {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+        }
+        body.results-mode .multi-choice-option:has(input:checked) { box-shadow: none; }
+        .multi-choice-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .multi-choice-option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.3);
+            accent-color: #4a90e2;
+        }
+
+        /* Navigation Arrows */
+        .nav-arrows {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            gap: 6px;
+            z-index: 101;
+        }
+        .nav-arrow {
+            width: 48px;
+            height: 48px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            transition: transform 0.1s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            outline: none;
+        }
+        .nav-arrow.prev { background-color: #4b5563; }
+        .nav-arrow.next { background-color: #000000; }
+        .nav-arrow:hover { transform: translateY(-1px); }
+        .nav-arrow:active { transform: translateY(0); }
+        .nav-arrow:focus-visible { box-shadow: 0 0 0 3px rgba(59,130,246,0.4); }
+        .nav-arrow:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Navigation */
+        .nav-row {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            z-index: 100;
+        }
+        .footer__questionWrapper___1tZ46 {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .footer__questionNo___3WNct {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+        .footer__questionNo___3WNct:hover {
+            background-color: #f8f9fa;
+        }
+        .section-prefix {
+            font-size: 16px;
+        }
+        .sectionNr {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .attemptedCount {
+            font-size: 14px;
+            color: #666;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+        .footer__questionWrapper___1tZ46.selected .attemptedCount {
+            display: none;
+        }
+        .footer__subquestionWrapper___9GgoP {
+            display: none;
+            gap: 2px;
+            margin-left: 10px;
+        }
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP {
+            display: flex;
+        }
+        .subQuestion {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ccc;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+        .subQuestion.answered {
+            background-color: #e9ecef;
+            border-color: #ddd;
+        }
+        .subQuestion.correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .subQuestion.incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .subQuestion:hover {
+            background-color: #f0f0f0;
+            border-color: #999;
+        }
+        .subQuestion.active {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #4a90e2;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .footer__deliverButton___3FM07 {
+            margin-left: auto;
+            margin-right: 20px;
+            background-color: #f3f4f6;
+            color: #111827;
+            border: 1px solid #d1d5db;
+            padding: 10px 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.08s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            min-width: 160px;
+            justify-content: center;
+        }
+        .footer__deliverButton___3FM07:hover {
+            background-color: #ebedf0;
+            border-color: #c7ccd4;
+        }
+        .footer__deliverButton___3FM07:active {
+            transform: translateY(1px);
+        }
+        .footer__deliverButton___3FM07:focus-visible {
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.35);
+            outline: none;
+        }
+        .footer__deliverButton___3FM07:disabled {
+            background: #eef0f3;
+            color: #9ca3af;
+            cursor: not-allowed;
+            border-color: #e5e7eb;
+            box-shadow: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Context Menu */
+        .context-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 140px;
+        }
+        .context-menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .context-menu-item:hover {
+            background-color: #f8f9fa;
+        }
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+        .highlight {
+            background-color: #ffff00;
+        }
+        .comment-highlight {
+            background-color: #90EE90;
+            position: relative;
+            cursor: help;
+        }
+        .comment-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .comment-highlight:hover .comment-tooltip {
+            opacity: 1;
+        }
+
+        /* Correct Answer Display */
+        .correct-answer-display {
+            font-weight: bold;
+            color: #28a745;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        /* Results Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-content {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 14px;
+            width: 92%;
+            max-width: 780px;
+            max-height: 86vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+        }
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 18px;
+            color: #111827;
+        }
+        .results-summary {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 16px;
+            text-align: center;
+            border-bottom: 1px solid #eef2f7;
+            padding-bottom: 12px;
+        }
+        .results-summary p {
+            margin: 0;
+            font-size: 14px;
+            color: #374151;
+        }
+        .results-summary p span {
+            display: inline-block;
+            padding: 4px 10px;
+            margin-left: 6px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            font-weight: 700;
+            color: #111827;
+        }
+        .results-details-container {
+            overflow-y: auto;
+            padding-right: 10px;
+            border-radius: 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .results-details-container::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+        
+        .results-details-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .results-details-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .results-details-container:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+        }
+        .result-row {
+            display: grid;
+            grid-template-columns: 56px 1fr 1fr;
+            gap: 12px;
+            padding: 10px 8px;
+            border-bottom: 1px solid #eef2f7;
+            font-size: 15px;
+            align-items: center;
+        }
+        .result-row.correct {
+            background-color: #f3faf5;
+        }
+        .result-row.incorrect {
+            background-color: #fff5f5;
+        }
+        .result-row .q-num {
+            font-weight: 700;
+            color: #111827;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            width: 42px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .result-row .user-ans {
+            color: #374151;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .result-row .correct-ans {
+            color: #065f46;
+            font-weight: 600;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .attemptedCount {
+                display: none;
+            }
+            .resizer {
+                width: 20px;
+            }
+            .resizer::after {
+                width: 44px;
+                height: 44px;
+            }
+            .header {
+                padding: 10px 15px;
+                height: 70px;
+            }
+            .timer-container {
+                font-size: 18px;
+            }
+            .telegram-link {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .passage-panel, .questions-panel {
+                width: 100%;
+                min-width: auto;
+            }
+            .resizer {
+                display: none;
+            }
+            .footer__questionWrapper___1tZ46 {
+                margin-right: 5px;
+            }
+            .footer__questionNo___3WNct {
+                padding: 10px 12px;
+                font-size: 16px;
+            }
+        }
+
+        /* Global scrollbar styling */
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        *::-webkit-scrollbar {
+            width: 8px;
+            background: transparent;
+        }
+        
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        *::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        *:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+        }
+            :root{
+            --bg:#ffffff;--surface:#ffffff;--surface-2:#f8fafc;--text:#111827;--muted:#4b5563;--line:#d1d5db;
+            --accent:#d9232d;--brand:#0f172a;--btn:#f3f4f6;--btn-text:#111827;--correct:#15803d;--incorrect:#b91c1c;
+            --highlight:#fff59d;--review-bg:#f8fafc;--base-font:16px;
+        }
+        body{background:var(--bg)!important;color:var(--text)!important;font-size:var(--base-font)!important;-webkit-touch-callout:none}
+        body[data-contrast="dark"]{--bg:#000;--surface:#050505;--surface-2:#111;--text:#fff;--muted:#d1d5db;--line:#3f3f46;--btn:#18181b;--btn-text:#fff;--highlight:#414141;--review-bg:#0d0d0d}
+        body[data-contrast="yellow"]{--bg:#000;--surface:#080808;--surface-2:#101010;--text:#ffe66b;--muted:#f3e7a0;--line:#5c5314;--btn:#171717;--btn-text:#ffe66b;--highlight:#635d20;--review-bg:#0d0d0d}
+        body[data-text-size="small"]{--base-font:14px} body[data-text-size="medium"]{--base-font:16px} body[data-text-size="large"]{--base-font:18px}
+        .header{height:64px!important;padding:0 16px!important;background:var(--surface)!important;border-bottom:1px solid var(--line)!important;display:grid!important;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;box-shadow:0 4px 22px rgba(15,23,42,.06)}
+        .header-left,.header-right,.header-center{display:flex;align-items:center}.header-left{gap:14px;min-width:0}.header-center{justify-content:center}.header-right{justify-content:flex-end;gap:10px;min-width:0}
+        .ielts-wordmark{font-size:28px;font-weight:800;letter-spacing:.04em;color:var(--accent);line-height:1}.test-taker-id{font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap}
+        .timer-container,.timer-shell{display:flex;align-items:center;justify-content:center}.timer-shell{min-width:112px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);font-weight:800;color:var(--text)}
+        .timer-controls,#timer-toggle-btn,#timer-reset-btn{display:none!important}
+        .icon-btn,.menu-toggle-btn{width:40px;height:40px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .18s ease,background .18s ease,border-color .18s ease}
+        .icon-btn:hover,.menu-toggle-btn:hover,.telegram-link:hover,.segment-btn:hover,.drawer-action-btn:hover,.primary-btn:hover,.secondary-btn:hover{transform:translateY(-1px)}
+        .telegram-link{color:var(--btn-text)!important;border:1px solid var(--line)!important;background:var(--surface-2)!important;padding:10px 14px!important;font-size:14px!important;font-weight:700!important;text-decoration:none!important;transition:transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;white-space:nowrap}
+        .telegram-link:hover{box-shadow:0 8px 20px rgba(15,23,42,.08)!important;text-decoration:none!important}
+        .menu-toggle-btn{gap:4px;flex-direction:column}.menu-toggle-btn span{display:block;width:16px;height:2px;background:currentColor;border-radius:999px}
+        .main-container{margin-top:64px!important;height:calc(100vh - 64px)!important;background:var(--bg)!important}
+        .part-header,.summary-completion,.matching-sentence,.flow-chart,.flow-chart-text,.modal-content,.options-drawer-content,.note-modal-content,.nav-row,.context-menu{background:var(--surface)!important;color:var(--text)!important;border-color:var(--line)!important}
+        .part-header p,.question-prompt p,.reading-passage p,.reading-passage li,.reading-passage h4,.tf-question-text,.matching-sentence span,.result-row,.drawer-label,.drawer-section,.modal-content h2,.note-modal-content h2{color:var(--text)!important}
+        .passage-panel,.questions-panel{padding-top:18px!important;padding-bottom:112px!important;background:var(--bg)!important}.questions-panel{border-left:1px solid var(--line)!important}
+        .resizer::before{background:var(--line)!important}.resizer::after{background-color:var(--surface)!important;border-color:var(--line)!important}
+        .flow-chart-input,.sentence-input,.summary-input,.matching-select{background:var(--surface)!important;color:var(--text)!important;border:1px solid var(--line)!important;height:34px!important}
+        .multi-choice-option,.tf-option{background:transparent!important;border:1px solid transparent;border-radius:8px}
+        .multi-choice-option:hover,.tf-option:hover{background:var(--surface-2)!important}
+        .multi-choice-option:has(input:checked),.tf-option:has(input:checked){background:var(--surface-2)!important;border-color:var(--line)!important}
+        .nav-row{border-top:1px solid var(--line);height:72px!important;padding:0 8px!important}
+        .footer__deliverButton___3FM07,.drawer-action-btn,.primary-btn,.secondary-btn,.segment-btn{border:1px solid var(--line);background:var(--btn);color:var(--btn-text);border-radius:12px;font-weight:700}
+        .footer__deliverButton___3FM07{min-width:130px!important}
+        .footer__questionNo___3WNct,.subQuestion{color:var(--text)!important}
+        .modal-overlay{z-index:3000!important}
+        .modal-content,.options-drawer-content,.note-modal-content{max-height:86vh;overflow:auto}
+        .options-drawer-content,.note-modal-content{width:min(520px,92vw);padding:24px;border-radius:18px;position:relative;border:1px solid var(--line);box-shadow:0 25px 70px rgba(0,0,0,.28)}
+        .drawer-section{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+        .drawer-label{font-size:14px;font-weight:800;margin-bottom:12px}.segmented-group{display:flex;gap:10px;flex-wrap:wrap}
+        .segment-btn,.drawer-action-btn,.primary-btn,.secondary-btn{padding:12px 14px;cursor:pointer;transition:transform .18s ease,background .18s ease,border-color .18s ease}
+        .segment-btn.active{outline:2px solid #3b82f6;outline-offset:0} body[data-contrast="yellow"] .segment-btn.active{outline-color:#facc15}
+        .results-actions{display:flex;justify-content:center;margin:0 0 14px}
+        .result-row{grid-template-columns:56px 1fr 1fr!important;border-bottom:1px solid var(--line)!important}
+        .result-row.correct{background:rgba(34,197,94,.08)!important}.result-row.incorrect{background:rgba(239,68,68,.08)!important}
+        .result-row .q-num,.result-row .user-ans,.result-row .correct-ans{border-color:var(--line)!important}
+        .review-block{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--review-bg);font-size:.95em}
+        .review-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
+        .review-chip{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+        .review-chip.correct{border-color:rgba(34,197,94,.35);background:rgba(34,197,94,.08)} .review-chip.incorrect{border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.08)}
+        .review-label{font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+        .review-explanation,.review-evidence{margin-top:10px;padding:12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+        .answer-highlight{background:linear-gradient(transparent 55%, rgba(250, 204, 21, .45) 55%)!important;border-radius:4px;padding:0 .05em;box-decoration-break:clone;-webkit-box-decoration-break:clone;position:relative}
+        .answer-highlight .q-badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#000;color:#fff;font-size:11px;font-weight:800;line-height:1;margin-right:6px;vertical-align:middle}
+        .context-menu{min-width:160px;border-radius:14px;border:1px solid var(--line)!important;box-shadow:0 20px 40px rgba(0,0,0,.16)} .context-menu-item{color:var(--text)!important} .context-menu-item:hover{background:var(--surface-2)!important}
+        .highlight{background:var(--highlight)!important;border-radius:3px;padding:0 .05em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+        .note-anchor{text-decoration:underline 2px solid currentColor;text-underline-offset:3px;cursor:pointer;position:relative}
+        .floating-note-tooltip{position:fixed;z-index:5000;max-width:min(300px,80vw);padding:10px 12px;border-radius:12px;background:#111827;color:#fff;font-size:13px;line-height:1.4;box-shadow:0 20px 45px rgba(0,0,0,.28);pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .12s ease, transform .12s ease}
+        .floating-note-tooltip.show{opacity:1;transform:translateY(0)}
+        .note-textarea{width:100%;min-height:130px;margin-top:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:14px;padding:14px;font:inherit;resize:vertical}
+        .note-modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+        body.review-mode .timer-shell{visibility:hidden} body.review-mode .nav-arrows{display:none} body.review-mode .question-set,.question{display:block!important} body.review-mode .question{scroll-margin-top:90px}
+        @media (max-width:900px){.header{grid-template-columns:1fr auto;grid-template-areas:"left right" "center center";height:auto!important;padding:10px 12px!important}.header-left{grid-area:left}.header-right{grid-area:right}.header-center{grid-area:center}.telegram-link{display:none!important}}
+
+    </style>
+</head>
+<body>
+        <div class="header">
+        <div class="header-left">
+            <div class="ielts-wordmark">IELTS</div>
+            <div class="test-taker-id">Test taker ID</div>
+        </div>
+        <div class="header-center">
+            <div class="timer-shell" id="timer-shell">
+                <span class="timer-display">60:00</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="icon-btn" type="button" aria-label="Connection status" title="Connection status">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M2 9.5C7.5 4.5 16.5 4.5 22 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M5 13C8.9 9.4 15.1 9.4 19 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M8.5 16.5C10.5 14.7 13.5 14.7 15.5 16.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <circle cx="12" cy="20" r="1.6" fill="currentColor"/>
+                </svg>
+            </button>
+            <button class="icon-btn" type="button" aria-label="Notifications" title="Notifications">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6.5 16.5h11l-1.2-1.9a3.8 3.8 0 0 1-.6-2V10a3.7 3.7 0 1 0-7.4 0v2.6c0 .7-.2 1.4-.6 2l-1.2 1.9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M10 18.5a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <a href="https://t.me/jasurbeks_ielts" target="_blank" class="telegram-link">Join us on Telegram</a>
+            <button class="menu-toggle-btn" id="top-options-btn" type="button" aria-label="Open options" title="Open options">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container" id="main-container">
+        <div id="passage-header-container">
+            <div id="part-header-1" class="part-header">
+                <p><strong>Part 1</strong></p>
+                <p>Read the text and answer questions 1-13.</p>
+            </div>
+            <div id="part-header-2" class="part-header hidden">
+                <p><strong>Part 2</strong></p>
+                <p>Read the text and answer questions 14-26.</p>
+            </div>
+            <div id="part-header-3" class="part-header hidden">
+                <p><strong>Part 3</strong></p>
+                <p>Read the text and answer questions 27-40.</p>
+            </div>
+        </div>
+        <div class="panels-container">
+            <div class="passage-panel" id="passage-panel">
+                <div id="passage-text-1" class="reading-passage">
+                    <h4 class="text-center">Soap</h4>
+                    <p>One substance everyone uses every day is soap, whether it be for washing our hands using a bar of soap, doing the laundry or washing the floor with detergent. Technically, soaps are ionic compounds from fatty acids and they are used for a variety of cleaning purposes. Soaps allow particles that cannot usually be dissolved in water to be soluble and then be washed away. Although made in a different way, synthetic detergents operate in a similar fashion.</p>
+                    <p>The human skin is under daily attack from various things, such as scorching sun, drying winds, biting cold weather, bacteria and dirt, and so our distant ancestors learned quickly that preserving the health of skin is a way for better and longer life. Popular in different civilisations, the benefits of soap finally managed to appeal to a wide European population in the 17th century, and, since then, the tradition of maintaining high personal hygiene has experienced only constant growth. With its ability to clean people's clothes and disinfect their surroundings from harmful bacteria and dirt, soaps remain one of the most useful and fundamental hygiene tools that mankind ever created.</p>
+                    <p>The first concrete evidence we have of a soap-like substance is dated around 2800 BC. The first soap makers were Babylonians, Mesopotamians, Egyptians, as well as the ancient Greeks and Romans. All of them made soap by mixing fat, oils and salts. Soap was not made and used for bathing and personal hygiene, but was rather produced for cleaning cooking utensils or goods or was used for medicinal purposes. According to Roman legend, their natural soap was first discovered near a mount called 'Sapo', where animals were sacrificed. Rain used to wash the fat from sacrificed animals along with wood ashes into the River Tiber, where the women who were washing clothes in it found the mixture made their washing easier. It is a nice story, but unfortunately there is no such place on record and no evidence for the mythical story.</p>
+                    <p>Soaps today come in three principal forms: bars, powders and liquids. Some liquid products are so viscous that they are gels. Raw materials are chosen according to many criteria, including their human and environmental safety, cost, compatibility with other ingredients, and the desired form and performance characteristics of the finished product. In ancient times, soap was made from animal fats and wood ashes. Today, it is still produced from vegetable or animal fats and alkali. The main sources of fats are beef and mutton tallow, while palm, coconut and palm kernel oils are the principal oils.</p>
+                    <p>In the early beginnings of soap making, it was an exclusive technique used by small groups of soap makers. The demand for early soap was high, but it was very expensive and there was a monopoly on soap production in many areas. Over time, recipes for soap making became more widely known, but soap was still expensive.</p>
+                    <p>Modern soap was made by the batch kettle boiling method until shortly after World War II, when continuous processes were developed. Continuous processes are preferred today, because of their flexibility, speed and economics. The first part of the manufacturing process is to heat the raw materials to remove impurities. This is followed by saponification, which involves adding a powerful alkali to the heated raw materials. This releases the fatty acids (known as 'neat soap') that are the basis of the soap and a valuable by-product, glycerine. The glycerine is recovered by chemical treatment, followed by evaporation and refining. Refined glycerine is an important industrial material used in foods, cosmetics, drugs and many other products. The next processing for the soap is vacuum spray drying to convert the neat soap into dry soap pellets. The moisture content of the pellets will be determined by the desired characteristics of the soap bar. In the final processing step, the dry soap pellets pass through a bar soap finishing line. The first unit in the line is a mixer, called an amalgamator, in which the soap pellets are blended together with fragrance, shades and all other ingredients. The mixture is then homogenised and refined through rolling mills and refining plodders to achieve thorough blending and a uniform texture. Finally, the mixture is cut into bar-size units and stamped into its final shape in a soap press.</p>
+                    <p>The history of liquid soaps and gels started only recently, when the technological and chemical advancements of the modern age enabled countless inventors to start experimenting with more complicated recipes. The first appearance of liquid soap happened in the mid 1800's with the exploits of several inventors. In 1865, William Shepphard patented liquid soap, however, popularity of this product would not arrive until the creation of Palmolive soap in 1898 by B.J. Johnson.</p>
+                    <p>Advancements in modern chemistry enabled the creation of shower gel. The main difference between liquid soaps and shower gels is that gels do not contain saponified oil. They are based mostly on petroleum, have numerous chemical ingredients that help the easier cleaning of skin, lather better in hard water areas, do not leave a residue on the skin and bathtub, and are in a balanced PH state, so that they do not cause skin irritations. Because some shower gels can cause drying up of the skin after use, many manufacturers insert various moisturisers into their recipes. Some use menthol, an ingredient that gives skin a sensation of coldness and freshness.</p>
+                </div>
+                <div id="passage-text-2" class="reading-passage hidden">
+                    <h4 class="text-center">Space Flight Tourism</h4>
+                    <p>Falcon 1's successful launch on 28th of September was an outstanding achievement for the fledgeling space tourism industry. When a rocket made by Space X in Hawthorne, California, reached an orbit of 500 kilometres from the Earth, it became possible for privately developed rocket too.</p>
+                    <p>Two days after the launch, Virgin Galactic started a business with the US National Oceanic and Atmospheric Administration which will be accepted by US scientists as a way of researching climate change using a spacecraft.</p>
+                    <p>No doubt the civilian space flight industry is an exciting area and this was apparent at the International Aeronautical Congress in Glasgow last month. It displayed slick promotional videos, and models of the "Nearly Ready" spacecraft in orbit to the people who would be investing money in the project.</p>
+                    <p>However, in spite of increasing confidence, it is also necessary to be cautious: can a civilian spacecraft be safe like holiday airlines? Gerardine Goh, a lawyer at DLR, the German Aerospace Centre in Bonn and a member of Germany's delegation to the UN's Office of Outer Space Affairs reported that as it is not global, there need to be enforceable regulations in place to guarantee the safety of a civilian spacecraft. She said, "Ships should be equipped to be seaworthy, aircraft should be equipped to be airworthy but there is no legislation in place to ensure that a spacecraft is spaceworthy."</p>
+                    <p>At the International Association for the Advancement of Space Safety, Goh is planning to press the UN to force civilian space operators to warrant which spacecraft are designed and built to minimum safety standards. She says, "Mass commercial space flight does not currently have international safety regulations." and "We deeply need a UN treaty which offers us this."</p>
+                    <p>One way companies are planning to transport tourists into space is with a "mother ship", an aircraft which carries a rocket at an altitude of 16 kilometres before launching it, says Goh. "But with launching the aircraft, the ICAO's air safety standards only apply to the mother ship and the rocket capsule until they are separated. After that, we do not have any safety standards for the capsule itself. It is a critical problem."</p>
+                    <p>From 16 kilometres to the Karman line, the point of 100 kilometres up where space is considered to start, the rocket will be travelling within a legal vacuum. Here, lawyers cannot agree on whether it is a plane or a rocket. Some insist that if you are in a well-equipped functioning rocket, more strict safety measures should try to be incorporated into the spaceship's design.</p>
+                    <p>The other aspects of the UN's 1967 treaty for outer space exploration may be discussed again if civilian space flight turns out to be successful. For example, countries must consider how to rescue and repatriate astronauts crashing or landing in their land. Also, governments have to decide if the money generated by the space flight industry will be enough to cover the cost of rescuing space tourists.</p>
+                    <p>Civilian space flight companies are very aware of the risks in this field as they have already had the experience of dealing with a tragedy. Unfortunately, three engineers were killed and another three were severely injured in 2007, when nitrous oxide rocket fuel suddenly exploded during fuel flow tests at a Scaled Composites facility in Mojave, California. The company is establishing WhiteKnightTwo, a carrier aircraft and SpaceShip Two, a six-seater rocket for Virgin Galactic. The facility was regulated by California's health and safety regulator, and it has now modified its technology to decrease the risks.</p>
+                    <p>However, space flight's dangers are far from just fuel issues. According to Laurent Gathier of Dassault Aviation developing the VSH of a rocketpowered sub-orbital tourist space plane, other critical safety factors are with depressurization risks, passengers close to the engine and the activities of flight trajectories including cosmic ray shielding.</p>
+                    <p>Civilian space companies should incorporate the safety features into their designs. For instance, the VSH will equip an ejector seat for all tourists and staff. It is a device for bailing out of the spacecraft with a default of 40,000 feet (12 kilometres).</p>
+                    <p>Goh's vision is essentially against the Federal Aviation Administration Office of Commercial Space Transportation (AST) and does not have any schemes to regulate civilian space flight safety until 2012. The Commercial Space Launch Amendments Act of 2004 mentions that George Nield as AST chief said, the civilian space flight regulation must not "stifle" the developing technologies with inconvenient rules.</p>
+                    <p>Before launching, a hands-off approach to civilian space flight could be quite risky. Goh said, "A lack of safety standards and a lot of operational burdens will leave a commercial space flight in the dangerous activity categories in terms of the insurance." It means insurance costs will be very high. Critics who are developing safety standards also insist that the "at-your-own-risk" mentality that is applied to risky sports like scuba-diving should also be applied to civilian space flight.</p>
+                </div>
+                <div id="passage-text-3" class="reading-passage hidden">
+                    <h4 class="text-center">Doctor's Rights and Drinks</h4>
+                    <p>New Yorker John Davin started his campaign for election to Congress on 26th of September 1922. Actually, he was not a politician, but a doctor who practiced in a local city for 40 years at the top of his profession. Davin and other doctors with the same opinions were faced with the task of arguing their cases in front of the people. Also, they made a new political party, the Medical Rights League, and decided that Davin should run as a candidate for the coming election. What did they want? Beer, or more precisely, a doctor who had the right to prescribe it.</p>
+                    <p>The Congress had legislated the law prohibiting the sale of alcohol in January 1920. The aim was to transform a nation of drinkers and gamblers into one of hard-working, law-abiding, teetotal citizens. It was now illegal to sell or buy a drink that included more than 0.5 per cent alcohol "for beverage purpose." Only medical alcohol was allowed, but the conditions were so strict. Doctors could prescribe "liquor" when there was a "need to afford relief from a known ailment". Patients could not have more than a pint of liquor "within 10 days at any time". Doctors who needed to prescribe alcohol were approved for a permit. But the current law said nothing about beer, traditional alcohol for ailments from anaemia to anthrax. So, could they prescribe beer or not?</p>
+                    <p>As doctors were requesting permission to prescribe beer, someone had to make a decision. That person was Attorney General Mitchell Palmer, a staunch supporter of Prohibition. To the delight of doctors and dismay of prohibitionists, he urged "it was not the purpose of Congress to prohibit the use of liquor for non-beverage usages." The Congress accepted medicinal alcohol for non-beverage usages. It was for "beer and other malt liquors."</p>
+                    <p>The Prohibitionists were very enraged. They had suspicions that doctors were in league with the brewers and that their intentions were more to disrupt Prohibition than for medicinal purposes. Although brandy and whisky might have some medicinal advantages, in their view, beer was not needed at pharmacies. Congressman Andrew Volstead, who drafted the National Prohibition Act, criticized the decision saying "It is not a worthy argument that beer is medicine," "Everything in beer except the alcohol is similar to the bears that can be bought without any prescription." He immediately set up a supplementary bill that would further restrict medicinal alcohol and ban "medical beer" altogether.</p>
+                    <p>Now, it was the doctors' turn to be infuriated. How dare politicians presume to tell doctors what sort of things they could prescribe or how much. The merits of medicinal alcohol were suddenly a topic of national debate. For a couple of decades, doctors had been divided on the issue. Many insisted it was a treatment for all manners of disease. Others removed a worthless remedy left from the past. The American Medical Association (AMA), in 1917, denied the medicinal usage of alcohol, "Its value in therapeutics as a tonic, stimulant or food has no scientific basis."</p>
+                    <p>However, as Prohibition hit home, doctors' enthusiasm for alcohol improved. Articles admiring beer, wine and whisky spread among medical journals. One doctor suggested champagne worked wonders in cases of scarlet fever. Beer was warranted to treat sleeplessness. One of the US's top doctors even insisted that when children with diphtheria developed secondary infections, alcohol could save them.</p>
+                    <p>According to JAMA, the report said, "Impressive particularly was the sincerity of the belief of a lot of physicians in the therapeutic effect of whisky within a limited number of diseases." "But equally impressive was the expressed belief of a limited number of physicians of necessity within a lot of diseases." The contents ran from anaemia to uraemia, including influenza and indigestion, cancer, colds and heart disease.</p>
+                </div>
+            </div>
+            <div class="resizer" id="resizer"></div>
+            <div class="questions-panel" id="questions-panel">
+                <!-- Part 1 Questions -->
+                <div id="questions-1" class="question-set">
+                    <div class="questions-container">
+                        <!-- Questions 1-4: TRUE/FALSE/NOT GIVEN -->
+                        <div class="question" data-q-start="1" data-q-end="4">
+                            <div class="question-prompt">
+                                <p><strong>Questions 1–4</strong></p>
+                                <p>Do the following statements agree with the information given in the text?</p>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li><strong>TRUE</strong> if the statement agrees with the information</li>
+                                    <li><strong>FALSE</strong> if the statement contradicts the information</li>
+                                    <li><strong>NOT GIVEN</strong> if there is no information on this</li>
+                                </ul>
+                            </div>
+                            <div class="tf-question" data-q-start="1" data-q-end="1">
+                                <div class="tf-question-line"><span class="tf-question-number">1</span><span class="tf-question-text">Current research is working on a way to make soap from discarded bio-rubbish.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q1" value="TRUE"> TRUE</label>
+                                    <label class="tf-option"><input type="radio" name="q1" value="FALSE"> FALSE</label>
+                                    <label class="tf-option"><input type="radio" name="q1" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="2" data-q-end="2">
+                                <div class="tf-question-line"><span class="tf-question-number">2</span><span class="tf-question-text">Soap has enjoyed widespread popularity in Europe for over a thousand years.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q2" value="TRUE"> TRUE</label>
+                                    <label class="tf-option"><input type="radio" name="q2" value="FALSE"> FALSE</label>
+                                    <label class="tf-option"><input type="radio" name="q2" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="3" data-q-end="3">
+                                <div class="tf-question-line"><span class="tf-question-number">3</span><span class="tf-question-text">One similarity of many ancient soaps is that they all used fat as an ingredient.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q3" value="TRUE"> TRUE</label>
+                                    <label class="tf-option"><input type="radio" name="q3" value="FALSE"> FALSE</label>
+                                    <label class="tf-option"><input type="radio" name="q3" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="4" data-q-end="4">
+                                <div class="tf-question-line"><span class="tf-question-number">4</span><span class="tf-question-text">Early soap was an inexpensive product due to an easy availability of ingredients.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q4" value="TRUE"> TRUE</label>
+                                    <label class="tf-option"><input type="radio" name="q4" value="FALSE"> FALSE</label>
+                                    <label class="tf-option"><input type="radio" name="q4" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Questions 5-10: Flow Chart -->
+                        <div class="question" data-q-start="5" data-q-end="10">
+                            <div class="question-prompt">
+                                <p><strong>Questions 5–10</strong></p>
+                                <p>Complete the flow chart below.</p>
+                                <p>Write <strong>NO MORE THAN TWO WORDS</strong> from the text for each answer.</p>
+                            </div>
+                            <div class="flow-chart">
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text"><input type="text" class="flow-chart-input" id="q5" placeholder="5" autocomplete="off"> are removed by heating the raw materials.</span>
+                                </div>
+                                <div class="flow-chart-arrow">↓</div>
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text">Saponification takes place by adding a strong <input type="text" class="flow-chart-input" id="q6" placeholder="6" autocomplete="off"> – fatty acids and glycerine are the result.</span>
+                                </div>
+                                <div class="flow-chart-arrow">↓</div>
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text">Glycerine undergoes treatment, <input type="text" class="flow-chart-input" id="q7" placeholder="7" autocomplete="off"> and refining, and is then sold.</span>
+                                </div>
+                                <div class="flow-chart-arrow">↓</div>
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text">The neat soap is converted to pellets using vacuum spray drying – the remaining <input type="text" class="flow-chart-input" id="q8" placeholder="8" autocomplete="off"> depends on the soaps' chosen properties.</span>
+                                </div>
+                                <div class="flow-chart-arrow">↓</div>
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text">An amalgamator adds <input type="text" class="flow-chart-input" id="q9" placeholder="9" autocomplete="off">, colour and additional components.</span>
+                                </div>
+                                <div class="flow-chart-arrow">↓</div>
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text">Homogenisation, refining and blending takes place.</span>
+                                </div>
+                                <div class="flow-chart-arrow">↓</div>
+                                <div class="flow-chart-item">
+                                    <span class="flow-chart-text">The finished soap is cut and stamped by a <input type="text" class="flow-chart-input" id="q10" placeholder="10" autocomplete="off">.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Questions 11-13: Sentence Completion -->
+                        <div class="question" data-q-start="11" data-q-end="13">
+                            <div class="question-prompt">
+                                <p><strong>Questions 11–13</strong></p>
+                                <p>Complete the sentences below.</p>
+                                <p>Write <strong>NO MORE THAN TWO WORDS</strong> from the text for each answer.</p>
+                            </div>
+                            <div class="sentence-completion">
+                                <p><strong>11</strong> More complex soap <input type="text" class="sentence-input" id="q11" placeholder="11" autocomplete="off"> were developed as a result of improvements in technology and chemistry.</p>
+                                <p><strong>12</strong> The absence of a <input type="text" class="sentence-input" id="q12" placeholder="12" autocomplete="off"> on the skin after washing is one benefit of using a shower gel.</p>
+                                <p><strong>13</strong> A poor PH balance in soap can cause <input type="text" class="sentence-input" id="q13" placeholder="13" autocomplete="off"> for users.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Part 2 Questions -->
+                <div id="questions-2" class="question-set hidden">
+                    <div class="questions-container">
+                        <!-- Questions 14-20: Summary Completion -->
+                        <div class="question" data-q-start="14" data-q-end="20">
+                            <div class="question-prompt">
+                                <p><strong>Questions 14–20</strong></p>
+                                <p>Complete the summary.</p>
+                                <p>Choose <strong>NO MORE THAN THREE WORDS</strong> from the passage for each answer.</p>
+                            </div>
+                            <div class="summary-completion">
+                                <p>On 28 September the emerging space tourism industry was enormous. In Hawthorne, California, a rocket was erected by <input type="text" class="summary-input" id="q14" placeholder="14" autocomplete="off">. Climate change was monitored by <input type="text" class="summary-input" id="q15" placeholder="15" autocomplete="off"> in US National Oceanic and Atmospheric Administration using its spacecraft. In Glasgow, at the International Aeronautical meeting, it is apparent that civilian space flight industry is growing, as it showed the <input type="text" class="summary-input" id="q16" placeholder="16" autocomplete="off"> spacecraft which promised sub-orbital flights. Although developing confirmation, non-regulation is clear to guarantee <input type="text" class="summary-input" id="q17" placeholder="17" autocomplete="off">. A method for space business is cooperating with a <input type="text" class="summary-input" id="q18" placeholder="18" autocomplete="off"> conveyable at 16 kilometres in the skies. From 16 kilometres to 100 kilometres' travelling may be available, but lawyers definitely cannot agree with whether it is a <input type="text" class="summary-input" id="q19" placeholder="19" autocomplete="off"> or a rocket. <input type="text" class="summary-input" id="q20" placeholder="20" autocomplete="off"> need to be revisited if civilian space flight proves successful.</p>
+                            </div>
+                        </div>
+
+                        <!-- Questions 21-26: Sentence Matching -->
+                        <div class="question" data-q-start="21" data-q-end="26">
+                            <div class="question-prompt">
+                                <p><strong>Questions 21–26</strong></p>
+                                <p>Complete each sentence with the correct ending A-I below.</p>
+                                <p>Write the correct letter A-I in boxes 21-26 on your answer sheet.</p>
+                                <p><strong>List of Endings</strong><br>
+                                <strong>A</strong> assisted some minimum safety standards may prevent that.<br>
+                                <strong>B</strong> emphasised a civilian space flight must not be under a severe regulation for technical advancement.<br>
+                                <strong>C</strong> hardly need a reminder of the danger when considering past experiences.<br>
+                                <strong>D</strong> will protect a commercial space flight.<br>
+                                <strong>E</strong> try to develop a module of safety regulations applied to civilian space flight.<br>
+                                <strong>F</strong> made up for an ejector seat for tourists and the crew in case of a craft emergency in the skies.<br>
+                                <strong>G</strong> indicated the main safety problems were with passengers' proximity to the powerful engine.<br>
+                                <strong>H</strong> believed that scuba-diving should be applied to civilian space flight.<br>
+                                <strong>I</strong> kept costs stratospheric.</p>
+                            </div>
+                            <div class="sentence-matching">
+                                <div class="matching-sentence">
+                                    <span class="matching-number">21</span>
+                                    <span>Civilian space flight companies</span>
+                                    <select class="matching-select" id="q21">
+                                        <option value="">Select</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="I">I</option>
+                                    </select>
+                                </div>
+                                <div class="matching-sentence">
+                                    <span class="matching-number">22</span>
+                                    <span>Laurent Gathier</span>
+                                    <select class="matching-select" id="q22">
+                                        <option value="">Select</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="I">I</option>
+                                    </select>
+                                </div>
+                                <div class="matching-sentence">
+                                    <span class="matching-number">23</span>
+                                    <span>VSH devised for a safety</span>
+                                    <select class="matching-select" id="q23">
+                                        <option value="">Select</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="I">I</option>
+                                    </select>
+                                </div>
+                                <div class="matching-sentence">
+                                    <span class="matching-number">24</span>
+                                    <span>AST chief George Nield</span>
+                                    <select class="matching-select" id="q24">
+                                        <option value="">Select</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="I">I</option>
+                                    </select>
+                                </div>
+                                <div class="matching-sentence">
+                                    <span class="matching-number">25</span>
+                                    <span>Insurance costs</span>
+                                    <select class="matching-select" id="q25">
+                                        <option value="">Select</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="I">I</option>
+                                    </select>
+                                </div>
+                                <div class="matching-sentence">
+                                    <span class="matching-number">26</span>
+                                    <span>Critics</span>
+                                    <select class="matching-select" id="q26">
+                                        <option value="">Select</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="I">I</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Part 3 Questions -->
+                <div id="questions-3" class="question-set hidden">
+                    <div class="questions-container">
+                        <!-- Questions 27-33: YES/NO/NOT GIVEN -->
+                        <div class="question" data-q-start="27" data-q-end="33">
+                            <div class="question-prompt">
+                                <p><strong>Questions 27–33</strong></p>
+                                <p>Do the following statements reflect the claims of the writer in Reading Passage 3?</p>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li><strong>YES</strong> if the statement reflects the opinion of the writer</li>
+                                    <li><strong>NO</strong> if the statement contradicts the opinion of the writer</li>
+                                    <li><strong>NOT GIVEN</strong> if it is impossible to say what the writer thinks about this</li>
+                                </ul>
+                            </div>
+                            <div class="tf-question" data-q-start="27" data-q-end="27">
+                                <div class="tf-question-line"><span class="tf-question-number">27</span><span class="tf-question-text">John Davin has been ready for the election to Congress.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q27" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q27" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q27" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="28" data-q-end="28">
+                                <div class="tf-question-line"><span class="tf-question-number">28</span><span class="tf-question-text">The Medical Rights League was made to support the right to prescribe beer by Davin and like-minded doctors.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q28" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q28" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q28" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="29" data-q-end="29">
+                                <div class="tf-question-line"><span class="tf-question-number">29</span><span class="tf-question-text">It was illegal to sell or buy a beverage that contained over 0.5 per cent alcohol.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q29" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q29" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q29" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="30" data-q-end="30">
+                                <div class="tf-question-line"><span class="tf-question-number">30</span><span class="tf-question-text">Congress only granted beer as medical alcohol.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q30" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q30" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q30" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="31" data-q-end="31">
+                                <div class="tf-question-line"><span class="tf-question-number">31</span><span class="tf-question-text">As beer might have some benefit for medicinal use, it was in a pharmacy.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q31" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q31" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q31" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="32" data-q-end="32">
+                                <div class="tf-question-line"><span class="tf-question-number">32</span><span class="tf-question-text">The American Medical Association (AMA) has funded a scientific basis.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q32" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q32" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q32" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                            <div class="tf-question" data-q-start="33" data-q-end="33">
+                                <div class="tf-question-line"><span class="tf-question-number">33</span><span class="tf-question-text">If children have diphtheria, alcohol may cure them.</span></div>
+                                <div class="tf-options">
+                                    <label class="tf-option"><input type="radio" name="q33" value="YES"> YES</label>
+                                    <label class="tf-option"><input type="radio" name="q33" value="NO"> NO</label>
+                                    <label class="tf-option"><input type="radio" name="q33" value="NOT GIVEN"> NOT GIVEN</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Questions 34-35: Multiple Choice -->
+                        <div class="question" data-q-start="34" data-q-end="35">
+                            <div class="question-prompt">
+                                <p><strong>Questions 34–35</strong></p>
+                                <p>Choose the appropriate letters A-D and write them in boxes 34-35 on your answer sheet.</p>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="34" data-q-end="34">
+                                <div class="question-prompt">
+                                    <p><strong>34.</strong> In 1922, the reason John Davin began a campaign</p>
+                                </div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q34" value="A"> was against beer and other malt liquors.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q34" value="B"> was to assert a doctor's right to prescribe beer.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q34" value="C"> was for the Medical Rights League's duty.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q34" value="D"> was to oppose strong-minded politicians.</label></div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="35" data-q-end="35">
+                                <div class="question-prompt">
+                                    <p><strong>35.</strong> In 1917, the American Medical Association (AMA)</p>
+                                </div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q35" value="A"> decided beer is a worthless remedy.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q35" value="B"> declared beer has an effect as a tonic.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q35" value="C"> decided beer won't be any evidence of a medical basis.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q35" value="D"> assisted a patient with cancer.</label></div>
+                            </div>
+                        </div>
+
+                        <!-- Questions 36-39: Summary Completion -->
+                        <div class="question" data-q-start="36" data-q-end="39">
+                            <div class="question-prompt">
+                                <p><strong>Questions 36–39</strong></p>
+                                <p>Complete the summary below.</p>
+                                <p>Choose <strong>ONE WORD</strong> from Reading Passage 3 for each answer.</p>
+                            </div>
+                            <div class="summary-completion">
+                                <p>Once prohibition affected homes, doctors stimulated interests in <input type="text" class="summary-input" id="q36" placeholder="36" autocomplete="off">. Besides, as doctors affirmed the effects of alcohol, beer was guaranteed to cure <input type="text" class="summary-input" id="q37" placeholder="37" autocomplete="off">. When children with <input type="text" class="summary-input" id="q38" placeholder="38" autocomplete="off"> transferred dual-infections, alcohol could save them. According to <input type="text" class="summary-input" id="q39" placeholder="39" autocomplete="off">, most physicians believed the effects of therapeutic usage of whisky in the treatment of a limited number of diseases to be remarkably impressive.</p>
+                            </div>
+                        </div>
+
+                        <!-- Question 40: Multiple Choice -->
+                        <div class="question" data-q-start="40" data-q-end="40">
+                            <div class="question-prompt">
+                                <p><strong>Question 40</strong></p>
+                                <p>Choose the appropriate letter A-D and write it in box 40 on your answer sheet.</p>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="40" data-q-end="40">
+                                <div class="question-prompt">
+                                    <p><strong>40.</strong> This text is taken from</p>
+                                </div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q40" value="A"> a medical textbook for a beginner.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q40" value="B"> a critical research of the scientific basis of a beverage.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q40" value="C"> a magazine article about alcohol issues.</label></div>
+                                <div class="multi-choice-option"><label><input type="radio" name="q40" value="D"> a document against government prohibition.</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="nav-arrows">
+        <button class="nav-arrow prev" onclick="previousQuestion()" id="prevBtn" aria-label="Previous question">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        <button class="nav-arrow next" onclick="nextQuestion()" id="nextBtn" aria-label="Next question">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-row perScorableItem" aria-label="Questions">
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(1)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">1</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 13</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(1)"><span class="sr-only">Question 1</span><span aria-hidden="true">1</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(2)"><span class="sr-only">Question 2</span><span aria-hidden="true">2</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(3)"><span class="sr-only">Question 3</span><span aria-hidden="true">3</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(4)"><span class="sr-only">Question 4</span><span aria-hidden="true">4</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(5)"><span class="sr-only">Question 5</span><span aria-hidden="true">5</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(6)"><span class="sr-only">Question 6</span><span aria-hidden="true">6</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(7)"><span class="sr-only">Question 7</span><span aria-hidden="true">7</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(8)"><span class="sr-only">Question 8</span><span aria-hidden="true">8</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(9)"><span class="sr-only">Question 9</span><span aria-hidden="true">9</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(10)"><span class="sr-only">Question 10</span><span aria-hidden="true">10</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(11)"><span class="sr-only">Question 11</span><span aria-hidden="true">11</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(12)"><span class="sr-only">Question 12</span><span aria-hidden="true">12</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(13)"><span class="sr-only">Question 13</span><span aria-hidden="true">13</span></button>
+            </div>
+        </div>
+        
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(2)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">2</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 13</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(14)"><span class="sr-only">Question 14</span><span aria-hidden="true">14</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(15)"><span class="sr-only">Question 15</span><span aria-hidden="true">15</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(16)"><span class="sr-only">Question 16</span><span aria-hidden="true">16</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(17)"><span class="sr-only">Question 17</span><span aria-hidden="true">17</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(18)"><span class="sr-only">Question 18</span><span aria-hidden="true">18</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(19)"><span class="sr-only">Question 19</span><span aria-hidden="true">19</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(20)"><span class="sr-only">Question 20</span><span aria-hidden="true">20</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(21)"><span class="sr-only">Question 21</span><span aria-hidden="true">21</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(22)"><span class="sr-only">Question 22</span><span aria-hidden="true">22</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(23)"><span class="sr-only">Question 23</span><span aria-hidden="true">23</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(24)"><span class="sr-only">Question 24</span><span aria-hidden="true">24</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(25)"><span class="sr-only">Question 25</span><span aria-hidden="true">25</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(26)"><span class="sr-only">Question 26</span><span aria-hidden="true">26</span></button>
+            </div>
+        </div>
+        
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(3)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">3</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 14</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(27)"><span class="sr-only">Question 27</span><span aria-hidden="true">27</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(28)"><span class="sr-only">Question 28</span><span aria-hidden="true">28</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(29)"><span class="sr-only">Question 29</span><span aria-hidden="true">29</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(30)"><span class="sr-only">Question 30</span><span aria-hidden="true">30</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(31)"><span class="sr-only">Question 31</span><span aria-hidden="true">31</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(32)"><span class="sr-only">Question 32</span><span aria-hidden="true">32</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(33)"><span class="sr-only">Question 33</span><span aria-hidden="true">33</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(34)"><span class="sr-only">Question 34</span><span aria-hidden="true">34</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(35)"><span class="sr-only">Question 35</span><span aria-hidden="true">35</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(36)"><span class="sr-only">Question 36</span><span aria-hidden="true">36</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(37)"><span class="sr-only">Question 37</span><span aria-hidden="true">37</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(38)"><span class="sr-only">Question 38</span><span aria-hidden="true">38</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(39)"><span class="sr-only">Question 39</span><span aria-hidden="true">39</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(40)"><span class="sr-only">Question 40</span><span aria-hidden="true">40</span></button>
+            </div>
+        </div>
+        
+        <button id="deliver-button" aria-label="Open options" class="footer__deliverButton___3FM07">
+            <i class="fa fa fa-check" aria-hidden="true"></i>
+            <span>Options</span>
+        </button>
+    </nav>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <div id="menu-highlight" class="context-menu-item" onclick="highlightText()">
+            Highlight
+        </div>
+        <div id="menu-note" class="context-menu-item" onclick="addNote()">
+            Note
+        </div>
+        <div id="menu-clear" class="context-menu-item" onclick="clearHighlight()">
+            Clear
+        </div>
+        <div id="menu-clear-all" class="context-menu-item" onclick="clearAllHighlights()">
+            Clear All
+        </div>
+    </div>
+
+        <div id="options-drawer" class="modal-overlay hidden">
+        <div class="options-drawer-content">
+            <button class="modal-close-btn" type="button" onclick="closeOptionsDrawer()">&times;</button>
+            <h2>Options</h2>
+            <div class="drawer-section">
+                <div class="drawer-label">Submit the test</div>
+                <button id="submit-test-btn" class="drawer-action-btn" type="button">Submit the test</button>
+            </div>
+            <div class="drawer-section">
+                <div class="drawer-label">Contrast</div>
+                <div class="segmented-group" id="contrast-group">
+                    <button type="button" class="segment-btn active" data-contrast="default">Black on white</button>
+                    <button type="button" class="segment-btn" data-contrast="dark">White on black</button>
+                    <button type="button" class="segment-btn" data-contrast="yellow">Yellow on black</button>
+                </div>
+            </div>
+            <div class="drawer-section">
+                <div class="drawer-label">Text size</div>
+                <div class="segmented-group" id="text-size-group">
+                    <button type="button" class="segment-btn" data-size="small">Small</button>
+                    <button type="button" class="segment-btn active" data-size="medium">Medium</button>
+                    <button type="button" class="segment-btn" data-size="large">Large</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="note-modal" class="modal-overlay hidden">
+        <div class="note-modal-content">
+            <button class="modal-close-btn" type="button" onclick="closeNoteModal()">&times;</button>
+            <h2>Add note</h2>
+            <textarea id="note-input" class="note-textarea" placeholder="Write your note here..."></textarea>
+            <div class="note-modal-actions">
+                <button type="button" class="secondary-btn" onclick="closeNoteModal()">Cancel</button>
+                <button type="button" class="primary-btn" onclick="saveNote()">Save note</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="results-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-btn" type="button" onclick="closeResultsModal()">&times;</button>
+            <h2>Results</h2>
+            <div class="results-summary">
+                <p>Score: <span id="results-score"></span> / 40</p>
+                <p>Estimated band: <span id="results-band"></span></p>
+            </div>
+            <div class="results-actions">
+                <button id="review-answers-btn" class="primary-btn" type="button">Review answers</button>
+            </div>
+            <div id="results-details" class="results-details-container"></div>
+        </div>
+    </div>
+
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const state = {currentPart:1,currentQuestion:1,timeInSeconds:3600,timerInterval:null,selectedRange:null,pendingNoteRange:null,reviewMode:false,submitted:false,tooltipEl:null};
+      const correctAnswers = {'1':'NOT GIVEN','2':'FALSE','3':'TRUE','4':'FALSE','5':'impurities','6':'alkali','7':'evaporation','8':'moisture content','9':'fragrance','10':'soap press','11':'recipes','12':'residue','13':'skin irritations','14':'Space X','15':'US scientists','16':'Nearly Ready','17':'safety','18':'mother ship','19':'plane','20':"UN's 1967 treaty",'21':'C','22':'G','23':'F','24':'B','25':'I','26':'H','27':'NO','28':'YES','29':'YES','30':'NO','31':'NO','32':'NO','33':'YES','34':'B','35':'C','36':'alcohol','37':'sleeplessness','38':'diphtheria','39':'JAMA','40':'C'};
+      const evidenceMap = {
+        1:{needle:"Current research is working on a way to make soap from discarded bio-rubbish", evidence:"The passage discusses soap history, ingredients, and manufacturing, but it says nothing about current research using discarded bio-rubbish.", why:"The statement introduces a modern research idea that is not mentioned anywhere in the passage."},
+        2:{needle:"appeal to a wide European population in the 17th century", evidence:"the benefits of soap finally managed to appeal to a wide European population in the 17th century", why:"That date shows soap became widely popular in Europe only a few centuries ago, not over a thousand years ago."},
+        3:{needle:"mixing fat, oils and salts", evidence:"All of them made soap by mixing fat, oils and salts.", why:"This directly states that fat was one of the shared ingredients in ancient soap-making."},
+        4:{needle:"it was very expensive", evidence:"The demand for early soap was high, but it was very expensive", why:"The statement says cheap; the passage says the opposite."},
+        5:{needle:"remove impurities", evidence:"The first part of the manufacturing process is to heat the raw materials to remove impurities.", why:"The missing words are taken directly from the process description."},
+        6:{needle:"adding a powerful alkali", evidence:"This is followed by saponification, which involves adding a powerful alkali", why:"Saponification happens when a strong alkali is added."},
+        7:{needle:"evaporation and refining", evidence:"The glycerine is recovered by chemical treatment, followed by evaporation and refining.", why:"The word after treatment is evaporation."},
+        8:{needle:"moisture content", evidence:"The moisture content of the pellets will be determined by the desired characteristics of the soap bar.", why:"The remaining moisture content depends on the soap's desired properties."},
+        9:{needle:"fragrance, shades", evidence:"the soap pellets are blended together with fragrance, shades and all other ingredients", why:"The amalgamator adds fragrance before later refining."},
+        10:{needle:"soap press", evidence:"stamped into its final shape in a soap press", why:"The final cutting and stamping are done by a soap press."},
+        11:{needle:"more complicated recipes", evidence:"enabled countless inventors to start experimenting with more complicated recipes", why:"The noun required in the sentence is recipes."},
+        12:{needle:"do not leave a residue", evidence:"do not leave a residue on the skin and bathtub", why:"The sentence asks what shower gel does not leave on the skin: residue."},
+        13:{needle:"cause skin irritations", evidence:"do not cause skin irritations", why:"An unbalanced pH can therefore cause skin irritations."},
+        14:{needle:"Space X", evidence:"When a rocket made by Space X in Hawthorne, California", why:"The company named in the passage is Space X."},
+        15:{needle:"US scientists", evidence:"accepted by US scientists as a way of researching climate change", why:"The people using it for climate-change research are US scientists."},
+        16:{needle:"Nearly Ready", evidence:"models of the 'Nearly Ready' spacecraft", why:"The summary refers to the named model shown in Glasgow."},
+        17:{needle:"guarantee the safety of a civilian spacecraft", evidence:"there need to be enforceable regulations in place to guarantee the safety of a civilian spacecraft", why:"The missing noun is safety."},
+        18:{needle:"mother ship", evidence:"with a 'mother ship', an aircraft which carries a rocket", why:"Companies plan to use a mother ship for launch."},
+        19:{needle:"whether it is a plane or a rocket", evidence:"lawyers cannot agree on whether it is a plane or a rocket", why:"The blank asks for the first of the two labels: plane."},
+        20:{needle:"UN's 1967 treaty", evidence:"The other aspects of the UN's 1967 treaty for outer space exploration may be discussed again", why:"That treaty is the framework said to need reconsideration."},
+        21:{needle:"dealing with a tragedy", evidence:"they have already had the experience of dealing with a tragedy", why:"That matches ending C."},
+        22:{needle:"passengers close to the engine", evidence:"other critical safety factors are with ... passengers close to the engine", why:"That lines up with ending G."},
+        23:{needle:"ejector seat for all tourists and staff", evidence:"the VSH will equip an ejector seat for all tourists and staff", why:"That directly supports ending F."},
+        24:{needle:"must not 'stifle' the developing technologies", evidence:"the civilian space flight regulation must not stifle the developing technologies", why:"This clearly matches ending B."},
+        25:{needle:"insurance costs will be very high", evidence:"It means insurance costs will be very high.", why:"Very high insurance costs correspond to ending I."},
+        26:{needle:"at-your-own-risk' mentality", evidence:"the at-your-own-risk mentality that is applied to risky sports like scuba-diving should also be applied", why:"This directly matches ending H."},
+        27:{needle:"started his campaign for election to Congress", evidence:"started his campaign for election to Congress on 26th of September 1922", why:"The statement says he had already been ready, but the text only says he started the campaign then."},
+        28:{needle:"Medical Rights League", evidence:"they made a new political party, the Medical Rights League ... a doctor who had the right to prescribe it", why:"The party was formed to support the right to prescribe beer."},
+        29:{needle:"0.5 per cent alcohol", evidence:"It was now illegal to sell or buy a drink that included more than 0.5 per cent alcohol", why:"This statement accurately mirrors the passage."},
+        30:{needle:"beer and other malt liquors", evidence:"It was for beer and other malt liquors.", why:"Congress did not grant only beer; it also included other malt liquors."},
+        31:{needle:"beer was not needed at pharmacies", evidence:"beer was not needed at pharmacies", why:"The statement suggests acceptability, but the passage says prohibitionists thought beer was not needed there."},
+        32:{needle:"no scientific basis", evidence:"Its value in therapeutics as a tonic, stimulant or food has no scientific basis.", why:"The AMA rejected medicinal value, so the claim is contradicted."},
+        33:{needle:"alcohol could save them", evidence:"when children with diphtheria developed secondary infections, alcohol could save them", why:"The passage states this explicitly."},
+        34:{needle:"right to prescribe it", evidence:"Beer, or more precisely, a doctor who had the right to prescribe it.", why:"This directly supports option B."},
+        35:{needle:"no scientific basis", evidence:"Its value in therapeutics as a tonic, stimulant or food has no scientific basis.", why:"That idea is captured most closely by option C."},
+        36:{needle:"enthusiasm for alcohol improved", evidence:"doctors' enthusiasm for alcohol improved", why:"The missing one-word answer is alcohol."},
+        37:{needle:"treat sleeplessness", evidence:"Beer was warranted to treat sleeplessness.", why:"The condition named is sleeplessness."},
+        38:{needle:"diphtheria", evidence:"when children with diphtheria developed secondary infections", why:"The illness mentioned is diphtheria."},
+        39:{needle:"According to JAMA", evidence:"According to JAMA, the report said", why:"The reporting source is JAMA."},
+        40:{needle:"magazine article about alcohol issues", evidence:"The piece narrates a public controversy, presents quotations, and discusses political and medical debate in a journalistic style.", why:"Among the choices, option C best fits the tone and purpose of the text."}
+      };
+      const partRanges = {1:[1,13],2:[14,26],3:[27,40]};
+      const norm=v=>String(v||'').trim().toLowerCase().replace(/\s+/g,' ');
+      const band=s=>s>=39?'9.0':s>=37?'8.5':s>=35?'8.0':s>=33?'7.5':s>=30?'7.0':s>=27?'6.5':s>=23?'6.0':s>=19?'5.5':s>=15?'5.0':s>=13?'4.5':'4.0';
+      const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+      function getQuestionType(q){if((q>=1&&q<=4)||(q>=27&&q<=35)||q===40)return'radio'; if(q>=21&&q<=26)return'select'; return'input';}
+      function getUserAnswer(q){if(getQuestionType(q)==='radio'){const c=document.querySelector(`input[name="q${q}"]:checked`);return c?c.value:'';} const el=document.getElementById(`q${q}`); return el?el.value.trim():'';}
+      function setBodyPrefs(c,s){document.body.setAttribute('data-contrast',c);document.body.setAttribute('data-text-size',s);document.querySelectorAll('#contrast-group .segment-btn').forEach(b=>b.classList.toggle('active',b.dataset.contrast===c));document.querySelectorAll('#text-size-group .segment-btn').forEach(b=>b.classList.toggle('active',b.dataset.size===s));}
+      function startTimer(){clearInterval(state.timerInterval);state.timerInterval=setInterval(()=>{if(state.reviewMode)return;state.timeInSeconds=Math.max(0,state.timeInSeconds-1);const m=Math.floor(state.timeInSeconds/60),s=state.timeInSeconds%60;document.querySelector('.timer-display').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;if(state.timeInSeconds===0)clearInterval(state.timerInterval);},1000);}
+      function switchToPart(part){state.currentPart=part;for(let i=1;i<=3;i++){document.getElementById(`passage-text-${i}`).classList.toggle('hidden',i!==part);document.getElementById(`questions-${i}`).classList.toggle('hidden',i!==part&&!state.reviewMode);document.getElementById(`part-header-${i}`).classList.toggle('hidden',i!==part);}document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach((w,idx)=>w.classList.toggle('selected',idx===part-1));updateNavButtons();}
+      function goToQuestion(q){state.currentQuestion=q;if(q<=13)switchToPart(1);else if(q<=26)switchToPart(2);else switchToPart(3);const el=document.querySelector(`[data-q-start="${q}"][data-q-end="${q}"]`)||document.getElementById(`q${q}`)?.closest('.question'); if(el)el.scrollIntoView({behavior:'smooth',block:'center'});document.querySelectorAll('.subQuestion').forEach(btn=>btn.classList.toggle('active',btn.textContent.trim()===String(q)));updateActiveQuestionStyles();updateNavButtons();}
+      function nextQuestion(){if(state.currentQuestion<40)goToQuestion(state.currentQuestion+1)} function previousQuestion(){if(state.currentQuestion>1)goToQuestion(state.currentQuestion-1)}
+      function updateNavButtons(){document.getElementById('prevBtn').disabled=state.currentQuestion<=1;document.getElementById('nextBtn').disabled=state.currentQuestion>=40||state.reviewMode;}
+      function isAnswered(q){return norm(getUserAnswer(q)).length>0}
+      function updateAttemptedCounts(){Object.entries(partRanges).forEach(([part,[start,end]])=>{let c=0;for(let q=start;q<=end;q++)if(isAnswered(q))c++;const span=document.querySelector(`.footer__questionNo___3WNct[onclick="switchToPart(${part})"] .attemptedCount`);if(span)span.textContent=`${c} of ${end-start+1}`;});document.querySelectorAll('.subQuestion').forEach(btn=>btn.classList.toggle('answered',isAnswered(Number(btn.textContent.trim()))));}
+      function updateActiveQuestionStyles(){document.querySelectorAll('.active-question').forEach(el=>el.classList.remove('active-question'));const spec=document.querySelector(`.tf-question[data-q-start="${state.currentQuestion}"]`)||document.querySelector(`.multi-choice-question[data-q-start="${state.currentQuestion}"]`);if(spec)spec.classList.add('active-question');}
+      function computeResults(){let score=0;const results=[];for(let q=1;q<=40;q++){const user=getUserAnswer(q),correct=correctAnswers[String(q)],ok=norm(user)===norm(correct);if(ok)score++;results.push({q,user:user||'Not Answered',correct,isCorrect:ok});}return{score,results};}
+      function applyScoreStyling(){document.querySelectorAll('.correct,.incorrect,.correct-answer-highlight').forEach(el=>el.classList.remove('correct','incorrect','correct-answer-highlight'));for(let q=1;q<=40;q++){const ok=norm(getUserAnswer(q))===norm(correctAnswers[String(q)])&&norm(getUserAnswer(q))!=='';const type=getQuestionType(q);if(type==='radio'){document.querySelectorAll(`input[name="q${q}"]`).forEach(inp=>{const wrap=inp.closest('.tf-option,.multi-choice-option');if(!wrap)return;if(inp.checked)wrap.classList.add(ok?'correct':'incorrect');if(!ok&&norm(inp.value)===norm(correctAnswers[String(q)]))wrap.classList.add('correct-answer-highlight');});}else{const el=document.getElementById(`q${q}`);if(el)el.classList.add(ok?'correct':'incorrect');}}}
+      function renderResultsModal(data){document.getElementById('results-score').textContent=data.score;document.getElementById('results-band').textContent=band(data.score);document.getElementById('results-details').innerHTML=data.results.map(r=>`<div class="result-row ${r.isCorrect?'correct':'incorrect'}"><div class="q-num">${r.q}</div><div class="user-ans"><strong>User:</strong> ${esc(r.user)}</div><div class="correct-ans"><strong>Correct:</strong> ${esc(r.correct)}</div></div>`).join('');}
+      function attachReviewBlocks(data){document.querySelectorAll('.review-block').forEach(el=>el.remove());data.results.forEach(r=>{const target=document.querySelector(`[data-q-start="${r.q}"][data-q-end="${r.q}"]`)||document.getElementById(`q${r.q}`)?.closest('.question');if(!target)return;const meta=evidenceMap[r.q];const block=document.createElement('div');block.className='review-block';block.innerHTML=`<div class="review-row"><div class="review-chip ${r.isCorrect?'correct':'incorrect'}"><div class="review-label">User answer</div><div>${esc(r.user)}</div></div><div class="review-chip correct"><div class="review-label">Correct answer</div><div>${esc(r.correct)}</div></div></div><div class="review-explanation"><div class="review-label">Explanation</div><div><strong>${r.isCorrect?'Correct.':'Not correct.'}</strong> ${esc(meta.why)}</div></div><div class="review-evidence"><div class="review-label">Evidence from passage</div><div>${esc(meta.evidence)}</div></div>`;target.appendChild(block);});}
+      function unwrap(el){const p=el.parentNode;if(!p)return;while(el.firstChild)p.insertBefore(el.firstChild,el);p.removeChild(el);p.normalize();}
+      function clearEvidenceHighlights(){document.querySelectorAll('.answer-highlight').forEach(unwrap)}
+      function ereg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+      function highlightFirst(root,preferred,q,fallback){if(!root)return;let h=root.innerHTML;for(const t of [preferred,fallback].filter(Boolean).sort((a,b)=>b.length-a.length)){const re=new RegExp(ereg(t),'i');if(re.test(h)){h=h.replace(re,m=>`<span class="answer-highlight" data-question="${q}"><span class="q-badge">${q}</span>${m}</span>`);root.innerHTML=h;return;}}}
+      function highlightEvidence(){clearEvidenceHighlights();{const groups={1:[...Array(13)].map((_,i)=>i+1),2:[...Array(13)].map((_,i)=>i+14),3:[...Array(14)].map((_,i)=>i+27)};Object.entries(groups).forEach(([part,qs])=>{const root=document.getElementById(`passage-text-${part}`);qs.forEach(q=>{const m=evidenceMap[q];if(m)highlightFirst(root,m.evidence,q,m.needle);});});}}
+      function enterReviewMode(data){state.reviewMode=true;document.body.classList.add('review-mode','results-mode');document.querySelectorAll('.question-set').forEach(s=>s.classList.remove('hidden'));attachReviewBlocks(data);highlightEvidence();closeResultsModal();switchToPart(1);goToQuestion(1);}
+      function markDisabled(v){document.querySelectorAll('input,select').forEach(el=>el.disabled=v)}
+      function submitTest(){closeOptionsDrawer();state.submitted=true;markDisabled(true);clearInterval(state.timerInterval);applyScoreStyling();const data=computeResults();renderResultsModal(data);document.getElementById('results-modal').classList.remove('hidden');document.getElementById('review-answers-btn').onclick=()=>enterReviewMode(data);}
+      function openOptionsDrawer(){document.getElementById('options-drawer').classList.remove('hidden')} function closeOptionsDrawer(){document.getElementById('options-drawer').classList.add('hidden')} function closeResultsModal(){document.getElementById('results-modal').classList.add('hidden')} function openNoteModal(){document.getElementById('note-modal').classList.remove('hidden');setTimeout(()=>document.getElementById('note-input').focus(),20)} function closeNoteModal(){document.getElementById('note-modal').classList.add('hidden');document.getElementById('note-input').value='';state.pendingNoteRange=null}
+      function getAllowedRange(){const sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed)return null;const r=sel.getRangeAt(0);const ok=document.getElementById('passage-panel').contains(r.commonAncestorContainer)||document.getElementById('questions-panel').contains(r.commonAncestorContainer);return ok?r:null}
+      function wrapRange(cls,dataset={}){const range=state.selectedRange;if(!range||range.collapsed)return;const span=document.createElement('span');span.className=cls;Object.entries(dataset).forEach(([k,v])=>span.dataset[k]=v);span.appendChild(range.extractContents());range.insertNode(span);window.getSelection().removeAllRanges();state.selectedRange=null;}
+      function highlightText(){wrapRange('highlight');closeContextMenu()} function addNote(){if(!state.selectedRange||state.selectedRange.collapsed)return;state.pendingNoteRange=state.selectedRange.cloneRange();closeContextMenu();openNoteModal()} function saveNote(){const note=document.getElementById('note-input').value.trim();if(!note||!state.pendingNoteRange)return;state.selectedRange=state.pendingNoteRange;wrapRange('note-anchor',{note:note,noteId:`note-${Date.now()}`});closeNoteModal()}
+      function clearHighlight(){const t=document.getElementById('contextMenu').targetElementForClear;if(t)unwrap(t);closeContextMenu()} function clearAllHighlights(){document.querySelectorAll('.highlight,.note-anchor').forEach(unwrap);closeContextMenu()}
+      function openContextMenu(x,y,mode,target){const menu=document.getElementById('contextMenu');document.getElementById('menu-highlight').style.display=mode==='selection'?'flex':'none';document.getElementById('menu-note').style.display=mode==='selection'?'flex':'none';document.getElementById('menu-clear').style.display=mode==='target'?'flex':'none';document.getElementById('menu-clear-all').style.display='flex';menu.targetElementForClear=target||null;menu.style.display='block';const rect=menu.getBoundingClientRect();menu.style.left=Math.min(x,window.innerWidth-rect.width-8)+'px';menu.style.top=Math.min(y,window.innerHeight-rect.height-8)+'px';}
+      function closeContextMenu(){document.getElementById('contextMenu').style.display='none'}
+      function setupContextMenu(){document.addEventListener('contextmenu',e=>{const target=e.target.closest('.highlight,.note-anchor');const range=getAllowedRange();if(target){e.preventDefault();openContextMenu(e.clientX,e.clientY,'target',target);return;}if(range){state.selectedRange=range.cloneRange();e.preventDefault();openContextMenu(e.clientX,e.clientY,'selection');}});document.addEventListener('click',e=>{if(!e.target.closest('#contextMenu'))closeContextMenu()});document.addEventListener('selectionchange',()=>{const r=getAllowedRange();if(r)state.selectedRange=r.cloneRange();});}
+      function positionTooltip(t){if(!state.tooltipEl){state.tooltipEl=document.createElement('div');state.tooltipEl.className='floating-note-tooltip';document.body.appendChild(state.tooltipEl);}state.tooltipEl.textContent=t.dataset.note||'';state.tooltipEl.classList.add('show');const r=t.getBoundingClientRect(),tr=state.tooltipEl.getBoundingClientRect();let left=r.left+r.width/2-tr.width/2,top=r.top-tr.height-10;if(left<8)left=8;if(left+tr.width>window.innerWidth-8)left=window.innerWidth-tr.width-8;if(top<8)top=r.bottom+10;state.tooltipEl.style.left=`${left}px`;state.tooltipEl.style.top=`${top}px`;}
+      function setupTooltip(){document.addEventListener('mouseenter',e=>{const t=e.target.closest('.note-anchor');if(t)positionTooltip(t)},true);document.addEventListener('mouseleave',e=>{if(e.target.closest('.note-anchor')&&state.tooltipEl)state.tooltipEl.classList.remove('show')},true);document.addEventListener('click',e=>{const t=e.target.closest('.note-anchor');if(t)positionTooltip(t);else if(state.tooltipEl)state.tooltipEl.classList.remove('show');});}
+      function setupResizer(){const rz=document.getElementById('resizer');rz.addEventListener('mousedown',e=>{e.preventDefault();const pp=document.getElementById('passage-panel'),qp=document.getElementById('questions-panel'),box=document.querySelector('.panels-container'),sx=e.clientX,sw=pp.getBoundingClientRect().width;function mv(ev){const total=box.getBoundingClientRect().width;let nw=sw+(ev.clientX-sx);nw=Math.max(320,Math.min(total-320,nw));pp.style.flex=`0 0 ${nw}px`;qp.style.flex='1 1 auto';}function up(){window.removeEventListener('mousemove',mv);window.removeEventListener('mouseup',up)}window.addEventListener('mousemove',mv);window.addEventListener('mouseup',up);});}
+      function setupButtons(){document.getElementById('top-options-btn').addEventListener('click',openOptionsDrawer);document.getElementById('deliver-button').addEventListener('click',openOptionsDrawer);document.getElementById('submit-test-btn').addEventListener('click',submitTest);document.querySelectorAll('#contrast-group .segment-btn').forEach(b=>b.addEventListener('click',()=>setBodyPrefs(b.dataset.contrast,document.body.getAttribute('data-text-size')||'medium')));document.querySelectorAll('#text-size-group .segment-btn').forEach(b=>b.addEventListener('click',()=>setBodyPrefs(document.body.getAttribute('data-contrast')||'default',b.dataset.size)));document.querySelectorAll('.flow-chart-input,.sentence-input,.summary-input,.matching-select').forEach(el=>{el.addEventListener('input',updateAttemptedCounts);el.addEventListener('change',updateAttemptedCounts);el.addEventListener('focus',()=>{const q=Number(el.id.replace('q',''));if(q)goToQuestion(q);});});document.querySelectorAll('input[type="radio"]').forEach(el=>el.addEventListener('change',()=>{updateAttemptedCounts();const q=Number(el.name.replace('q',''));if(q)goToQuestion(q);}));}
+      window.nextQuestion=nextQuestion;window.previousQuestion=previousQuestion;window.goToQuestion=goToQuestion;window.switchToPart=switchToPart;window.closeOptionsDrawer=closeOptionsDrawer;window.closeResultsModal=closeResultsModal;window.highlightText=highlightText;window.addNote=addNote;window.saveNote=saveNote;window.closeNoteModal=closeNoteModal;window.clearHighlight=clearHighlight;window.clearAllHighlights=clearAllHighlights;
+      setBodyPrefs('default','medium');setupButtons();setupContextMenu();setupTooltip();setupResizer();updateAttemptedCounts();updateActiveQuestionStyles();updateNavButtons();switchToPart(1);startTimer();
+    });
+    </script>
+
+</body>
+</html>

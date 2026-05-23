@@ -1,0 +1,2853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@600&display=swap" rel="stylesheet">
+    <title>IELTS Full Reading Practice</title>
+    <style>
+        /* All CSS styles from the original code remain exactly the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            line-height: 1.4;
+            font-size: 16px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            padding: 12px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 60px;
+        }
+
+        .ielts-logo {
+            display: none;
+        }
+
+        .test-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .audio-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .audio-icon {
+            width: 16px;
+            height: 16px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>') no-repeat center;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .telegram-link {
+            color: #0088cc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .telegram-link:hover {
+            text-decoration: underline;
+        }
+
+        .telegram-link::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: currentColor;
+            -webkit-mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-1.37.2-1.64l16.56-6.4c.75-.29 1.4.22 1.2.94l-2.67 12.61c-.22.95-1.13 1.18-1.78.73l-4.5-3.32l-2.23 2.15c-.47.44-1.29.21-1.48-.37z"/></svg>');
+            mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23l7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3L3.64 12c-.88-.25-.89-1.37.2-1.64l16.56-6.4c.75-.29 1.4.22 1.2.94l-2.67 12.61c-.22.95-1.13 1.18-1.78.73l-4.5-3.32l-2.23 2.15c-.47.44-1.29.21-1.48-.37z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        #volume-slider {
+            -webkit-appearance: none;
+            width: 80px;
+            height: 4px;
+            background: #ddd;
+            outline: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        #volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+        }
+
+        #volume-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            border: none;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            opacity: 0.7;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon:hover {
+            opacity: 1;
+        }
+        
+        #play-pause-btn {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .main-container {
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            height: calc(100vh - 60px);
+        }
+
+        .panels-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .passage-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+        .reading-passage h4 {
+            font-family: 'Merriweather', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #4a90e2;
+            padding-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+       
+        .reading-passage p {
+            margin-bottom: 1.2em;
+        }
+
+        .question ul li label {
+            display: block;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .questions-panel {
+            flex: 1;
+            padding: 20px 20px 100px;
+            overflow-y: auto;
+            min-width: 200px;
+            border-left: 1px solid #e0e0e0;
+        }
+
+        .resizer {
+            width: 10px;
+            cursor: col-resize;
+            background-color: #f0f0f0;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="30" viewBox="0 0 10 30"><path d="M4 11h2v2H4zM4 15h2v2H4zM4 19h2v2H4z" fill="%23888"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            flex-shrink: 0;
+            flex-grow: 0;
+        }
+
+        .nav-row {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            z-index: 100;
+        }
+
+        .footer__questionWrapper___1tZ46 {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .footer__questionNo___3WNct {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .footer__questionNo___3WNct:hover {
+            background-color: #f8f9fa;
+        }
+
+        .section-prefix {
+            font-size: 16px;
+        }
+
+        .sectionNr {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .attemptedCount {
+            font-size: 14px;
+            color: #666;
+            margin-left: 5px;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .attemptedCount {
+                display: none;
+            }
+        }
+
+        .footer__questionWrapper___1tZ46.selected .attemptedCount {
+            display: none;
+        }
+
+        .footer__subquestionWrapper___9GgoP {
+            display: none;
+            gap: 2px;
+            margin-left: 10px;
+        }
+
+        .footer__questionWrapper___1tZ46.selected .footer__subquestionWrapper___9GgoP {
+            display: flex;
+        }
+
+        .subQuestion {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ccc;
+            background: white;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+
+        .subQuestion.answered {
+            background-color: #e9ecef;
+            border-color: #ddd;
+        }
+        .subQuestion.correct {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+        .subQuestion.incorrect {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .subQuestion:hover {
+            background-color: #f0f0f0;
+            border-color: #999;
+        }
+
+        .subQuestion.active {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #4a90e2;
+        }
+
+        .subQuestion.completed {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .footer__deliverButton___3FM07 {
+            margin-left: auto;
+            margin-right: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, border-color 0.2s;
+            min-width: 170px;
+            justify-content: center;
+        }
+
+        .footer__deliverButton___3FM07:hover {
+            background-color: #e0e0e0;
+            border-color: #bbb;
+        }
+
+        .footer__deliverButton___3FM07:disabled {
+            background: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            border-color: #ddd;
+        }
+
+        .fa-check::before {
+            content: "✓";
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .context-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 140px;
+        }
+
+        .context-menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .context-menu-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .highlight {
+            background-color: #ffff00;
+        }
+
+        .comment-highlight {
+            background-color: #90EE90;
+            position: relative;
+            cursor: help;
+        }
+
+        .comment-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .comment-highlight:hover .comment-tooltip {
+            opacity: 1;
+        }
+
+        .question {
+            margin-bottom: 40px;
+        }
+        .question p {
+            margin-bottom: 10px;
+        }
+        .question ul, .question .people-table {
+            margin-top: 0;
+        }
+        .question-prompt {
+            margin-bottom: 20px;
+        }
+        .question ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .question ul li {
+            margin-bottom: 5px;
+        }
+        .answer-input {
+            border: 1px solid #888;
+            border-radius: 4px;
+            background-color: #fff;
+            padding: 2px 5px;
+            font-size: 16px;
+            text-align: center;
+            margin-right: 4px;
+            margin-left: 4px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            height: 28px;
+            width: 150px;
+        }
+        .answer-input.active-input {
+            border-color: #4a90e2;
+            box-shadow: 0 0 3px 1px rgba(74, 144, 226, 0.5);
+        }
+        .answer-input::placeholder {
+            color: #999;
+            font-weight: bold;
+            text-align: center;
+        }
+        .answer-input.correct {
+            border-color: #28a745;
+            background-color: #e9f7ef;
+        }
+        .answer-input.incorrect {
+            border-color: #dc3545;
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .answer-input {
+            z-index: 10;
+            position: relative;
+            pointer-events: auto;
+        }
+
+        .part-header {
+            background-color: #f1f2ec;
+            padding: 15px 20px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            margin: 10px 20px;
+            border-radius: 5px;
+        }
+        .part-header p {
+            margin: 0;
+        }
+        .part-header p:first-child {
+            margin-bottom: 5px;
+        }
+
+        .question li.correct {
+            color: #155724;
+            font-weight: bold;
+        }
+        .question li.incorrect {
+            color: #721c24;
+        }
+        .question li.correct::before {
+            content: '✔ ';
+            color: #28a745;
+        }
+        .question li.incorrect::before {
+            content: '✖ ';
+            color: #dc3545;
+        }
+
+        .example-box {
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .timer-container {
+            display: flex;
+            position: relative;
+            cursor: default;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            align-items: center;
+        }
+        .timer-container .timer-tooltip {
+            display: none;
+        }
+
+        .timer-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 15px;
+        }
+
+        .timer-controls button {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .timer-controls button:hover {
+            background: #e0e0e0;
+        }
+
+        .timer-controls button svg {
+            width: 20px;
+            height: 20px;
+            fill: #333;
+        }
+
+        .nav-arrows {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            z-index: 101;
+        }
+
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-arrow:hover {
+            background: #555;
+        }
+
+        .nav-arrow:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .tf-question {
+            margin-bottom: 25px;
+            padding: 10px 0px;
+            border-radius: 4px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .tf-question-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 5px 0px;
+            border-radius: 4px;
+        }
+        .tf-question-number, .question-number-box {
+            border: 2px solid #ccc;
+            padding: 2px 8px;
+            margin-right: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            transition: border-color 0.3s;
+            display: inline-block;
+        }
+        .tf-question-text {
+            padding-top: 3px;
+        }
+        .tf-options {
+            padding-left: 5px;
+        }
+        .tf-option {
+            display: block;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .tf-option input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .tf-question.correct .tf-question-line {
+            background-color: #e9f7ef;
+        }
+        .tf-question.incorrect .tf-question-line {
+            background-color: #f8d7da;
+        }
+        .matching-form-container {
+            margin-top: 20px;
+        }
+        .matching-form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .matching-form-label {
+            width: 180px;
+            flex-shrink: 0;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.hidden {
+            display: none;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #888;
+        }
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .results-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .results-details-container {
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .result-row {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr;
+            gap: 15px;
+            padding: 8px 5px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+        }
+        .result-row.incorrect {
+            background-color: #f8d7da;
+        }
+        .result-row .q-num {
+            font-weight: bold;
+        }
+        .result-row .user-ans {
+            color: #555;
+        }
+        .result-row .correct-ans {
+            color: #155724;
+            font-weight: 500;
+        }
+        .correct-answer-display {
+            font-weight: bold;
+            color: #28a745;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        .correct-answer-highlight, .tf-option.correct-answer-highlight {
+            background-color: #d4edda !important;
+            border: 1px solid #c3e6cb !important;
+            border-radius: 4px;
+            padding: 4px;
+        }
+        .correct-answer-highlight {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+        }
+        .centered-title {
+            text-align: center;
+            font-size: 50px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .multi-choice-question {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 3px solid transparent;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .multi-choice-option {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .multi-choice-option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .multi-choice-option input[type="checkbox"],
+        .multi-choice-option input[type="radio"] {
+            margin-right: 12px;
+            transform: scale(1.3);
+            accent-color: #4a90e2;
+        }
+        .multi-choice-option.correct {
+            background-color: #e9f7ef;
+        }
+        .multi-choice-option.incorrect {
+            background-color: #f8d7da;
+        }
+        
+        .summary-text {
+            margin-top: 20px;
+        }
+        .summary-text p {
+            line-height: 2.5;
+            font-size: 16px;
+        }
+    
+        /* --- requested fixes --- */
+        .header {
+            background: #fff;
+            padding: 8px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            height: 60px;
+            gap: 16px;
+        }
+        .header-left, .header-center, .header-right { display:flex; align-items:center; }
+        .header-left { min-width: 0; flex: 1 1 auto; }
+        .header-center { justify-content: center; }
+        .header-right { justify-content:flex-end; }
+        .brand-cluster { display:flex; align-items:center; gap: 14px; min-width:0; }
+        .ielts-badge {
+            color:#ea1d2c; background:transparent; font-weight:900; letter-spacing:-1px;
+            font-size:52px; line-height:.85; flex-shrink:0;
+        }
+        .test-taker-id { font-size:16px; font-weight:700; color:#111; white-space:nowrap; }
+        .signal-cluster { display:flex; align-items:center; gap:10px; }
+        .signal-icon {
+            width:36px; height:36px; border-radius:999px; border:1px solid #d7d7d7;
+            background:#f3f3f3; display:flex; align-items:center; justify-content:center;
+            cursor:pointer; color:#333;
+        }
+        .signal-icon:hover, .header-menu-btn:hover { background:#e9e9e9; }
+        .signal-icon svg { width:20px; height:20px; fill:currentColor; }
+        .header-menu-btn {
+            width:38px; height:38px; border-radius:999px; border:1px solid #d7d7d7;
+            background:#f3f3f3; display:flex; flex-direction:column; justify-content:center;
+            gap:4px; padding:0 9px; cursor:pointer;
+        }
+        .header-menu-btn span { display:block; height:2px; background:#222; border-radius:999px; width:100%; }
+        .main-container { margin-top: 60px; height: calc(100vh - 60px); }
+        .part-header { margin: 4px 20px 8px; padding: 14px 20px; background:#dfe4ec; border-color:#cfd7e4; border-radius:18px; }
+        .timer-container { font-size:16px; font-weight:500; }
+        .timer-controls { gap:8px; margin-left:12px; }
+        .timer-controls button { width:34px; height:34px; }
+        .timer-controls button:hover { background:#e7e7e7; }
+
+        .options-overlay {
+            position: fixed; inset: 0; background: #efefef; z-index: 2800; padding: 40px 52px; overflow: auto;
+        }
+        .options-shell { max-width: 1120px; margin: 0 auto; }
+        .options-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; }
+        .options-topbar h2 { font-size:58px; font-weight:500; }
+        .sub-topbar { display:grid; grid-template-columns:240px 1fr 80px; align-items:center; }
+        .sub-topbar h2 { text-align:center; }
+        .options-body { max-width: 1000px; margin: 0 auto; }
+        .options-submit-btn {
+            width:100%; text-align:left; background:#ff0b3c; color:#fff; border:none; border-radius:14px;
+            padding:26px 38px; font-size:34px; margin-bottom:28px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+        }
+        .options-list-card { background:#fff; border:1px solid #d5d5d5; border-radius:12px; overflow:hidden; }
+        .options-list-item, .options-choice {
+            width:100%; background:#fff; border:none; border-bottom:1px solid #ddd; padding:34px 40px;
+            font-size:28px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; text-align:left;
+        }
+        .options-list-item:last-child, .options-choice:last-child { border-bottom:none; }
+        .options-close-btn, .options-back-btn {
+            border:none; background:transparent; color:#111; cursor:pointer;
+        }
+        .options-close-btn { font-size:64px; line-height:1; }
+        .options-back-btn { font-size:24px; }
+        .options-choice .tick { opacity:0; width:38px; display:inline-block; }
+        .options-choice.active .tick { opacity:1; }
+        .options-choice span:last-child { flex:1; }
+
+        body.contrast-white-black, body.contrast-white-black .passage-panel, body.contrast-white-black .questions-panel, body.contrast-white-black .part-header, body.contrast-white-black .reading-passage, body.contrast-white-black .question-set {
+            background:#111 !important; color:#fff !important;
+        }
+        body.contrast-white-black input, body.contrast-white-black select { background:#000 !important; color:#fff !important; border-color:#777 !important; }
+
+        body.contrast-yellow-black, body.contrast-yellow-black .passage-panel, body.contrast-yellow-black .questions-panel, body.contrast-yellow-black .part-header, body.contrast-yellow-black .reading-passage, body.contrast-yellow-black .question-set {
+            background:#000 !important; color:#ffe96a !important;
+        }
+        body.contrast-yellow-black input, body.contrast-yellow-black select { background:#000 !important; color:#ffe96a !important; border-color:#968b37 !important; }
+
+        body.text-small { font-size:14px; }
+        body.text-medium { font-size:16px; }
+        body.text-large { font-size:19px; }
+        body.text-small .reading-passage, body.text-small .questions-panel { font-size:14px !important; }
+        body.text-medium .reading-passage, body.text-medium .questions-panel { font-size:16px !important; }
+        body.text-large .reading-passage, body.text-large .questions-panel { font-size:19px !important; line-height:1.75 !important; }
+
+        .selection-toolbar {
+            position:absolute; background:#ece7d4; border-radius:24px; padding:10px;
+            box-shadow:0 16px 40px rgba(0,0,0,.18); z-index:2500; display:none;
+            gap:10px; align-items:center;
+        }
+        .selection-toolbar .context-menu-item {
+            border:none !important; background:#d9dce3; color:#111; padding:14px 20px;
+            border-radius:18px; font-size:18px; font-weight:700; display:flex !important;
+        }
+        .selection-toolbar .context-menu-item:hover { background:#cfd4dc; }
+        .selection-toolbar #menu-highlight { background:#dfd089; }
+        .selection-toolbar #menu-highlight:hover { background:#d4c56d; }
+        .selection-toolbar #menu-clear { display:none !important; }
+
+        .highlight { background:#ffef57 !important; border-radius:4px; padding:0 1px; }
+        .comment-highlight {
+            background:transparent !important; text-decoration: underline 2px #2d6cdf; text-underline-offset:3px;
+            cursor:pointer; position:relative;
+        }
+        .comment-highlight .comment-tooltip {
+            position:absolute; bottom:115%; left:50%; transform:translateX(-50%);
+            background:#000; color:#fff; padding:10px 14px; border-radius:14px; font-size:13px;
+            white-space:nowrap; max-width:260px; overflow:hidden; text-overflow:ellipsis; opacity:0; pointer-events:none;
+            transition:opacity .2s ease;
+        }
+        .comment-highlight:hover .comment-tooltip { opacity:1; }
+
+        .note-modal-overlay {
+            position:fixed; inset:0; background:rgba(0,0,0,.28); display:flex; align-items:center; justify-content:center; z-index:3000;
+        }
+        .note-modal-card {
+            width:min(540px,92vw); background:#fff; border-radius:24px; padding:28px 28px 24px; box-shadow:0 28px 80px rgba(0,0,0,.2);
+        }
+        .note-modal-card h3 { font-size:24px; margin:0 0 16px; }
+        .note-quote {
+            background:#eef2f8; border-left:4px solid #4a82e2; color:#6b7280; border-radius:14px;
+            padding:14px 16px; margin-bottom:12px; max-height:90px; overflow:auto;
+        }
+        .note-input { width:100%; min-height:140px; border:2px solid #5a94f0; border-radius:18px; padding:18px; font-size:18px; resize:vertical; outline:none; }
+        .note-modal-actions { display:flex; justify-content:flex-end; gap:14px; margin-top:18px; }
+        .note-cancel-btn, .note-save-btn { border:none; border-radius:18px; padding:14px 22px; font-size:18px; font-weight:700; cursor:pointer; }
+        .note-cancel-btn { background:#efc7c7; color:#933; }
+        .note-save-btn { background:#cfe5cf; color:#1f6b2d; }
+
+        @media (max-width: 900px) {
+            .test-taker-id { display:none; }
+            .options-overlay { padding:22px; }
+            .options-topbar h2 { font-size:42px; }
+            .options-submit-btn { font-size:26px; padding:20px 24px; }
+            .options-list-item, .options-choice { font-size:22px; padding:24px 22px; }
+        }
+
+
+/* --- final repaired review layer --- */
+.review-inline-card{margin-top:10px;background:#eef3fa;border:1px solid #d7dfeb;border-radius:14px;padding:12px 14px;line-height:1.55;}
+.review-inline-card .review-inline-title{font-weight:800;font-size:16px;margin-bottom:6px;}
+.review-inline-card .review-inline-meta{font-size:14px;margin-bottom:8px;}
+.review-inline-card .review-inline-evidence{background:#fff;border-radius:10px;padding:10px 12px;margin-top:8px;font-size:14px;}
+.review-evidence-highlight{background:#fff176!important;border-radius:4px;padding:0 2px;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.review-badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 7px;border-radius:999px;background:#000;color:#fff;font-size:14px;font-weight:800;margin-right:8px;vertical-align:middle;}
+.result-row{cursor:pointer;}
+
+
+/* enhanced sequential review */
+.review-question-focus{
+  background: rgba(241, 202, 0, 0.08) !important;
+  border: 1px solid rgba(241, 202, 0, 0.35) !important;
+  border-radius: 18px !important;
+  padding: 16px !important;
+}
+.review-inline-card{
+  margin-top:12px;
+  margin-bottom:8px;
+  background:#eef3fa;
+  border:1px solid #d7dfeb;
+  border-radius:14px;
+  padding:14px 16px;
+  line-height:1.6;
+}
+.review-inline-card .review-inline-title{
+  font-weight:800;
+  font-size:16px;
+  margin-bottom:6px;
+}
+.review-inline-card .review-inline-meta{
+  font-size:14px;
+  margin-bottom:8px;
+}
+.review-inline-card .review-inline-explanation{
+  margin-top:8px;
+}
+.review-inline-card .review-inline-evidence{
+  background:#fff;
+  border-radius:10px;
+  padding:10px 12px;
+  margin-top:10px;
+  font-size:14px;
+}
+.review-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:28px;
+  height:28px;
+  padding:0 8px;
+  border-radius:999px;
+  background:#000;
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+  margin-right:8px;
+  vertical-align:middle;
+}
+.review-evidence-highlight{
+  background:#fff176 !important;
+  border-radius:4px;
+  padding:0 2px;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+
+
+/* exact sentence review patch */
+.review-question-focus{
+  background: rgba(241, 202, 0, 0.08) !important;
+  border: 1px solid rgba(241, 202, 0, 0.35) !important;
+  border-radius: 18px !important;
+  padding: 16px !important;
+}
+.review-inline-card{
+  margin-top:12px;
+  margin-bottom:8px;
+  background:#eef3fa;
+  border:1px solid #d7dfeb;
+  border-radius:14px;
+  padding:14px 16px;
+  line-height:1.6;
+}
+.review-inline-card .review-inline-title{font-weight:800;font-size:16px;margin-bottom:6px;}
+.review-inline-card .review-inline-meta{font-size:14px;margin-bottom:8px;}
+.review-inline-card .review-inline-explanation{margin-top:8px;}
+.review-inline-card .review-inline-evidence{
+  background:#fff;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:14px;
+}
+.review-badge{
+  display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;
+  padding:0 8px;border-radius:999px;background:#000;color:#fff;font-size:14px;font-weight:800;
+  margin-right:8px;vertical-align:middle;
+}
+.review-evidence-highlight{
+  background:#fff176 !important;
+  border-radius:4px;
+  padding:0 2px;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+}
+
+</style>
+</head>
+<body>
+    
+<div class="header">
+    <div class="header-left">
+        <div class="brand-cluster">
+            <div class="ielts-badge">IELTS</div>
+            <div class="test-taker-id">Test taker ID: 000-000-000</div>
+        </div>
+    </div>
+    <div class="header-center">
+        <div class="timer-container">
+            <span class="timer-display">60:00</span>
+            <div class="timer-controls">
+                <button id="timer-toggle-btn" title="Pause/Resume Timer" type="button" aria-label="Pause or resume timer">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8 5v14l11-7L8 5z"/></svg>
+                </button>
+                <button id="timer-reset-btn" title="Reset Timer" type="button" aria-label="Reset timer">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="signal-cluster" aria-label="Status controls">
+            <button class="signal-icon" id="wifi-btn" type="button" title="Network status" aria-label="Network status">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 18.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Zm5.7-2.3a8.1 8.1 0 0 0-11.4 0 .8.8 0 0 0 0 1.2l.7.7a.8.8 0 0 0 1.2 0 5.7 5.7 0 0 1 8 0 .8.8 0 0 0 1.2 0l.7-.7a.8.8 0 0 0-.4-1.2Zm3.3-3.3a12.7 12.7 0 0 0-18 0 .8.8 0 0 0 0 1.2l.7.7a.8.8 0 0 0 1.2 0 10.3 10.3 0 0 1 14.6 0 .8.8 0 0 0 1.2 0l.7-.7a.8.8 0 0 0-.4-1.2Zm3.1-3.1a17 17 0 0 0-24 0 .8.8 0 0 0 0 1.2l.7.7a.8.8 0 0 0 1.2 0 14.6 14.6 0 0 1 20.6 0 .8.8 0 0 0 1.2 0l.7-.7a.8.8 0 0 0-.4-1.2Z"/></svg>
+            </button>
+            <button class="signal-icon" id="bell-btn" type="button" title="Notifications" aria-label="Notifications">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 22a2.6 2.6 0 0 0 2.6-2.6H9.4A2.6 2.6 0 0 0 12 22Zm7.1-5.1-1.5-1.5V10a5.6 5.6 0 1 0-11.2 0v5.4l-1.5 1.5a1 1 0 0 0 .7 1.7h12.8a1 1 0 0 0 .7-1.7Z"/></svg>
+            </button>
+            <button aria-label="Open options" class="header-menu-btn" id="header-options-btn" type="button" title="Options">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="main-container" id="main-container">
+
+        <div id="passage-header-container">
+            <div id="part-header-1" class="part-header">
+                <p><strong>Part 1</strong></p>
+                <p>Read the text and answer questions 1-13.</p>
+            </div>
+            <div id="part-header-2" class="part-header hidden">
+                <p><strong>Part 2</strong></p>
+                <p>Read the text and answer questions 14-26.</p>
+            </div>
+            <div id="part-header-3" class="part-header hidden">
+                <p><strong>Part 3</strong></p>
+                <p>Read the text and answer questions 27-40.</p>
+            </div>
+        </div>
+        <div class="panels-container">
+            <div class="passage-panel" id="passage-panel">
+                <div id="passage-text-1" class="reading-passage">
+                    <h4 class="text-center">DISCOVERING PURPLE</h4>
+                    <p>For thousands of years, dyes used to colour textiles and other materials were made from only natural sources. Historically, coloured dyes were made from the roots and leaves of plants, and from certain animals. Among the most precious of the animal-based dyes was the purple colour extracted from snails. This dye was very difficult to obtain and was therefore outrageously expensive. What was more, colours from natural dyes tended to be quite dull, and they faded when exposed to sunlight. But all this changed in 1856 when a London teenager made an important discovery.</p>
+                    <p>William Perkin was born on March 12, 1838, in London, England. His father was a builder, and the family lived in fairly prosperous circumstances in an otherwise rather disreputable neighbourhood in the city's East End. As a boy, Perkin's curiosity prompted early interests in the arts, sciences, photography, and engineering. But then one day, when he was exploring his late grandfather's home, he happened to come across a run-down, yet functional, laboratory, and this solidified his passion for chemistry.</p>
+                    <p>As a student at the City of London School, Perkin became immersed in the study of chemistry. His teacher, Thomas Hall, encouraged him to attend a series of lectures given by eminent scientist Michael Faraday at the Royal Institution. Those speeches fired the young chemist's enthusiasm further, and he became determined to attend the Royal College of Chemistry. Perkin's father hoped to convince his bright young son to follow in his older brother's footsteps into the more respectable field of architecture, so he tried to prevent this at first. But pressure from Hall and the wishes of his son won out, and Perkin entered the Royal College of Chemistry in 1853, at the age of 15. At the time of Perkin's enrolment, the college was headed by noted German chemist August Wilhelm Hofmann. Perkin's scientific gifts soon caught Hofmann's attention, and within two years, he became Hofmann's youngest assistant. Not long after that, Perkins made the discovery that would make him both famous and wealthy.</p>
+                    <p>In 1856, the only viable medical treatment for the deadly disease malaria was quinine, derived from the bark of the cinchona tree native to South America. Demand for this drug was surpassing the available supply. Thus, when Hofmann made some passing comments about the desirability of a synthetic substitute for quinine, it is unsurprising that his star pupil was moved to take up the challenge.</p>
+                    <p>During his spring school holidays that year, Perkin spent his time at home attempting to manufacture the drug from aniline, a by-product from the manufacture of the gas that lit London's streets. Despite his best efforts, however, he did not end up with quinine. Instead, he produced a mysterious dark sludge. Luckily, Perkin's scientific training and nature prompted him to investigate the substance further. Incorporating potassium dichromate and alcohol into the aniline at various stages of the experimental process, he finally happened upon a deep purple solution. Perkin quickly grasped that his purple solution could be used to colour fabric, thus making it the world's first synthetic dye.</p>
+                    <p>Perkin asked advice of Scottish dye works owner Robert Pullar, who convinced him that manufacturing the dye would be well worth it if the colour remained fast and the cost was not prohibitive. Thus reassured, he decided to pursue his commercial plans. Over the fierce objections of his mentor Hofmann, Perkin left college to give birth to the modern chemical industry. He was still only eighteen years old.</p>
+                    <p>With the help of his father and brother, Perkin set up a factory on a site near the Grand Union Canal in Greenford Green, not far from London. Utilising the cheap and almost unlimited supply of aniline available in the city, it began producing the world's first synthetic dye in 1857. Perkin originally called his dye 'Tyrian Purple' or 'aniline purple', but then decided to call it 'mauve', after the French word for the mallow plant used to make the colour violet. This was the name he fixed on in 1859, and is the name still in use to this day.</p>
+                    <p>The company received an unexpected commercial boost from the Empress Eugenie of France when she decided the new colour flattered her, and it soon became the must-have shade for all the fashionable ladies of France. Not to be outdone, England's Queen Victoria also appeared in public wearing a gown of the same hue, thus making it all the rage in England as well. The dye was bold and fast, and the public wanted more. So Perkin went back to the drawing board, and between 1859 and 1864 he developed several more synthetic dye colours.</p>
+                    <p>It is important to note that Perkin's synthetic dye discoveries had effects far beyond the merely decorative. The dyes also became vital to medical research in many ways. For instance, they were used to stain previously invisible microbes and bacteria, allowing researchers to identify such bacilli as tuberculosis, cholera, and anthrax.</p>
+                </div>
+                <div id="passage-text-2" class="reading-passage hidden">
+                    <h4 class="text-center">Beachcombing for early humans in Africa</h4>
+                    <p><strong>A</strong>&nbsp;&nbsp;Kenya has long been known as the 'cradle of mankind' following the discovery of fossils thought to be of the first members of the human family, which arose in Africa around 6-7million years ago. Various distinct species evolved from these ancestors over millions of years, including our own — Homo sapiens — around 250,000 years ago. 'A lot of the research on the origins of modern humans has focused on defining their point of origin, then understanding why humans left Africa about 60,000 years ago to colonise the rest of the world,' says anthropologist Dr Marta Mirazón Lahr of Cambridge University. 'But we have no idea what happened between 200,000 years and 60,000 years ago. We also have very little information on what occurred inside Africa after 60,000 years, when the different population groups and languages we see today evolved. The genetics suggest that the expansion out of Africa is just the tip of a massive population expansion inside the continent.'</p>
+                    <p><strong>B</strong>&nbsp;&nbsp;Along with fellow Cambridge anthropologist Professor Robert Foley, Mirazón Lahr is investigating the evolutionary history of modern human populations. 'The challenge is to find the sites where evidence of these early people can be recovered — their stone tools, the animals they hunted, their ornaments and, ultimately, the fossils of the people themselves,' she says. She has chosen to focus on East Africa based on the theory that its past environment was suitable for sustained occupation over time. But the region is huge, and finding the right place to look is absolutely crucial. 'In the past there were periods of enormous rainfall in the tropics,' she says. 'The lakes were much higher and their margins were wider. We are looking at where the ancient lake margins would have been when the lakes were last high, and that's where we look.'</p>
+                    <p><strong>C</strong>&nbsp;&nbsp;Some of their most spectacular finds have been on the ancient Turkana beaches in Kenya's Rift Valley. 'Ten thousand years ago, this area was wetter, with animals such as gazelles, hippos and lions, and the beaches are still there, even though the lake is long gone. We've found a great many shells on the surface, and a small number of harpoons the people fished with. A lot has already been exposed by the wind, and occasionally we find sites where things are buried, and then we dig,' she says. 'We're looking at the stone tools and how these relate to times of particularly high water levels. Then we're looking at the fauna and, if we're lucky, we find actual human fossils. The oldest fossil ever found that looks like a modern human is 200,000 years old, and comes from the Turkana Basin. We're trying to find the fossils that mark the origin of Homo sapiens.'</p>
+                    <p><strong>D</strong>&nbsp;&nbsp;The primitive technologies that our early ancestors left behind gradually evolve, and comparing finds dated to different times can advance understanding of our own evolutionary trajectory. 'We think the evolution to modern humans is associated with changes in behaviour and in technology, for example in their tool use. We've already found evidence that they started using animal bones to make tools, which was rare in earlier populations,' says Mirazón Lahr. 'The people who lived around here 10,000 years ago used microliths — a form of miniaturised stone tool technology,' adds her colleague Foley. 'Instead of producing one or two big flakes like the earliest modern humans, they produced lots of very small flakes to make composite tools. We've also found a beach in the Turkana Basin from about 200,000 years ago and that has its own very different fossilised fauna, and very different stone tools. The technology and the people changed a lot during the past 200,000 years.'</p>
+                    <p><strong>E</strong>&nbsp;&nbsp;Mirazón Lahr emphasises that geography and climate played a critical role in the origins and diversification of modern humans. 'The times when the lakes were high were periods of plenty in East Africa,' she says. 'When it was very wet there were lots of animals to hunt, the vegetation could grow, and you can imagine that the people would have thrived.' East Africa had a unique mosaic environment with lake basins, highlands and plains that provided alternative niches for foraging populations over this period. 'We think that early modern humans could live in the region throughout these long periods, even if they had to move between basins.' With a network of habitable zones, human populations survived by expanding, contracting and shifting ranges according to the state of the environment at any given time.</p>
+                    <p><strong>F</strong>&nbsp;&nbsp;By comparing the fossil records from different basins over time, Mirazón Lahr is trying to establish a spatial and temporal image of human occupation over the past 200,000 years. She believes that the way to find novel insights is to consider each problem from various angles. Drawing on her wide-ranging interests from molecular genetics to prehistory, and combining genetic, fossil, archaeological and palaeoclimatic information, she hopes to form an accurate and complete picture of our early ancestors' lives and the external forces that shaped their evolution, both biological and behavioural.</p>
+                </div>
+                <div id="passage-text-3" class="reading-passage hidden">
+                    <h4 class="text-center">Rewards for scientific achievement</h4>
+                    <p>While the Nobel Prizes are over 115 years old, rewards for scientific achievement have been around much longer. As early as the 17th century, at the very origins of modern experimental science, promoters of science realized the need for some system of recognition and reward that would provide incentive for advances in the field.</p>
+                    <p>Before the prize, it was the gift that dominated in science. Precursors to modern scientists — the early astronomers, philosophers, physicians, alchemists and engineers — offered wonderful discoveries, inventions and works of literature or art as gifts to powerful patrons, often royalty. Many scientists prefaced their publications with extravagant letters of dedication; they might, or they might not, be rewarded with a gift in return. Eventually, different kinds of incentives, including prizes and awards, as well as new, salaried academic positions, became more common and the favor of particular wealthy patrons diminished in importance. But at the height of the Renaissance, early scientists relied on gifts from powerful princes to compensate and advertise their efforts.</p>
+                    <p>With courtiers all vying for a patron's attention, scientific gifts had to be presented with drama and flair. The astronomer Galileo Galilei (1564—1642) presented his newly discovered moons of Jupiter to the Medici dukes of Italy as a 'gift' that was literally out of this world. In return, the Medici family 'ennobled' Galileo with the title and position of court philosopher and mathematician. If a gift succeeded, the gift-giver might, like Galileo in this case, be fortunate enough to receive a gift in return. Gift-givers could not, however, predict what form a patron's gift would take, and they might find themselves burdened with offers they couldn't refuse. Tycho Brahe (1546—1601), the great Danish Renaissance astronomer, received everything from exotic animals to chemical secrets in return for his discoveries.</p>
+                    <p>By the early-17th century, scientific promoters realized that gift-giving was ill-suited to encouraging experimental science. Experimentation required many individuals to collect data in many places across long periods of time. Gifts emphasized competitive individualism at a time when scientific collaboration and the often humdrum work of empirical observation were paramount.</p>
+                    <p>While it was accepted that some competitive rivalry helped to inspire and advance science, scientific reformers believed that too much led to the ostentation that too often plagued courtly gift-giving. Most of all, reformers feared an individual would not tackle a problem that couldn't be finished and presented to a patron in his or her lifetime — or even if they did, their findings might die with them.</p>
+                    <p>For these reasons, promoters of experimental science saw the reform of rewards as integral to radical changes in the pace and scale of scientific discovery. For example, Sir Francis Bacon (1561—1626), lord chancellor of England and an influential booster of experimental science, emphasized the importance even of 'approximations' or unfinished attempts at reaching a particular goal. Instead of dissipating their efforts attempting to appease patrons, many researchers, he hoped, could be stimulated to work toward the same ends via a wellpublicized research wish list. Bacon coined the term 'desiderata', still used by researchers today to denote widespread research goals. He also suggested many ingenious ways to advance discovery by stimulating the human hunger for fame; a row of statues celebrating famous inventors of the past, for example, could be paired with a row of empty plinths upon which researchers might imagine their own busts one day resting.</p>
+                    <p>Bacon's techniques inspired one of his chief admirers, the reformer Samuel Hartlib (circa 1600—1662) to collect many schemes for reforming the system of recognition. One proposed that rewards should go not only 'to such as exactly hit the marke, but even to those that probably misse it', because their errors would stimulate others and make 'active braines to beate about for New Inventions'. Hartlib planned a centralized office systematizing rewards for those who 'expect Rewards for Services done to the King or State, and know not where to pitch and what to desire'.</p>
+                    <p>Collaborative scientific societies, beginning in the mid-17th century, distanced rewards from the whims and demands of individual patrons. The periodicals that many new scientific societies started publishing offered a new medium that allowed authors to tackle ambitious research problems that might not individually produce a complete publication pleasing to a dedicatee. The societies saw their periodicals as a means to entice discovery by offering credit. Today's Leopoldina, the German national scientific society, founded its publication in 1670. According to its bylaws, those who might not otherwise publish their findings could see them 'exhibited to the world with the praiseworthy mention of their name' — an important step on the way to standardizing scientific citation.</p>
+                    <p>States might also offer rewards for solutions to problems, most famously in the case of the prize offered by the British government in 1714 for figuring out how to determine longitude at sea. Some in the 17th century likened this long-sought discovery to the philosopher's stone. The idea of using a prize to highlight a specific problem is alive and well today. In fact, some contemporary scientific prizes, such as the Simons Foundation's 'Cracking the Glass Problem', set forth specific questions that still need to be resolved.</p>
+                    <p>The shift from gift-giving to prize-giving completely transformed the rules of engagement in scientific discovery. Of course, the need for monetary support hasn't gone away. Obtaining financial support can still be a sizable part of what it takes to get science done today. Succeeding in grant competitions might seem mystifying, and winning a career-changing Nobel might come as a bolt out of the blue. But researchers can take comfort that they no longer have to present their innovations on bended knee as wondrous gifts that will appeal to the whims of individual patrons.</p>
+                </div>
+            </div>
+            <div class="resizer" id="resizer"></div>
+            <div class="questions-panel" id="questions-panel">
+                <!-- Part 1 Questions -->
+                <div id="questions-1" class="question-set">
+                    <div class="questions-container">
+                        <div class="question" data-q-start="1" data-q-end="7">
+                            <div class="question-prompt">
+                                <p><strong>Questions 1-7</strong><br>Complete the notes below.</p>
+                                <p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+                                <p>Write your answers in boxes 1-7 on your answer sheet.</p>
+                            </div>
+                            <div class="summary-text">
+                                <p class="centered-title">The first synthetic dye</p>
+                                <p><strong>Traditional dyes:</strong></p>
+                                <ul>
+                                    <li>made from plants, or animals e.g. <input type="text" class="answer-input" id="q1" placeholder="1"></li>
+                                    <li>purple dye was hard to obtain and extremely <input type="text" class="answer-input" id="q2" placeholder="2"></li>
+                                </ul>
+                                <p><strong>William Perkin:</strong></p>
+                                <ul>
+                                    <li>found an old <input type="text" class="answer-input" id="q3" placeholder="3"> in grandfather's house and decided to study chemistry</li>
+                                    <li>1856: was trying to find a way to make the drug called <input type="text" class="answer-input" id="q4" placeholder="4"></li>
+                                    <li>created a purple solution from aniline, a by-product of the <input type="text" class="answer-input" id="q5" placeholder="5"> industry</li>
+                                    <li>1857: began manufacturing dye in his <input type="text" class="answer-input" id="q6" placeholder="6"> near London</li>
+                                    <li>1859: called his dye <input type="text" class="answer-input" id="q7" placeholder="7"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="8" data-q-end="13">
+                            <div class="question-prompt">
+                                <p><strong>Questions 8-13</strong><br>Do the following statements agree with the information given in the text?</p>
+                                <p>In boxes 8-13 on your answer sheet, write</p>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li><strong>TRUE</strong> if the statement agrees with the information</li>
+                                    <li><strong>FALSE</strong> if the statement contradicts the information</li>
+                                    <li><strong>NOT GIVEN</strong> if there is no information on this</li>
+                                </ul>
+                            </div>
+                            <div class="tf-question" data-q-start="8" data-q-end="8">
+                                <div class="tf-question-line"><span class="tf-question-number">8</span><span class="tf-question-text">Hofmann noticed that Perkin had a talent for chemistry.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q8" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q8" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q8" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="9" data-q-end="9">
+                                <div class="tf-question-line"><span class="tf-question-number">9</span><span class="tf-question-text">Hofmann asked Perkin to do some experiments at home during the holidays.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q9" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q9" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="10" data-q-end="10">
+                                <div class="tf-question-line"><span class="tf-question-number">10</span><span class="tf-question-text">Perkin faced challenges obtaining the raw material needed to produce his dye.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q10" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q10" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="11" data-q-end="11">
+                                <div class="tf-question-line"><span class="tf-question-number">11</span><span class="tf-question-text">Perkin personally sent his new colour directly to the Empress Eugenie.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q11" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q11" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="12" data-q-end="12">
+                                <div class="tf-question-line"><span class="tf-question-number">12</span><span class="tf-question-text">The popularity of Perkin's product at home and abroad led to demand for additional colours.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q12" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q12" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="13" data-q-end="13">
+                                <div class="tf-question-line"><span class="tf-question-number">13</span><span class="tf-question-text">Perkin's dyes enabled scientists to see certain microbes and bacteria for the first time.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q13" value="TRUE"> TRUE</label><label class="tf-option"><input type="radio" name="q13" value="FALSE"> FALSE</label><label class="tf-option"><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Part 2 Questions -->
+                <div id="questions-2" class="question-set hidden">
+                    <div class="questions-container">
+                        <div class="question" data-q-start="14" data-q-end="19">
+                            <div class="question-prompt">
+                                <p><strong>Questions 14-19</strong><br>The text has six paragraphs, A-F.</p>
+                                <p>Choose the correct heading for each paragraph from the list of headings below.</p>
+                                <p>Write the correct number, i-vii, in boxes 14-19 on your answer sheet.</p>
+                            </div>
+                            <div class="example-box" style="font-size: 15px;">
+                                <p><strong>List of Headings</strong></p>
+                                <ul style="list-style-type: none; margin-left: 0; padding-left: 0;">
+                                    <li><strong>i</strong> How weather affected human evolution</li>
+                                    <li><strong>ii</strong> A disappointing find</li>
+                                    <li><strong>iii</strong> Two gaps in our knowledge</li>
+                                    <li><strong>iv</strong> A multi-disciplinary approach</li>
+                                    <li><strong>v</strong> Evidence of an earlier landscape</li>
+                                    <li><strong>vi</strong> Developments in artefacts over time</li>
+                                    <li><strong>vii</strong> Difficulties identifying where to focus research</li>
+                                </ul>
+                            </div>
+                            <div class="matching-form-container">
+                                <div class="matching-form-row">
+                                    <label for="q14" class="matching-form-label"><strong>14</strong>&nbsp;&nbsp;Paragraph A</label>
+                                    <select class="answer-input" id="q14"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q15" class="matching-form-label"><strong>15</strong>&nbsp;&nbsp;Paragraph B</label>
+                                    <select class="answer-input" id="q15"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q16" class="matching-form-label"><strong>16</strong>&nbsp;&nbsp;Paragraph C</label>
+                                    <select class="answer-input" id="q16"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q17" class="matching-form-label"><strong>17</strong>&nbsp;&nbsp;Paragraph D</label>
+                                    <select class="answer-input" id="q17"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q18" class="matching-form-label"><strong>18</strong>&nbsp;&nbsp;Paragraph E</label>
+                                    <select class="answer-input" id="q18"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option></select>
+                                </div>
+                                <div class="matching-form-row">
+                                    <label for="q19" class="matching-form-label"><strong>19</strong>&nbsp;&nbsp;Paragraph F</label>
+                                    <select class="answer-input" id="q19"><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="20" data-q-end="24">
+                            <div class="question-prompt">
+                                <p><strong>Questions 20-24</strong><br>Complete the summary below.</p>
+                                <p>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</p>
+                                <p>Write your answers in boxes 20-24 on your answer sheet.</p>
+                            </div>
+                            <div class="summary-text">
+                                <p class="centered-title">The ancient Turkana beaches</p>
+                                <p>Ten thousand years ago, a wide range of <input type="text" class="answer-input" id="q20" placeholder="20"> lived in this area. The <input type="text" class="answer-input" id="q21" placeholder="21"> which was in the basin disappeared a long time ago, but its beaches remain. A lot of <input type="text" class="answer-input" id="q22" placeholder="22"> have been discovered on the ground, along with a few <input type="text" class="answer-input" id="q23" placeholder="23"> which ancient humans used for fishing. The wind has uncovered many interesting objects, and others have been found by digging. Sometimes human remains are found in the form of <input type="text" class="answer-input" id="q24" placeholder="24">.</p>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="25" data-q-end="26">
+                            <div class="question-prompt">
+                                <p><strong>Questions 25-26</strong><br>Choose <strong>TWO</strong> letters, A-E.</p>
+                                <p>Which <strong>TWO</strong> aspects of early humans does Mirazon Lahr and Foley's research focus on?</p>
+                                <p>Write the correct letters in boxes 25-26 on your answer sheet.</p>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="25" data-q-end="26">
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="checkbox" name="q25-26" value="A"> A the type of artefacts they created</label></div>
+                                    <div class="multi-choice-option"><label><input type="checkbox" name="q25-26" value="B"> B the way they interacted with other populations</label></div>
+                                    <div class="multi-choice-option"><label><input type="checkbox" name="q25-26" value="C"> C the kind of societies they lived in</label></div>
+                                    <div class="multi-choice-option"><label><input type="checkbox" name="q25-26" value="D"> D the regions they inhabited</label></div>
+                                    <div class="multi-choice-option"><label><input type="checkbox" name="q25-26" value="E"> E the form of language they used</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Part 3 Questions -->
+                <div id="questions-3" class="question-set hidden">
+                    <div class="questions-container">
+                        <div class="question" data-q-start="27" data-q-end="30">
+                            <div class="question-prompt">
+                                <p><strong>Questions 27-30</strong><br>Do the following statements agree with the views of the writer in the text?</p>
+                                <p>In boxes 27-30 below write</p>
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li><strong>YES</strong> if the statement agrees with the claims of the writer</li>
+                                    <li><strong>NO</strong> if the statement contradicts the claims of the writer</li>
+                                    <li><strong>NOT GIVEN</strong> if it is impossible to say what the writer thinks about this</li>
+                                </ul>
+                            </div>
+                            <div class="tf-question" data-q-start="27" data-q-end="27">
+                                <div class="tf-question-line"><span class="tf-question-number">27</span><span class="tf-question-text">The belief that progress depended on scientists benefiting from their work dates from the 17th century.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q27" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q27" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q27" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="28" data-q-end="28">
+                                <div class="tf-question-line"><span class="tf-question-number">28</span><span class="tf-question-text">Early scientists could be confident of receiving patronage if they dedicated their work appropriately.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q28" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q28" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q28" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="29" data-q-end="29">
+                                <div class="tf-question-line"><span class="tf-question-number">29</span><span class="tf-question-text">Galileo considered his discovery of the moons of Jupiter to be one of his most important contributions to science.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q29" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q29" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q29" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                            <div class="tf-question" data-q-start="30" data-q-end="30">
+                                <div class="tf-question-line"><span class="tf-question-number">30</span><span class="tf-question-text">Some gifts bestowed by patrons were more welcome than others.</span></div>
+                                <div class="tf-options"><label class="tf-option"><input type="radio" name="q30" value="YES"> YES</label><label class="tf-option"><input type="radio" name="q30" value="NO"> NO</label><label class="tf-option"><input type="radio" name="q30" value="NOT GIVEN"> NOT GIVEN</label></div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="31" data-q-end="35">
+                            <div class="question-prompt">
+                                <p><strong>Questions 31-35</strong><br>Choose the correct letter, A, B, C or D.</p>
+                                <p>Write the correct letter in boxes 31-35 on your answer sheet.</p>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="31" data-q-end="31">
+                                <p><strong>31</strong>&nbsp;&nbsp;What did promoters of science begin to understand by the early-17th century?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q31" value="A"> A the benefits of making science more appealing</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q31" value="B"> B the importance of up-to-date scientific equipment</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q31" value="C"> C the impact of inaccurate data on scientific research</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q31" value="D"> D the need for scientists to share their work with one another</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="32" data-q-end="32">
+                                <p><strong>32</strong>&nbsp;&nbsp;What was scientific reformers' greatest concern about the patronage system?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q32" value="A"> A It was often restricted to royal courts.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q32" value="B"> B It led to unhealthy competition for resources.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q32" value="C"> C It resulted in scientists' work not always being judged on its merits.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q32" value="D"> D It encouraged scientists to avoid research that took many years to complete.</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="33" data-q-end="33">
+                                <p><strong>33</strong>&nbsp;&nbsp;Why does the writer refer to a row of statues?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q33" value="A"> A to propose how research goals should evolve</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q33" value="B"> B to compare the achievements of different scientists</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q33" value="C"> C to illustrate how a desire for recognition could be exploited</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q33" value="D"> D to provide examples of important scientists from the past</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="34" data-q-end="34">
+                                <p><strong>34</strong>&nbsp;&nbsp;It was accepted under one of Samuel Hartlib's schemes that</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q34" value="A"> A inspiration was hard to achieve.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q34" value="B"> B failure could bring about positive results.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q34" value="C"> C scientists needed assistance in record keeping.</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q34" value="D"> D scientific research should be given a higher status.</label></div>
+                                </div>
+                            </div>
+                            <div class="multi-choice-question" data-q-start="35" data-q-end="35">
+                                <p><strong>35</strong>&nbsp;&nbsp;What is the writer doing in the eighth paragraph?</p>
+                                <div class="multi-choice-options">
+                                    <div class="multi-choice-option"><label><input type="radio" name="q35" value="A"> A explaining how journals contributed to scientific progress</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q35" value="B"> B describing how research projects became more ambitious</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q35" value="C"> C indicating how scientific societies expanded their membership</label></div>
+                                    <div class="multi-choice-option"><label><input type="radio" name="q35" value="D"> D suggesting how nations attracted the best scientific researchers</label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="question" data-q-start="36" data-q-end="40">
+                            <div class="question-prompt">
+                                <p><strong>Questions 36-40</strong><br>Complete the summary using the list of words, A-J, below.</p>
+                                <p>Write the correct letter, A-J, in boxes 36-40 on your answer sheet.</p>
+                            </div>
+                            <div class="example-box" style="font-size: 15px;">
+                                <p><strong>List of Words</strong></p>
+                                <ul style="list-style-type: upper-alpha; margin-left: 20px;">
+                                    <li>A inventions</li>
+                                    <li>B strategy</li>
+                                    <li>C investigation</li>
+                                    <li>D likelihood</li>
+                                    <li>E facilities</li>
+                                    <li>F funding</li>
+                                    <li>G navigation</li>
+                                    <li>H ambitions</li>
+                                    <li>I collaboration</li>
+                                    <li>J interests</li>
+                                </ul>
+                            </div>
+                            <div class="summary-text">
+                                <p class="centered-title">Offering rewards for solutions to problems</p>
+                                <p>Scientific progress has long been encouraged through prizes. A famous case was that of the reward offered in 1714 by the British government to resolve the problem of maritime <input type="text" class="answer-input" id="q36" placeholder="36">. The practice of prize-giving persists today, and in some cases, for example the Simons Foundation's 'Cracking the Glass Problem', details are provided on the particular areas of <input type="text" class="answer-input" id="q37" placeholder="37"> that should be focused on. Prize-giving changed the way in which people engaged in scientific discovery. Scientists today may still have to secure <input type="text" class="answer-input" id="q38" placeholder="38"> for their research. But they should reassure themselves with the fact that although there might be little <input type="text" class="answer-input" id="q39" placeholder="39"> of them winning a Nobel Prize, at least they no longer have to satisfy the arbitrary <input type="text" class="answer-input" id="q40" placeholder="40"> of individual patrons.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="nav-arrows">
+        <button class="nav-arrow" onclick="previousQuestion()" id="prevBtn">‹</button>
+        <button class="nav-arrow" onclick="nextQuestion()" id="nextBtn">›</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-row perScorableItem" aria-label="Questions">
+        <div class="footer__questionWrapper___1tZ46 selected multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(1)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">1</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 13</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(1)"><span class="sr-only">Question 1</span><span aria-hidden="true">1</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(2)"><span class="sr-only">Question 2</span><span aria-hidden="true">2</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(3)"><span class="sr-only">Question 3</span><span aria-hidden="true">3</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(4)"><span class="sr-only">Question 4</span><span aria-hidden="true">4</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(5)"><span class="sr-only">Question 5</span><span aria-hidden="true">5</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(6)"><span class="sr-only">Question 6</span><span aria-hidden="true">6</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(7)"><span class="sr-only">Question 7</span><span aria-hidden="true">7</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(8)"><span class="sr-only">Question 8</span><span aria-hidden="true">8</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(9)"><span class="sr-only">Question 9</span><span aria-hidden="true">9</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(10)"><span class="sr-only">Question 10</span><span aria-hidden="true">10</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(11)"><span class="sr-only">Question 11</span><span aria-hidden="true">11</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(12)"><span class="sr-only">Question 12</span><span aria-hidden="true">12</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(13)"><span class="sr-only">Question 13</span><span aria-hidden="true">13</span></button>
+            </div>
+        </div>
+        
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(2)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">2</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 13</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(14)"><span class="sr-only">Question 14</span><span aria-hidden="true">14</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(15)"><span class="sr-only">Question 15</span><span aria-hidden="true">15</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(16)"><span class="sr-only">Question 16</span><span aria-hidden="true">16</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(17)"><span class="sr-only">Question 17</span><span aria-hidden="true">17</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(18)"><span class="sr-only">Question 18</span><span aria-hidden="true">18</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(19)"><span class="sr-only">Question 19</span><span aria-hidden="true">19</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(20)"><span class="sr-only">Question 20</span><span aria-hidden="true">20</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(21)"><span class="sr-only">Question 21</span><span aria-hidden="true">21</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(22)"><span class="sr-only">Question 22</span><span aria-hidden="true">22</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(23)"><span class="sr-only">Question 23</span><span aria-hidden="true">23</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(24)"><span class="sr-only">Question 24</span><span aria-hidden="true">24</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(25)"><span class="sr-only">Question 25</span><span aria-hidden="true">25</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(26)"><span class="sr-only">Question 26</span><span aria-hidden="true">26</span></button>
+            </div>
+        </div>
+        
+        <div class="footer__questionWrapper___1tZ46 multiple" role="tablist">
+            <button role="tab" class="footer__questionNo___3WNct" onclick="switchToPart(3)">
+                <span>
+                    <span aria-hidden="true" class="section-prefix">Part </span>
+                    <span class="sectionNr" aria-hidden="true">3</span>
+                    <span class="attemptedCount" aria-hidden="true">0 of 14</span>
+                </span>
+            </button>
+            <div class="footer__subquestionWrapper___9GgoP">
+                <button class="subQuestion scorable-item" onclick="goToQuestion(27)"><span class="sr-only">Question 27</span><span aria-hidden="true">27</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(28)"><span class="sr-only">Question 28</span><span aria-hidden="true">28</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(29)"><span class="sr-only">Question 29</span><span aria-hidden="true">29</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(30)"><span class="sr-only">Question 30</span><span aria-hidden="true">30</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(31)"><span class="sr-only">Question 31</span><span aria-hidden="true">31</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(32)"><span class="sr-only">Question 32</span><span aria-hidden="true">32</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(33)"><span class="sr-only">Question 33</span><span aria-hidden="true">33</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(34)"><span class="sr-only">Question 34</span><span aria-hidden="true">34</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(35)"><span class="sr-only">Question 35</span><span aria-hidden="true">35</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(36)"><span class="sr-only">Question 36</span><span aria-hidden="true">36</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(37)"><span class="sr-only">Question 37</span><span aria-hidden="true">37</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(38)"><span class="sr-only">Question 38</span><span aria-hidden="true">38</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(39)"><span class="sr-only">Question 39</span><span aria-hidden="true">39</span></button>
+                <button class="subQuestion scorable-item" onclick="goToQuestion(40)"><span class="sr-only">Question 40</span><span aria-hidden="true">40</span></button>
+            </div>
+        </div>
+        
+        <button id="deliver-button" aria-label="Review your answers" class="footer__deliverButton___3FM07">
+            <i class="fa fa fa-check" aria-hidden="true"></i>
+            <span>Options</span>
+        </button>
+    </nav>
+
+
+    <div id="options-overlay" class="options-overlay hidden" aria-hidden="true">
+        <div class="options-shell">
+            <div id="options-main-view">
+                <div class="options-topbar">
+                    <h2>Options</h2>
+                    <button class="options-close-btn" id="options-close-btn" type="button" aria-label="Close options">&times;</button>
+                </div>
+                <div class="options-body">
+                    <button class="options-submit-btn" id="options-submit-btn" type="button">
+                        <span>Submit the test</span><span>&rsaquo;</span>
+                    </button>
+                    <div class="options-list-card">
+                        <button class="options-list-item" id="open-contrast-view" type="button"><span>Contrast</span><span>&rsaquo;</span></button>
+                        <button class="options-list-item" id="open-textsize-view" type="button"><span>Text size</span><span>&rsaquo;</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="options-contrast-view" class="hidden">
+                <div class="options-topbar sub-topbar">
+                    <button class="options-back-btn" data-back-to-main type="button">&lsaquo; Options</button>
+                    <h2>Contrast</h2>
+                    <button class="options-close-btn" data-close-options type="button" aria-label="Close contrast">&times;</button>
+                </div>
+                <div class="options-body">
+                    <div class="options-list-card">
+                        <button class="options-choice active" data-contrast="default" type="button"><span class="tick">✓</span><span>Black on white</span></button>
+                        <button class="options-choice" data-contrast="white-black" type="button"><span class="tick">✓</span><span>White on black</span></button>
+                        <button class="options-choice" data-contrast="yellow-black" type="button"><span class="tick">✓</span><span>Yellow on black</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="options-textsize-view" class="hidden">
+                <div class="options-topbar sub-topbar">
+                    <button class="options-back-btn" data-back-to-main type="button">&lsaquo; Options</button>
+                    <h2>Text size</h2>
+                    <button class="options-close-btn" data-close-options type="button" aria-label="Close text size">&times;</button>
+                </div>
+                <div class="options-body">
+                    <div class="options-list-card">
+                        <button class="options-choice" data-textsize="small" type="button"><span class="tick">✓</span><span>Small</span></button>
+                        <button class="options-choice active" data-textsize="medium" type="button"><span class="tick">✓</span><span>Medium</span></button>
+                        <button class="options-choice" data-textsize="large" type="button"><span class="tick">✓</span><span>Large</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="contextMenu" class="context-menu">
+        <div id="menu-highlight" class="context-menu-item" onclick="highlightText()">
+            Highlight
+        </div>
+        <div id="menu-note" class="context-menu-item" onclick="addNote()">
+            Note
+        </div>
+        <div id="menu-clear" class="context-menu-item" onclick="clearHighlight()">
+            Clear
+        </div>
+        <div id="menu-clear-all" class="context-menu-item" onclick="clearAllHighlights()">
+            Clear All
+        </div>
+    </div>
+
+    <div id="results-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="results-close-x" type="button">&times;</button>
+            <h2>Results</h2>
+            <div class="results-summary">
+                <p>Score: <span id="results-score"></span> / 40</p>
+                <p>IELTS Band: <span id="results-band"></span></p>
+            </div>
+            <div class="modal-actions">
+                <button class="review-btn" id="review-answers-btn" type="button">Review answers</button>
+                <button class="results-close-secondary" id="results-close-btn" type="button">Close</button>
+            </div>
+            <div id="results-details" class="results-details-container">
+                <!-- Results for each question will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- STATE VARIABLES ---
+        let currentPassage = 1;
+        let currentQuestion = 1;
+        let selectedRange = null;
+        let timeInSeconds = 3600;
+        let timerInterval;
+        let draggedItem = null;
+        let activeQuestionElement = null;
+        let selectedDragItem = null;
+
+        // --- DOM ELEMENTS ---
+        const timerDisplay = document.querySelector('.timer-display');
+        const timerToggleButton = document.getElementById('timer-toggle-btn');
+        const timerResetButton = document.getElementById('timer-reset-btn');
+        const deliverButton = document.getElementById('deliver-button');
+        const resizer = document.getElementById('resizer');
+        const passagePanel = document.getElementById('passage-panel');
+        const questionsPanel = document.getElementById('questions-panel');
+        const contextMenu = document.getElementById('contextMenu');
+
+        // --- ICON SVGs ---
+        const playIcon = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8 5v14l11-7L8 5z"/></svg>';
+        const pauseIcon = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+
+        // --- ANSWERS ---
+        const correctAnswers = {
+            '1': 'snails', '2': 'expensive', '3': 'laboratory', '4': 'quinine', '5': 'gas', '6': 'factory', '7': 'mauve',
+            '8': 'TRUE', '9': 'FALSE', '10': 'FALSE', '11': 'NOT GIVEN', '12': 'TRUE', '13': 'TRUE',
+            '14': 'iii', '15': 'vii', '16': 'v', '17': 'vi', '18': 'i', '19': 'iv',
+            '20': 'animals', '21': 'lake', '22': 'shells', '23': 'harpoons', '24': 'fossils',
+            '25-26': ['A', 'D'],
+            '27': 'YES', '28': 'NO', '29': 'NOT GIVEN', '30': 'YES',
+            '31': 'D', '32': 'D', '33': 'C', '34': 'B', '35': 'A',
+            '36': 'G', '37': 'C', '38': 'F', '39': 'D', '40': 'J'
+        };
+
+        // --- INITIALIZATION ---
+        function initialize() {
+            startTimer();
+            switchToPart(1);
+            
+            document.body.addEventListener('input', updateAllIndicators);
+            document.body.addEventListener('change', updateAllIndicators);
+            deliverButton.addEventListener('click', checkAnswers);
+            timerToggleButton.addEventListener('click', toggleTimer);
+            timerResetButton.addEventListener('click', resetTimer);
+
+            // Add click listeners to question containers for navigation
+            document.querySelectorAll('[data-q-start]').forEach(el => {
+                el.addEventListener('click', () => {
+                    const qNum = parseInt(el.dataset.qStart, 10);
+                    if (currentQuestion !== qNum) {
+                        goToQuestion(qNum);
+                    }
+                });
+            });
+
+            resizer.addEventListener('mousedown', initResize, false);
+            initializeContextMenu();
+        }
+
+        // --- CORE TEST LOGIC ---
+
+        function checkAnswers() {
+            // Disable all inputs to prevent changes
+            const allInputs = document.querySelectorAll('input, select, textarea');
+            allInputs.forEach(input => {
+                input.disabled = true;
+            });
+
+            // Disable submit button
+            deliverButton.disabled = true;
+            deliverButton.style.cursor = 'not-allowed';
+            
+            clearInterval(timerInterval);
+            let score = 0;
+            const totalQuestions = 40;
+            const resultsDetailsContainer = document.getElementById('results-details');
+            resultsDetailsContainer.innerHTML = '';
+
+            document.querySelectorAll('.correct, .incorrect, .correct-answer-highlight').forEach(el => {
+                el.classList.remove('correct', 'incorrect', 'correct-answer-highlight');
+            });
+            document.querySelectorAll('.correct-answer-display').forEach(el => el.remove());
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionKey = String(i);
+                const correctAnswer = correctAnswers[questionKey];
+                let userAnswer = '';
+                let isCorrect = false;
+                
+                let userAnswerDisplay = 'Not Answered';
+                const correctAnswerText = Array.isArray(correctAnswer) ? correctAnswer.join(' / ') : correctAnswer;
+
+                const textInput = document.getElementById(`q${i}`);
+                const radioGroup = document.querySelectorAll(`input[name="q${i}"][type="radio"]`);
+                const selectInput = document.getElementById(`q${i}`);
+                const checkboxGroup = document.querySelectorAll(`input[name="q25-26"][type="checkbox"]:checked`);
+                
+                // Handle Text Inputs
+                if (textInput && textInput.tagName === 'INPUT' && textInput.type === 'text') {
+                    const element = textInput.closest('.matching-form-row') || textInput;
+                    userAnswer = textInput.value.trim();
+                    userAnswerDisplay = userAnswer || 'Not Answered';
+
+                    isCorrect = Array.isArray(correctAnswer) ?
+                        correctAnswer.some(ans => userAnswer.toLowerCase() === ans.toLowerCase()) :
+                        userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+                    
+                    if (isCorrect) {
+                        score++;
+                        element.classList.add('correct');
+                    } else {
+                        element.classList.add('incorrect');
+                        const correctAnswerSpan = document.createElement('span');
+                        correctAnswerSpan.className = 'correct-answer-display';
+                        correctAnswerSpan.innerHTML = `&nbsp;➜&nbsp;<span class="correct-answer-highlight">${correctAnswerText}</span>`;
+                        textInput.parentNode.insertBefore(correctAnswerSpan, textInput.nextSibling);
+                    }
+                }
+                // Handle Select Inputs
+                else if (selectInput && selectInput.tagName === 'SELECT') {
+                    const element = selectInput.closest('.matching-form-row') || selectInput;
+                    userAnswer = selectInput.value;
+                    userAnswerDisplay = userAnswer || 'Not Answered';
+
+                    isCorrect = userAnswer === correctAnswer;
+                    
+                    if (isCorrect) {
+                        score++;
+                        element.classList.add('correct');
+                    } else {
+                        element.classList.add('incorrect');
+                        const correctAnswerSpan = document.createElement('span');
+                        correctAnswerSpan.className = 'correct-answer-display';
+                        correctAnswerSpan.innerHTML = `&nbsp;➜&nbsp;<span class="correct-answer-highlight">${correctAnswerText}</span>`;
+                        selectInput.parentNode.insertBefore(correctAnswerSpan, selectInput.nextSibling);
+                    }
+                }
+                // Handle Radio Button Inputs (T/F, MCQs)
+                else if (radioGroup.length > 0) {
+                    const questionContainer = radioGroup[0].closest('.tf-question') || radioGroup[0].closest('.multi-choice-question');
+                    const checkedRadio = document.querySelector(`input[name="q${i}"]:checked`);
+
+                    if (checkedRadio) {
+                        userAnswer = checkedRadio.value;
+                        userAnswerDisplay = userAnswer;
+                        isCorrect = userAnswer === correctAnswer;
+
+                        const userLabel = checkedRadio.closest('.tf-option, .multi-choice-option');
+                        if (userLabel) {
+                            userLabel.classList.add(isCorrect ? 'correct' : 'incorrect');
+                        }
+                    }
+
+                    if (isCorrect) {
+                        score++;
+                    } else {
+                        if (questionContainer){
+                            const correctOptionEl = questionContainer.querySelector(`input[value="${correctAnswerText}"]`);
+                            if (correctOptionEl) {
+                                const correctLabel = correctOptionEl.closest('.tf-option, .multi-choice-option');
+                                if (correctLabel) {
+                                    correctLabel.classList.add('correct-answer-highlight');
+                                }
+                            }
+                        }
+                    }
+                }
+                // Handle Checkbox Group (Questions 25-26)
+                else if (i === 25 || i === 26) {
+                    const checkedBoxes = Array.from(document.querySelectorAll('input[name="q25-26"]:checked'));
+                    const userValues = checkedBoxes.map(box => box.value).sort();
+                    const correctValues = correctAnswers['25-26'].sort();
+                    
+                    // For checkbox questions, both must be correct to get points
+                    isCorrect = userValues.length === correctValues.length && 
+                                userValues.every((val, idx) => val === correctValues[idx]);
+                    
+                    if (isCorrect) {
+                        score += 2; // Give 2 points for the pair
+                    }
+                    
+                    // Mark individual options
+                    checkedBoxes.forEach(box => {
+                        const isOptionCorrect = correctValues.includes(box.value);
+                        const optionLabel = box.closest('.multi-choice-option');
+                        if (optionLabel) {
+                            optionLabel.classList.add(isOptionCorrect ? 'correct' : 'incorrect');
+                        }
+                    });
+                    
+                    // Skip the second question in the pair to avoid double counting
+                    if (i === 25) i = 26;
+                    userAnswerDisplay = userValues.join(', ');
+                    correctAnswerText = correctValues.join(', ');
+                }
+                 
+                // For showing results in the modal
+                 const resultRow = `
+                    <div class="result-row ${isCorrect ? '' : 'incorrect'}">
+                        <span class="q-num">${i}</span>
+                        <span class="user-ans">${userAnswerDisplay}</span>
+                        <span class="correct-ans">${correctAnswerText}</span>
+                    </div>`;
+                resultsDetailsContainer.innerHTML += resultRow;
+                
+                // Update nav button color
+                const navButton = document.querySelector(`.subQuestion[onclick="goToQuestion(${i})"]`);
+                if (navButton) {
+                    navButton.classList.remove('answered', 'active');
+                    navButton.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            }
+
+            document.getElementById('results-score').textContent = score;
+            document.getElementById('results-band').textContent = calculateBandScore(score);
+            document.getElementById('results-modal').classList.remove('hidden');
+        }
+
+        function calculateBandScore(score) {
+            if (score >= 39) return '9.0';
+            const mapping = {
+                40: 9.0, 39: 9.0, 38: 8.5, 37: 8.5, 36: 8.0, 35: 8.0, 34: 7.5,
+                33: 7.5, 32: 7.0, 31: 7.0, 30: 7.0, 29: 6.5, 28: 6.5, 27: 6.5,
+                26: 6.0, 25: 6.0, 24: 6.0, 23: 5.5, 22: 5.5, 21: 5.5, 20: 5.5,
+                19: 5.0, 18: 5.0, 17: 5.0, 16: 5.0, 15: 5.0, 14: 4.5, 13: 4.5,
+                12: 4.0, 11: 4.0, 10: 4.0, 9: 3.5, 8: 3.5, 7: 3.0, 6: 3.0,
+                5: 2.5, 4: 2.5
+            };
+            if (score <= 0) return 0.0;
+            if (score === 1) return 1.0;
+            if (score <= 3) return 2.0;
+            if (score <= 5) return 2.5;
+            return mapping[score] || 0.0;
+        }
+
+        function switchToPart(partNumber) {
+            currentPassage = partNumber;
+
+            // Hide all passages and questions
+            document.querySelectorAll('.reading-passage, .question-set, .part-header').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Show the correct passage, questions, and header
+            document.getElementById(`passage-text-${partNumber}`).classList.remove('hidden');
+            document.getElementById(`questions-${partNumber}`).classList.remove('hidden');
+            document.getElementById(`part-header-${partNumber}`).classList.remove('hidden');
+
+            // Update bottom navigation 'selected' state
+            document.querySelectorAll('.footer__questionWrapper___1tZ46').forEach((wrapper, index) => {
+                wrapper.classList.toggle('selected', (index + 1) === partNumber);
+            });
+
+            // Go to the first question of the part
+            const firstQuestionOfPart = {1: 1, 2: 14, 3: 27}[partNumber];
+            goToQuestion(firstQuestionOfPart);
+        }
+        
+        function goToQuestion(questionNumber) {
+            currentQuestion = questionNumber;
+
+            let passageNumber = 1;
+            if (questionNumber >= 14 && questionNumber <= 26) passageNumber = 2;
+            else if (questionNumber >= 27) passageNumber = 3;
+            
+            if (currentPassage !== passageNumber) {
+                switchToPart(passageNumber);
+                return; 
+            }
+
+            if (activeQuestionElement) {
+                activeQuestionElement.classList.remove('active-question', 'active-input');
+            }
+
+            let targetEl = document.querySelector(`[data-q-start="${questionNumber}"]`);
+
+            if (targetEl) {
+                activeQuestionElement = targetEl;
+                 if (targetEl.matches('input[type="text"]') || targetEl.matches('select')) {
+                     targetEl.classList.add('active-input');
+                 } else {
+                     targetEl.classList.add('active-question');
+                 }
+                 scrollIntoViewIfNeeded(targetEl);
+            } else {
+                 const pMatch = document.querySelector(`.paragraph-matching-question select[id="q${questionNumber}"]`);
+                 if(pMatch) {
+                    activeQuestionElement = pMatch;
+                    pMatch.classList.add('active-input');
+                    scrollIntoViewIfNeeded(pMatch);
+                 }
+            }
+
+            updateNavigation();
+        }
+        
+        // --- UI & NAVIGATION ---
+
+        function updateNavigation() {
+            const navButtons = document.querySelectorAll('.subQuestion');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            const activeNav = document.querySelector(`.subQuestion[onclick="goToQuestion(${currentQuestion})"]`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+
+            const inputs = document.querySelectorAll('.answer-input, .drop-zone.filled, .summary-drop-zone.filled');
+            inputs.forEach(input => input.classList.remove('active-input'));
+            
+            const activeInput = document.getElementById(`q${currentQuestion}`);
+            if (activeInput) {
+                activeInput.classList.add('active-input');
+                if (typeof activeInput.focus === 'function') {
+                    activeInput.focus();
+                }
+            } else {
+                const activeQuestionBlock = document.querySelector(`[data-q-start="${currentQuestion}"]`);
+                if (activeQuestionBlock) {
+                    const firstInput = activeQuestionBlock.querySelector('input, select');
+                    if(firstInput) {
+                        firstInput.classList.add('active-input');
+                         if (typeof firstInput.focus === 'function') {
+                            firstInput.focus();
+                        }
+                    }
+                }
+            }
+        }
+        
+        window.nextQuestion = () => currentQuestion < 40 && goToQuestion(currentQuestion + 1);
+        window.previousQuestion = () => currentQuestion > 1 && goToQuestion(currentQuestion - 1);
+
+        function updateAllIndicators() {
+            updateAttemptedCount(1, 1, 13);
+            updateAttemptedCount(2, 14, 26);
+            updateAttemptedCount(3, 27, 40);
+            updateAnsweredNav();
+        }
+        
+        function updateAnsweredNav() {
+            const navButtons = document.querySelectorAll('.subQuestion');
+            navButtons.forEach(btn => {
+                const qNum = parseInt(btn.textContent, 10);
+                if (isQuestionAnswered(qNum)) {
+                    btn.classList.add('answered');
+                } else {
+                    btn.classList.remove('answered');
+                }
+            });
+        }
+        
+        function isQuestionAnswered(qNum) {
+            const textInput = document.getElementById(`q${qNum}`);
+            if (textInput && (textInput.value.trim() !== '' || (textInput.classList.contains('drop-zone') && textInput.children.length > 0))) {
+                return true;
+            }
+            const radio = document.querySelector(`input[name="q${qNum}"]:checked`);
+            if (radio) {
+                return true;
+            }
+            const checkbox = document.querySelector(`input[name="q25-26"]:checked`);
+            if (checkbox && (qNum === 25 || qNum === 26)) {
+                return true;
+            }
+            return false;
+        }
+
+        function scrollIntoViewIfNeeded(element) {
+            const panel = element.closest('.questions-panel, .passage-panel');
+            const panelRect = panel.getBoundingClientRect();
+            const elementRect = element.getBoundingClientRect();
+            if (elementRect.top < panelRect.top || elementRect.bottom > panelRect.bottom) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        // --- MISC HELPERS ---
+        
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval); // Ensure no multiple intervals
+            timerInterval = setInterval(() => {
+                timeInSeconds--;
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (timeInSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.textContent = "Time's up!";
+                }
+            }, 1000);
+            timerToggleButton.innerHTML = pauseIcon;
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerToggleButton.innerHTML = playIcon;
+        }
+
+        function toggleTimer() {
+            // Check based on the icon currently displayed
+            if (timerToggleButton.innerHTML.includes('M6 19h4V5H6v14z')) { // Check for pause icon shape
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function resetTimer() {
+            timeInSeconds = 3600;
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            startTimer();
+            timerToggleButton.innerHTML = pauseIcon;
+        }
+        
+        function initResize(e) {
+            e.preventDefault();
+            const startX = e.clientX;
+            const startWidth = passagePanel.offsetWidth;
+            
+            const doDrag = (e) => {
+                const newWidth = startWidth + e.clientX - startX;
+                if (newWidth > 200 && (document.body.clientWidth - newWidth - resizer.offsetWidth) > 200) {
+                    passagePanel.style.flex = `0 0 ${newWidth}px`;
+                }
+            };
+            const stopDrag = () => {
+                window.removeEventListener('mousemove', doDrag, false);
+                window.removeEventListener('mouseup', stopDrag, false);
+            };
+            
+            window.addEventListener('mousemove', doDrag, false);
+            window.addEventListener('mouseup', stopDrag, false);
+        }
+        
+        // --- CONTEXT MENU (Highlighting) ---
+        
+        function initializeContextMenu() {
+            const panels = [passagePanel, questionsPanel];
+            let targetElementForClear = null;
+
+            // This listener simply tracks the last valid text selection in either panel.
+            document.addEventListener('selectionchange', () => {
+                const selection = window.getSelection();
+                if (selection && !selection.isCollapsed && selection.toString().trim().length > 0) {
+                    const range = selection.getRangeAt(0);
+                    if (panels.some(panel => panel.contains(range.commonAncestorContainer))) {
+                        selectedRange = range;
+                        targetElementForClear = null; // New selection overrides clearing a specific element
+                    }
+                }
+            });
+
+            const showContextMenu = (e) => {
+                const target = e.target;
+                const isClickOnHighlight = target.closest('.highlight, .comment-highlight');
+                const isSelectionActive = selectedRange && selectedRange.toString().trim().length > 0;
+                
+                let showMenu = false;
+
+                if (isClickOnHighlight) {
+                    document.getElementById('menu-highlight').style.display = 'none';
+                    document.getElementById('menu-note').style.display = 'none';
+                    document.getElementById('menu-clear').style.display = 'block';
+                    document.getElementById('menu-clear-all').style.display = 'block';
+                    contextMenu.targetElementForClear = isClickOnHighlight;
+                    showMenu = true;
+                } else if (isSelectionActive && panels.some(panel => panel.contains(selectedRange.commonAncestorContainer))) {
+                    document.getElementById('menu-highlight').style.display = 'flex';
+                    document.getElementById('menu-note').style.display = 'flex';
+                    document.getElementById('menu-clear').style.display = 'none';
+                    document.getElementById('menu-clear-all').style.display = 'block'; // Always show clear all
+                    showMenu = true;
+                }
+
+                if (showMenu) {
+                    e.preventDefault();
+                    contextMenu.style.display = 'block';
+                    const menuHeight = contextMenu.offsetHeight;
+                    const menuWidth = contextMenu.offsetWidth;
+                    let left = e.pageX;
+                    let top = e.pageY;
+                    if (left + menuWidth > window.innerWidth) left = window.innerWidth - menuWidth - 5;
+                    if (top + menuHeight > window.innerHeight) top = e.pageY - menuHeight - 5;
+                    else top = e.pageY - menuHeight - 5;
+                    
+                    contextMenu.style.left = `${left}px`;
+                    contextMenu.style.top = `${top}px`;
+                }
+            };
+
+            panels.forEach(panel => {
+                panel.addEventListener('contextmenu', showContextMenu);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (contextMenu.style.display === 'block' && !contextMenu.contains(e.target)) {
+                    closeContextMenu();
+                }
+            });
+        }
+
+        function closeContextMenu() {
+            contextMenu.style.display = 'none';
+            selectedRange = null; // Clear range after menu closes
+        }
+
+        function unwrapElement(element) {
+            const parent = element.parentNode;
+            if (!parent) return;
+            while (element.firstChild) {
+                parent.insertBefore(element.firstChild, element);
+            }
+            parent.removeChild(element);
+            parent.normalize();
+        }
+
+        window.highlightText = () => {
+            if (selectedRange && !selectedRange.collapsed) {
+                const span = document.createElement('span');
+                span.className = 'highlight';
+                span.appendChild(selectedRange.extractContents());
+                selectedRange.insertNode(span);
+            }
+            closeContextMenu();
+            window.getSelection().removeAllRanges();
+        };
+
+        window.addNote = () => {
+            if (!(selectedRange && !selectedRange.collapsed)) {
+                closeContextMenu();
+                return;
+            }
+            openNoteModal(selectedRange);
+            closeContextMenu();
+        };
+
+        window.clearHighlight = () => {
+             const elementToClear = contextMenu.targetElementForClear;
+             if (elementToClear) {
+                 unwrapElement(elementToClear);
+             }
+             closeContextMenu();
+             window.getSelection().removeAllRanges();
+        };
+        
+        window.clearAllHighlights = () => {
+            document.querySelectorAll('.highlight, .comment-highlight').forEach(unwrapElement);
+            closeContextMenu();
+            window.getSelection().removeAllRanges();
+        };
+
+        function updateAttemptedCount(part, startQ, endQ) {
+            let answeredCount = 0;
+            for (let i = startQ; i <= endQ; i++) {
+                if (isQuestionAnswered(i)) {
+                    answeredCount++;
+                }
+            }
+            const partHeader = document.querySelector(`.footer__questionNo___3WNct[onclick="switchToPart(${part})"]`);
+            if (partHeader) {
+                const countSpan = partHeader.querySelector('.attemptedCount');
+                if (countSpan) {
+                     countSpan.textContent = `${answeredCount} of ${endQ - startQ + 1}`;
+                }
+            }
+        }
+
+        // --- GLOBAL FUNCTION EXPOSURE ---
+        window.nextQuestion = nextQuestion;
+        window.previousQuestion = previousQuestion;
+        window.goToQuestion = goToQuestion;
+        window.switchToPart = switchToPart;
+        window.closeResultsModal = closeResultsModal;
+        // note/highlight functions already exposed above
+
+        // --- START THE APP ---
+        initialize();
+    });
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const deliverButton = document.getElementById('deliver-button');
+    const headerOptionsBtn = document.getElementById('header-options-btn');
+    const optionsOverlay = document.getElementById('options-overlay');
+    const optionsCloseBtn = document.getElementById('options-close-btn');
+    const optionsMain = document.getElementById('options-main-view');
+    const optionsContrast = document.getElementById('options-contrast-view');
+    const optionsText = document.getElementById('options-textsize-view');
+    const optionsSubmitBtn = document.getElementById('options-submit-btn');
+    const openContrastView = document.getElementById('open-contrast-view');
+    const openTextsizeView = document.getElementById('open-textsize-view');
+    const timerDisplay = document.querySelector('.timer-display');
+    const timerToggleButton = document.getElementById('timer-toggle-btn');
+    const timerResetButton = document.getElementById('timer-reset-btn');
+    const contextMenu = document.getElementById('contextMenu');
+
+    if (contextMenu) {
+        contextMenu.classList.add('selection-toolbar');
+    }
+
+    function showView(which) {
+        optionsMain.classList.add('hidden');
+        optionsContrast.classList.add('hidden');
+        optionsText.classList.add('hidden');
+        which.classList.remove('hidden');
+    }
+
+    function openOptions() {
+        optionsOverlay.classList.remove('hidden');
+        optionsOverlay.setAttribute('aria-hidden', 'false');
+        showView(optionsMain);
+    }
+
+    function closeOptions() {
+        optionsOverlay.classList.add('hidden');
+        optionsOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    if (deliverButton) {
+        deliverButton.onclick = function (e) {
+            e.preventDefault();
+            openOptions();
+        };
+    }
+    if (headerOptionsBtn) {
+        headerOptionsBtn.onclick = function () { openOptions(); };
+    }
+    if (optionsCloseBtn) optionsCloseBtn.onclick = closeOptions;
+    document.querySelectorAll('[data-close-options]').forEach(btn => btn.onclick = closeOptions);
+    document.querySelectorAll('[data-back-to-main]').forEach(btn => btn.onclick = function(){ showView(optionsMain); });
+    if (openContrastView) openContrastView.onclick = function(){ showView(optionsContrast); };
+    if (openTextsizeView) openTextsizeView.onclick = function(){ showView(optionsText); };
+    if (optionsOverlay) {
+        optionsOverlay.addEventListener('click', function(e){
+            if (e.target === optionsOverlay) closeOptions();
+        });
+    }
+    if (optionsSubmitBtn) {
+        optionsSubmitBtn.onclick = function () {
+            closeOptions();
+            if (typeof checkAnswers === 'function') {
+                checkAnswers();
+            } else {
+                const clickEvt = new Event('click', { bubbles: true });
+                const btn = document.getElementById('deliver-button');
+                if (btn) btn.dispatchEvent(clickEvt);
+            }
+        };
+    }
+
+    document.querySelectorAll('[data-contrast]').forEach(btn => {
+        btn.onclick = function () {
+            document.querySelectorAll('[data-contrast]').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            body.classList.remove('contrast-white-black', 'contrast-yellow-black');
+            const mode = btn.getAttribute('data-contrast');
+            if (mode === 'white-black') body.classList.add('contrast-white-black');
+            if (mode === 'yellow-black') body.classList.add('contrast-yellow-black');
+        };
+    });
+
+    document.querySelectorAll('[data-textsize]').forEach(btn => {
+        btn.onclick = function () {
+            document.querySelectorAll('[data-textsize]').forEach(el => el.classList.remove('active'));
+            btn.classList.add('active');
+            body.classList.remove('text-small', 'text-medium', 'text-large');
+            body.classList.add('text-' + btn.getAttribute('data-textsize'));
+        };
+    });
+    body.classList.add('text-medium');
+
+    // Robust timer layer
+    let timeInSeconds = 3600;
+    let timerInterval = null;
+    let timerRunning = false;
+    const playIcon = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8 5v14l11-7L8 5z"/></svg>';
+    const pauseIcon = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+
+    function renderTimer() {
+        if (!timerDisplay) return;
+        const mins = Math.floor(timeInSeconds / 60);
+        const secs = Math.max(0, timeInSeconds % 60);
+        timerDisplay.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+    function startTimerRobust() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerRunning = true;
+        if (timerToggleButton) timerToggleButton.innerHTML = pauseIcon;
+        timerInterval = setInterval(function () {
+            timeInSeconds -= 1;
+            if (timeInSeconds <= 0) {
+                timeInSeconds = 0;
+                renderTimer();
+                clearInterval(timerInterval);
+                timerRunning = false;
+                if (timerToggleButton) timerToggleButton.innerHTML = playIcon;
+                return;
+            }
+            renderTimer();
+        }, 1000);
+    }
+    function pauseTimerRobust() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerRunning = false;
+        if (timerToggleButton) timerToggleButton.innerHTML = playIcon;
+    }
+    function toggleTimerRobust() {
+        if (timerRunning) pauseTimerRobust();
+        else startTimerRobust();
+    }
+    function resetTimerRobust() {
+        timeInSeconds = 3600;
+        renderTimer();
+        startTimerRobust();
+    }
+    renderTimer();
+    startTimerRobust();
+    if (timerToggleButton) timerToggleButton.onclick = toggleTimerRobust;
+    if (timerResetButton) timerResetButton.onclick = resetTimerRobust;
+
+    // make icons "work"
+    const wifiBtn = document.getElementById('wifi-btn');
+    const bellBtn = document.getElementById('bell-btn');
+    if (wifiBtn) {
+        wifiBtn.onclick = function(){
+            wifiBtn.classList.toggle('active-state');
+            wifiBtn.style.background = wifiBtn.classList.contains('active-state') ? '#dfeaf9' : '#f3f3f3';
+        };
+    }
+    if (bellBtn) {
+        bellBtn.onclick = function(){
+            bellBtn.classList.toggle('active-state');
+            bellBtn.style.background = bellBtn.classList.contains('active-state') ? '#dfeaf9' : '#f3f3f3';
+        };
+    }
+
+    // Better selection toolbar positioning
+    let latestRange = null;
+    function isInAllowedPanel(node) {
+        const passagePanel = document.getElementById('passage-panel');
+        const questionsPanel = document.getElementById('questions-panel');
+        return (passagePanel && passagePanel.contains(node)) || (questionsPanel && questionsPanel.contains(node));
+    }
+
+    document.addEventListener('selectionchange', function () {
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || !sel.toString().trim()) return;
+        const range = sel.getRangeAt(0);
+        if (!isInAllowedPanel(range.commonAncestorContainer)) return;
+        latestRange = range.cloneRange();
+    });
+
+    function closeContextMenuPatched() {
+        if (contextMenu) contextMenu.style.display = 'none';
+    }
+
+    function positionMenuFromRange(range) {
+        if (!contextMenu || !range) return;
+        const rect = range.getBoundingClientRect();
+        const menuW = contextMenu.offsetWidth || 360;
+        const left = Math.min(window.scrollX + rect.left, window.scrollX + window.innerWidth - menuW - 12);
+        const top = window.scrollY + rect.bottom + 10;
+        contextMenu.style.left = left + 'px';
+        contextMenu.style.top = top + 'px';
+        contextMenu.style.display = 'flex';
+    }
+
+    document.addEventListener('mouseup', function () {
+        setTimeout(function () {
+            const sel = window.getSelection();
+            if (!sel || sel.isCollapsed || !sel.toString().trim()) return;
+            if (!latestRange) return;
+            positionMenuFromRange(latestRange);
+        }, 0);
+    });
+
+    function unwrapElement(element) {
+        const parent = element && element.parentNode;
+        if (!parent) return;
+        while (element.firstChild) parent.insertBefore(element.firstChild, element);
+        parent.removeChild(element);
+        parent.normalize();
+    }
+
+    window.highlightText = function () {
+        const range = latestRange;
+        if (!range || range.collapsed) return closeContextMenuPatched();
+        const span = document.createElement('span');
+        span.className = 'highlight';
+        span.appendChild(range.extractContents());
+        range.insertNode(span);
+        window.getSelection().removeAllRanges();
+        latestRange = null;
+        closeContextMenuPatched();
+    };
+
+    function openNoteModal(range) {
+        const selectedText = (range && range.toString()) ? range.toString() : '';
+        const overlay = document.createElement('div');
+        overlay.className = 'note-modal-overlay';
+        overlay.innerHTML = `
+            <div class="note-modal-card">
+                <h3>Add note</h3>
+                <div class="note-quote">${selectedText.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                <textarea class="note-input" placeholder="Write your note here..."></textarea>
+                <div class="note-modal-actions">
+                    <button class="note-cancel-btn" type="button">Cancel</button>
+                    <button class="note-save-btn" type="button">Save</button>
+                </div>
+            </div>`;
+        document.body.appendChild(overlay);
+        const input = overlay.querySelector('.note-input');
+        input.focus();
+        overlay.querySelector('.note-cancel-btn').onclick = function () { overlay.remove(); };
+        overlay.onclick = function (e) { if (e.target === overlay) overlay.remove(); };
+        overlay.querySelector('.note-save-btn').onclick = function () {
+            const note = input.value.trim();
+            if (note && range && !range.collapsed) {
+                const span = document.createElement('span');
+                span.className = 'comment-highlight';
+                const tooltip = document.createElement('span');
+                tooltip.className = 'comment-tooltip';
+                tooltip.textContent = note;
+                span.appendChild(range.extractContents());
+                span.appendChild(tooltip);
+                range.insertNode(span);
+            }
+            latestRange = null;
+            window.getSelection().removeAllRanges();
+            overlay.remove();
+        };
+    }
+    window.addNote = function () {
+        if (!latestRange || latestRange.collapsed) return closeContextMenuPatched();
+        openNoteModal(latestRange.cloneRange());
+        closeContextMenuPatched();
+    };
+    window.clearHighlight = function () {
+        const hovered = document.querySelector('.highlight:hover, .comment-highlight:hover');
+        if (hovered) unwrapElement(hovered);
+        closeContextMenuPatched();
+    };
+    window.clearAllHighlights = function () {
+        document.querySelectorAll('.highlight, .comment-highlight').forEach(unwrapElement);
+        closeContextMenuPatched();
+    };
+
+    document.addEventListener('click', function (e) {
+        if (contextMenu && contextMenu.style.display !== 'none' && !contextMenu.contains(e.target)) {
+            if (!window.getSelection().toString().trim()) closeContextMenuPatched();
+        }
+    });
+});
+</script>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const correctAnswers = {"1": "snails", "2": "expensive", "3": "laboratory", "4": "quinine", "5": "gas", "6": "factory", "7": "mauve", "8": "TRUE", "9": "FALSE", "10": "FALSE", "11": "NOT GIVEN", "12": "TRUE", "13": "TRUE", "14": "iii", "15": "vii", "16": "v", "17": "vi", "18": "i", "19": "iv", "20": "animals", "21": "lake", "22": "shells", "23": "harpoons", "24": "fossils", "25": ["A", "D"], "26": ["A", "D"], "27": "YES", "28": "NO", "29": "NOT GIVEN", "30": "YES", "31": "D", "32": "D", "33": "C", "34": "B", "35": "A", "36": "G", "37": "C", "38": "F", "39": "D", "40": "J"};
+  const stopWords = new Set("the a an and or of in on at to for from by with is are was were be been being this that these those it its as into over under around about near not only more less most very each per one two three four five six seven eight nine ten can could should would if than then when while during after before by according accordingly".split(/\s+/));
+
+  function bandFromScore(score){
+    if(score >= 39) return 9;
+    if(score >= 37) return 8.5;
+    if(score >= 35) return 8;
+    if(score >= 33) return 7.5;
+    if(score >= 30) return 7;
+    if(score >= 27) return 6.5;
+    if(score >= 23) return 6;
+    if(score >= 19) return 5.5;
+    if(score >= 15) return 5;
+    if(score >= 13) return 4.5;
+    return 0;
+  }
+
+  function getPartForQuestion(q){
+    if(q <= 13) return 1;
+    if(q <= 26) return 2;
+    return 3;
+  }
+
+  function switchToPartSafe(part){
+    if (typeof window.switchToPart === 'function') {
+      window.switchToPart(part);
+      return;
+    }
+    ['1','2','3'].forEach(p => {
+      const passage = document.getElementById('passage-text-' + p);
+      const questions = document.getElementById('questions-' + p);
+      const header = document.getElementById('part-header-' + p);
+      if (passage) passage.classList.toggle('hidden', String(part) !== p);
+      if (questions) questions.classList.toggle('hidden', String(part) !== p);
+      if (header) header.classList.toggle('hidden', String(part) !== p);
+    });
+  }
+
+  function getQuestionAnchor(q){
+    let el = document.getElementById('q' + q);
+    if(el){
+      return el.closest('.matching-form-row') || el.closest('li') || el.closest('p') || el.closest('.tf-question') || el.closest('.multi-choice-question') || el.closest('.question') || el;
+    }
+    const radio = document.querySelector('input[name="q' + q + '"]');
+    if(radio) return radio.closest('.tf-question') || radio.closest('.multi-choice-question') || radio.closest('.question') || radio.parentElement;
+    return document.querySelector('[data-q-start="' + q + '"]') || document.getElementById('questions-' + getPartForQuestion(q));
+  }
+
+  function getQuestionText(q){
+    const anchor = getQuestionAnchor(q);
+    let txt = anchor ? (anchor.innerText || anchor.textContent || '') : ('Question ' + q);
+    return txt.replace(/\s+/g,' ').trim().slice(0, 260);
+  }
+
+  function getPassageParagraphs(q){
+    const root = document.getElementById('passage-text-' + getPartForQuestion(q));
+    return root ? Array.from(root.querySelectorAll('p')) : [];
+  }
+
+  function collectUserAnswer(q){
+    const textInput = document.getElementById('q' + q);
+    if(textInput && textInput.tagName === 'INPUT' && textInput.type === 'text') return textInput.value.trim();
+    if(textInput && textInput.tagName === 'SELECT') return (textInput.value || '').trim();
+    const radios = document.querySelectorAll('input[name="q' + q + '"]:checked');
+    if(radios.length) return radios[0].value.trim();
+    if(q === 25 || q === 26){
+      const checks = Array.from(document.querySelectorAll('input[name="q25-26"]:checked')).map(el=>el.value.trim());
+      return checks;
+    }
+    return '';
+  }
+
+  function normalize(val){
+    if(Array.isArray(val)) return val.map(v=>String(v).trim().toLowerCase()).sort().join('|');
+    return String(val || '').trim().toLowerCase();
+  }
+
+  function isCorrect(q, user, correct){
+    if(q === 25 || q === 26){
+      const u = Array.isArray(user) ? [...user].map(x=>x.toLowerCase()).sort() : [];
+      const c = Array.isArray(correct) ? [...correct].map(x=>x.toLowerCase()).sort() : [String(correct).toLowerCase()];
+      return JSON.stringify(u) === JSON.stringify(c);
+    }
+    return normalize(user) === normalize(correct);
+  }
+
+  function tokens(str){
+    return String(str || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g,' ')
+      .split(/\s+/)
+      .filter(Boolean)
+      .filter(w => w.length > 2 && !stopWords.has(w));
+  }
+
+  function splitSentences(text){
+    return String(text).match(/[^.!?]+[.!?]?/g) || [String(text)];
+  }
+
+  function restoreParagraphs(){
+    document.querySelectorAll('[data-review-original-html]').forEach(p => {
+      p.innerHTML = p.getAttribute('data-review-original-html');
+    });
+  }
+
+  function clearReviewArtifacts(){
+    restoreParagraphs();
+    document.querySelectorAll('.review-inline-card').forEach(el => el.remove());
+    document.querySelectorAll('.review-question-focus').forEach(el => el.classList.remove('review-question-focus'));
+  }
+
+  function exactSentenceMatch(q, correct){
+    const questionTokens = tokens(getQuestionText(q));
+    const correctTokens = Array.isArray(correct) ? correct.map(x => String(x).toLowerCase()) : [String(correct).toLowerCase()];
+    let best = {score:-1, paragraph:null, sentences:[], ref:''};
+
+    getPassageParagraphs(q).forEach((p, idx) => {
+      const raw = (p.innerText || p.textContent || '').trim();
+      if(!raw) return;
+      const sentences = splitSentences(raw);
+      let matches = [];
+      sentences.forEach(sentence => {
+        const lower = sentence.toLowerCase();
+        let score = 0;
+        correctTokens.forEach(ans => {
+          if(ans && lower.includes(ans)) score += 9;
+        });
+        questionTokens.forEach(tok => {
+          if(tok && lower.includes(tok)) score += 2;
+        });
+        if(score > 0) matches.push({sentence: sentence.trim(), score});
+      });
+      matches.sort((a,b)=>b.score-a.score);
+
+      if(matches.length){
+        const topScore = matches[0].score;
+        const selected = matches.filter(m => m.score >= Math.max(3, topScore - 2)).slice(0, 2).map(m=>m.sentence);
+        const total = selected.reduce((s, sent) => s + (matches.find(m=>m.sentence===sent)?.score || 0), 0);
+        if(total > best.score){
+          best = {score: total, paragraph: p, sentences: selected, ref: 'P' + getPartForQuestion(q) + ' ¶' + (idx+1)};
+        }
+      }
+    });
+
+    if(best.paragraph) return best;
+
+    const paragraphs = getPassageParagraphs(q);
+    if(paragraphs.length){
+      const p = paragraphs[0];
+      const raw = (p.innerText || p.textContent || '').trim();
+      return {score:0, paragraph:p, sentences:splitSentences(raw).slice(0,1), ref:'P' + getPartForQuestion(q) + ' ¶1'};
+    }
+    return {score:0, paragraph:null, sentences:[], ref:''};
+  }
+
+  function escapeRegExp(s){
+    return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlightExactSentences(q, evidence){
+    if(!evidence || !evidence.paragraph) return;
+    const p = evidence.paragraph;
+    if(!p.hasAttribute('data-review-original-html')) {
+      p.setAttribute('data-review-original-html', p.innerHTML);
+    }
+    let html = p.getAttribute('data-review-original-html');
+    let badgeInserted = false;
+
+    evidence.sentences.forEach(sentence => {
+      const trimmed = sentence.trim();
+      if(!trimmed) return;
+      const regex = new RegExp(escapeRegExp(trimmed));
+      html = html.replace(regex, function(match){
+        const badge = !badgeInserted ? '<span class="review-badge">' + q + '</span>' : '';
+        badgeInserted = true;
+        return badge + '<span class="review-evidence-highlight">' + match + '</span>';
+      });
+    });
+
+    if(!badgeInserted){
+      html = '<span class="review-badge">' + q + '</span>' + html;
+    }
+
+    p.innerHTML = html;
+  }
+
+  function buildExplanation(q, correctDisplay, evidenceText){
+    return 'The correct answer is ' + correctDisplay + '. The highlighted sentence directly supports that answer, and the question number is placed at the start of the relevant evidence.';
+  }
+
+  function renderInlineReview(result){
+    switchToPartSafe(getPartForQuestion(result.q));
+    const anchor = getQuestionAnchor(result.q);
+    if(anchor) anchor.classList.add('review-question-focus');
+
+    if(result.evidence && result.evidence.paragraph){
+      highlightExactSentences(result.q, result.evidence);
+      result.evidence.paragraph.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    if(anchor){
+      const card = document.createElement('div');
+      card.className = 'review-inline-card';
+      card.innerHTML = `
+        <div class="review-inline-title">Explanation for Question ${result.q}</div>
+        <div class="review-inline-meta"><strong>Your answer:</strong> ${result.userDisplay} &nbsp;&nbsp; <strong>Correct answer:</strong> ${result.correctDisplay}</div>
+        <div class="review-inline-explanation">${result.explanation}</div>
+        <div class="review-inline-evidence"><strong>Evidence used:</strong><br>${result.evidenceText}</div>
+        <div style="margin-top:8px;font-size:13px;font-weight:700;color:#184f99;">${result.ref}</div>
+      `;
+      anchor.insertAdjacentElement('afterend', card);
+    }
+  }
+
+  function buildResults(){
+    let score = 0;
+    const results = [];
+    for(let q=1; q<=40; q++) {
+      const correct = correctAnswers[String(q)];
+      const user = collectUserAnswer(q);
+      const ok = isCorrect(q, user, correct);
+      if(ok) score++;
+      const evidence = exactSentenceMatch(q, correct);
+      const userDisplay = Array.isArray(user) ? (user.length ? user.join(', ') : 'Not Answered') : (user || 'Not Answered');
+      const correctDisplay = Array.isArray(correct) ? correct.join(' / ') : correct;
+      const evidenceText = evidence.sentences && evidence.sentences.length ? evidence.sentences.join(' ') : 'Evidence could not be isolated automatically.';
+      results.push({
+        q,
+        ok,
+        userDisplay,
+        correctDisplay,
+        evidence,
+        evidenceText,
+        explanation: buildExplanation(q, correctDisplay, evidenceText),
+        ref: evidence.ref || ('P' + getPartForQuestion(q))
+      });
+    }
+    return {results, score};
+  }
+
+  function closeResultsModalPatched(){
+    const modal = document.getElementById('results-modal');
+    if(modal) modal.classList.add('hidden');
+  }
+
+  function showResultsModal(data){
+    const modal = document.getElementById('results-modal');
+    const scoreEl = document.getElementById('results-score');
+    const bandEl = document.getElementById('results-band');
+    const details = document.getElementById('results-details');
+
+    if(scoreEl) scoreEl.textContent = data.score;
+    if(bandEl) bandEl.textContent = bandFromScore(data.score);
+
+    if(details){
+      details.innerHTML = '';
+      data.results.forEach(res => {
+        const row = document.createElement('div');
+        row.className = 'result-row' + (res.ok ? '' : ' incorrect');
+        row.innerHTML = `<div class="q-num">${res.q}</div><div class="user-ans">${res.userDisplay}</div><div class="correct-ans">${res.correctDisplay}</div>`;
+        details.appendChild(row);
+      });
+    }
+
+    const reviewBtn = document.getElementById('review-answers-btn');
+    if(reviewBtn) {
+      reviewBtn.onclick = function(){
+        closeResultsModalPatched();
+        clearReviewArtifacts();
+        data.results.forEach(res => renderInlineReview(res));
+      };
+    }
+
+    const closeBtn = document.getElementById('results-close-btn');
+    const closeX = document.getElementById('results-close-x');
+    if(closeBtn) closeBtn.onclick = closeResultsModalPatched;
+    if(closeX) closeX.onclick = closeResultsModalPatched;
+
+    if(modal) modal.classList.remove('hidden');
+  }
+
+  function runSubmitFlow(){
+    const data = buildResults();
+    showResultsModal(data);
+  }
+
+  const optionsSubmitBtn = document.getElementById('options-submit-btn');
+  if(optionsSubmitBtn) {
+    optionsSubmitBtn.onclick = function(e){
+      e.preventDefault();
+      const overlay = document.getElementById('options-overlay');
+      if(overlay) overlay.classList.add('hidden');
+      runSubmitFlow();
+    };
+  }
+
+  // Rebind timer robustly
+  const timerDisplay = document.querySelector('.timer-display');
+  const toggleBtn = document.getElementById('timer-toggle-btn');
+  const resetBtn = document.getElementById('timer-reset-btn');
+  let secs = 3600;
+  let running = true;
+  function renderTimer(){
+    if(timerDisplay) timerDisplay.textContent = String(Math.floor(secs/60)).padStart(2,'0') + ':' + String(secs%60).padStart(2,'0');
+  }
+  renderTimer();
+  if(window.__exactReviewTimer) clearInterval(window.__exactReviewTimer);
+  window.__exactReviewTimer = setInterval(function(){
+    if(running && secs > 0) {
+      secs--;
+      renderTimer();
+    }
+  }, 1000);
+  if(toggleBtn) toggleBtn.onclick = function(){ running = !running; };
+  if(resetBtn) resetBtn.onclick = function(){ secs = 3600; running = true; renderTimer(); };
+
+  window.runSubmitFlow = runSubmitFlow;
+});
+</script>
+
+
+<script>
+(function(){
+  function applyFinalTimerPatch(){
+    const oldToggle = document.getElementById('timer-toggle-btn');
+    const oldReset = document.getElementById('timer-reset-btn');
+    const timerDisplay = document.querySelector('.timer-display');
+    if(!oldToggle || !oldReset || !timerDisplay) return;
+
+    const toggleBtn = oldToggle.cloneNode(true);
+    const resetBtn = oldReset.cloneNode(true);
+    oldToggle.parentNode.replaceChild(toggleBtn, oldToggle);
+    oldReset.parentNode.replaceChild(resetBtn, oldReset);
+
+    try{
+      const probe = window.setInterval(function(){}, 1000);
+      for(let i = 1; i <= probe; i++) window.clearInterval(i);
+    }catch(e){}
+
+    const playIcon = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M8 5v14l11-7L8 5z"></path></svg>';
+    const pauseIcon = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>';
+
+    let secs = 3600;
+    let running = true;
+    let intervalId = null;
+
+    function render(){
+      const mins = Math.floor(secs / 60);
+      const sec = secs % 60;
+      timerDisplay.textContent = String(mins).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+      toggleBtn.innerHTML = running ? pauseIcon : playIcon;
+    }
+
+    function tick(){
+      if(!running) return;
+      if(secs > 0){
+        secs -= 1;
+        render();
+      }else{
+        running = false;
+        render();
+      }
+    }
+
+    function startSingleInterval(){
+      if(intervalId) clearInterval(intervalId);
+      intervalId = setInterval(tick, 1000);
+    }
+
+    toggleBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      running = !running;
+      render();
+    }, true);
+
+    resetBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      secs = 3600;
+      running = true;
+      render();
+      startSingleInterval();
+    }, true);
+
+    render();
+    startSingleInterval();
+    window.__finalWorkingTimer = {
+      pause: function(){ running = false; render(); },
+      resume: function(){ running = true; render(); },
+      reset: function(){ secs = 3600; running = true; render(); }
+    };
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', applyFinalTimerPatch);
+  }else{
+    applyFinalTimerPatch();
+  }
+})();
+</script>
+
+</body>
+</html>
