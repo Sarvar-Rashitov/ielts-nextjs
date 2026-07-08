@@ -1,6 +1,6 @@
 // /app/api/check-writing/route.ts
 // Next.js 13+ App Router API route
-// Place your OPENAI_API_KEY in .env.local — never in frontend code.
+// Uses DeepSeek API for AI evaluation
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -243,10 +243,10 @@ function isRateLimited(ip: string): boolean {
 
 export async function POST(req: NextRequest) {
   // --- API key check ---
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { error: "Server configuration error: OPENAI_API_KEY not set." },
+      { error: "Server configuration error: DEEPSEEK_API_KEY not set." },
       { status: 500 }
     );
   }
@@ -296,17 +296,17 @@ export async function POST(req: NextRequest) {
   const testDef = TEST_LIBRARY[testId];
   const prompt  = buildPrompt(testDef, essay1, essay2, wordCount1, wordCount2);
 
-  // --- Call OpenAI ---
-  let openAIResponse: Response;
+  // --- Call DeepSeek API ---
+  let deepSeekResponse: Response;
   try {
-    openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+    deepSeekResponse = await fetch("https://api.deepseek.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o",
+        model: "deepseek-chat",
         temperature: 0.3,
         max_tokens: 2000,
         messages: [
@@ -316,22 +316,22 @@ export async function POST(req: NextRequest) {
       }),
     });
   } catch (networkErr) {
-    console.error("OpenAI network error:", networkErr);
+    console.error("DeepSeek network error:", networkErr);
     return NextResponse.json(
-      { error: "Could not reach OpenAI. Check your network or try again." },
+      { error: "Could not reach DeepSeek API. Check your network or try again." },
       { status: 502 }
     );
   }
 
-  if (!openAIResponse.ok) {
-    const errBody = await openAIResponse.json().catch(() => ({})) as { error?: { message?: string } };
-    const message = errBody?.error?.message ?? `OpenAI returned status ${openAIResponse.status}`;
-    console.error("OpenAI API error:", message);
-    return NextResponse.json({ error: message }, { status: openAIResponse.status });
+  if (!deepSeekResponse.ok) {
+    const errBody = await deepSeekResponse.json().catch(() => ({})) as { error?: { message?: string } };
+    const message = errBody?.error?.message ?? `DeepSeek returned status ${deepSeekResponse.status}`;
+    console.error("DeepSeek API error:", message);
+    return NextResponse.json({ error: message }, { status: deepSeekResponse.status });
   }
 
-  // --- Parse OpenAI response ---
-  const aiData = await openAIResponse.json() as {
+  // --- Parse DeepSeek response ---
+  const aiData = await deepSeekResponse.json() as {
     choices: Array<{ message: { content: string } }>;
   };
 
@@ -343,7 +343,7 @@ export async function POST(req: NextRequest) {
     const cleaned = rawContent.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     feedback = JSON.parse(cleaned) as FeedbackResult;
   } catch (parseErr) {
-    console.error("Failed to parse OpenAI JSON:", rawContent, parseErr);
+    console.error("Failed to parse DeepSeek JSON:", rawContent, parseErr);
     return NextResponse.json(
       { error: "AI returned an unexpected format. Please try again." },
       { status: 500 }
