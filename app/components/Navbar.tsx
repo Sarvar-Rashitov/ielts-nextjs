@@ -309,7 +309,7 @@ export default function Navbar({ toggleSidebar }: Props) {
           <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
             <div className="flex gap-2">
               <button
-                onClick={() => navigate("https://t.me/jasurbeks_ielts")}
+                onClick={() => navigate("https://t.me/eduselfuz")}
                 className="flex items-center gap-2 text-[12px] text-white/35 hover:text-white/60 bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] px-3 py-2 rounded-lg transition-all"
               >
                 <IconSend /> Telegram

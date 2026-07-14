@@ -71,7 +71,7 @@ router.push("/dashboard")
   />
 
   <p className="text-sm font-semibold text-gray-800 text-center">
-    Jasurbek Abdullayev
+    Sarvar Rashitov
   </p>
 
   <p className="text-xs text-gray-500 text-center mt-1 leading-relaxed px-2">
